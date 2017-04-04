@@ -39,6 +39,11 @@ signals:
 
 private:
     void draw();
+    void drawCube();
+    void drawTrebuchet();
+    void drawPied();
+    //void drawContre-poid();
+    //void drawBras();
 
     int xRot;
     int yRot;

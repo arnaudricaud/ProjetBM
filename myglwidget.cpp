@@ -78,7 +78,11 @@ void MyGLWidget::initializeGL()
     glEnable(GL_LIGHT0);
 
     static GLfloat lightPosition[4] = { 0, 0, 10, 1.0 };
+    static GLfloat light2Position[4] = {0, 10, 0, 1.0};
+    static GLfloat light2Direction[4] = {0, 0, 0, 1.0};
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+    glLightfv(GL_LIGHT1, GL_POSITION, light2Position);
+    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, light2Direction);
 }
 
 void MyGLWidget::paintGL()
@@ -130,37 +134,67 @@ void MyGLWidget::mouseMoveEvent(QMouseEvent *event)
 
 void MyGLWidget::draw()
 {
-    qglColor(Qt::red);
-    glBegin(GL_QUADS);
-        glNormal3f(0,0,-1);
-        glVertex3f(-1,-1,0);
-        glVertex3f(-1,1,0);
-        glVertex3f(1,1,0);
-        glVertex3f(1,-1,0);
+    glColor3f(1,1,1);
+    drawPied();
 
-    glEnd();
-    glBegin(GL_TRIANGLES);
-        glNormal3f(0,-1,0.707);
-        glVertex3f(-1,-1,0);
-        glVertex3f(1,-1,0);
-        glVertex3f(0,0,1.2);
-    glEnd();
-    glBegin(GL_TRIANGLES);
-        glNormal3f(1,0, 0.707);
-        glVertex3f(1,-1,0);
-        glVertex3f(1,1,0);
-        glVertex3f(0,0,1.2);
-    glEnd();
-    glBegin(GL_TRIANGLES);
-        glNormal3f(0,1,0.707);
-        glVertex3f(1,1,0);
-        glVertex3f(-1,1,0);
-        glVertex3f(0,0,1.2);
-    glEnd();
-    glBegin(GL_TRIANGLES);
-        glNormal3f(-1,0,0.707);
-        glVertex3f(-1,1,0);
-        glVertex3f(-1,-1,0);
-        glVertex3f(0,0,1.2);
-    glEnd();
 }
+
+void MyGLWidget::drawCube()
+{
+
+    glBegin(GL_QUADS);
+        glVertex3f(-1.0f, -1.0f, -1.0f);
+        glVertex3f(-1.0f, 1.0f, -1.0f);
+        glVertex3f(1.0f, 1.0f, -1.0f);
+        glVertex3d(1.0f, -1.0f, -1.0f);
+    glEnd();
+    glBegin(GL_QUADS);
+        glVertex3d(1.0f, -1.0f, 1.0f);
+        glVertex3f(1.0f, 1.0f, 1.0f);
+        glVertex3f(-1.0f, 1.0f, 1.0f);
+        glVertex3f(-1.0f, -1.0f, 1.0f);
+    glEnd();
+    glBegin(GL_QUADS);
+        glVertex3d(1.0f, -1.0f, -1.0f);
+        glVertex3f(1.0f, -1.0f, 1.0f);
+        glVertex3f(-1.0f, -1.0f, 1.0f);
+        glVertex3f(-1.0f, -1.0f, -1.0f);
+    glEnd();
+    glBegin(GL_QUADS);
+        glVertex3f(-1.0f, 1.0f, -1.0f);
+        glVertex3f(-1.0f, 1.0f, 1.0f);
+        glVertex3f(1.0f, 1.0f, 1.0f);
+        glVertex3d(1.0f, 1.0f, -1.0f);
+    glEnd();
+
+    glBegin(GL_QUADS);
+        glVertex3f(-1.0f, -1.0f, -1.0f);
+        glVertex3f(-1.0f, -1.0f, 1.0f);
+        glVertex3f(-1.0f, 1.0f, 1.0f);
+        glVertex3d(-1.0f, 1.0f, -1.0f);
+    glEnd();
+    glBegin(GL_QUADS);
+        glVertex3d(1.0f, 1.0f, -1.0f);
+        glVertex3f(1.0f, 1.0f, 1.0f);
+        glVertex3f(1.0f, -1.0f, 1.0f);
+        glVertex3f(1.0f, -1.0f, -1.0f);
+    glEnd();
+
+}
+
+void MyGLWidget::drawTrebuchet()
+{
+    drawPied();
+
+}
+
+void MyGLWidget::drawPied()
+{
+    glPushMatrix();
+    glScalef (2.0, 0.5, 1.0);
+    drawCube();
+    glPopMatrix();
+
+}
+
+
