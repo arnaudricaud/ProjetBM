@@ -3,8 +3,11 @@
 #include <QtWidgets>
 #include <QtOpenGL>
 #include <QDebug>
-
+#include <QGLWidget>
+#include <QOpenGLTexture>
+#include <GL/glu.h>
 #include "myglwidget.h"
+
 
 MyGLWidget::MyGLWidget(QWidget *parent)
     : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
@@ -12,7 +15,9 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     xRot = 0;
     yRot = 0;
     zRot = 0;
-    zoom = 1;
+    zoom = 0.1;
+    angleCatapulte = 0;
+    angleBras = 0;
 }
 
 MyGLWidget::~MyGLWidget()
@@ -71,30 +76,42 @@ void MyGLWidget::setZRotation(int angle)
 void MyGLWidget::setZoom(int scale)
 {
 
-    zoom = float(scale)/100;
-    qDebug()<<zoom;
+    zoom = float(scale)/1000;
     emit zoomChanged(scale);
         updateGL();
 }
 
+void MyGLWidget::setAngleCatapulte(int angle)
+{
+    angleCatapulte = angle;
+    emit angleCatapulteChanged(angle);
+        updateGL();
+}
 
 
 void MyGLWidget::initializeGL()
 {
     qglClearColor(Qt::black);
 
+
+
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glShadeModel(GL_SMOOTH);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
+    glEnable(GL_TEXTURE_2D);
+    //glEnable(GL_LIGHTING);
+    //glEnable(GL_LIGHT0);
+    //glEnable(GL_LIGHT1);
+    //static GLfloat lightPosition[4] = { 0, 0, 10, 1.0 };
+    //static GLfloat light2Position[4] = {0, 10, 0, 1.0};
+    //static GLfloat light2Direction[4] = {0, 0, 0, 1.0};
+    //glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+    //glLightfv(GL_LIGHT1, GL_POSITION, light2Position);
+    //glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, light2Direction);
 
-    static GLfloat lightPosition[4] = { 0, 0, 10, 1.0 };
-    static GLfloat light2Position[4] = {0, 10, 0, 1.0};
-    static GLfloat light2Direction[4] = {0, 0, 0, 1.0};
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-    glLightfv(GL_LIGHT1, GL_POSITION, light2Position);
-    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, light2Direction);
+
+    //Chargement des textures:
+
 }
 
 void MyGLWidget::paintGL()
@@ -148,64 +165,151 @@ void MyGLWidget::mouseMoveEvent(QMouseEvent *event)
 void MyGLWidget::draw()
 {
     glColor3f(1,1,1);
-    drawPied();
-
+    drawTrebuchet();
+    //drawSol();
+    //drawCiel();
 }
 
 void MyGLWidget::drawCube()
 {
 
     glBegin(GL_QUADS);
-        glVertex3f(-1.0f, -1.0f, -1.0f);
-        glVertex3f(-1.0f, 1.0f, -1.0f);
-        glVertex3f(1.0f, 1.0f, -1.0f);
-        glVertex3d(1.0f, -1.0f, -1.0f);
+        glVertex3f(-0.5f, -0.5f, -0.5f);
+        glVertex3f(-0.5f, 0.5f, -0.5f);
+        glVertex3f(0.5f, 0.5f, -0.5f);
+        glVertex3d(0.5f, -0.5f, -0.5f);
     glEnd();
     glBegin(GL_QUADS);
-        glVertex3d(1.0f, -1.0f, 1.0f);
-        glVertex3f(1.0f, 1.0f, 1.0f);
-        glVertex3f(-1.0f, 1.0f, 1.0f);
-        glVertex3f(-1.0f, -1.0f, 1.0f);
+        glVertex3d(0.5f, -0.5f, 0.5f);
+        glVertex3f(0.5f, 0.5f, 0.5f);
+        glVertex3f(-0.5f, 0.5f, 0.5f);
+        glVertex3f(-0.5f, -0.5f, 0.5f);
     glEnd();
     glBegin(GL_QUADS);
-        glVertex3d(1.0f, -1.0f, -1.0f);
-        glVertex3f(1.0f, -1.0f, 1.0f);
-        glVertex3f(-1.0f, -1.0f, 1.0f);
-        glVertex3f(-1.0f, -1.0f, -1.0f);
+        glVertex3d(0.5f, -0.5f, -0.5f);
+        glVertex3f(0.5f, -0.5f, 0.5f);
+        glVertex3f(-0.5f, -0.5f, 0.5f);
+        glVertex3f(-0.5f, -0.5f, -0.5f);
     glEnd();
     glBegin(GL_QUADS);
-        glVertex3f(-1.0f, 1.0f, -1.0f);
-        glVertex3f(-1.0f, 1.0f, 1.0f);
-        glVertex3f(1.0f, 1.0f, 1.0f);
-        glVertex3d(1.0f, 1.0f, -1.0f);
+        glVertex3f(-0.5f, 0.5f, -0.5f);
+        glVertex3f(-0.5f, 0.5f, 0.5f);
+        glVertex3f(0.5f, 0.5f, 0.5f);
+        glVertex3d(0.5f, 0.5f, -0.5f);
     glEnd();
 
     glBegin(GL_QUADS);
-        glVertex3f(-1.0f, -1.0f, -1.0f);
-        glVertex3f(-1.0f, -1.0f, 1.0f);
-        glVertex3f(-1.0f, 1.0f, 1.0f);
-        glVertex3d(-1.0f, 1.0f, -1.0f);
+        glVertex3f(-0.5f, -0.5f, -0.5f);
+        glVertex3f(-0.5f, -0.5f, 0.5f);
+        glVertex3f(-0.5f, 0.5f, 0.5f);
+        glVertex3d(-0.5f, 0.5f, -0.5f);
     glEnd();
     glBegin(GL_QUADS);
-        glVertex3d(1.0f, 1.0f, -1.0f);
-        glVertex3f(1.0f, 1.0f, 1.0f);
-        glVertex3f(1.0f, -1.0f, 1.0f);
-        glVertex3f(1.0f, -1.0f, -1.0f);
+        glVertex3d(0.5f, 0.5f, -0.5f);
+        glVertex3f(0.5f, 0.5f, 0.5f);
+        glVertex3f(0.5f, -0.5f, 0.5f);
+        glVertex3f(0.5f, -0.5f, -0.5f);
     glEnd();
 
 }
 
 void MyGLWidget::drawTrebuchet()
 {
-    drawPied();
-
+    glRotatef(angleCatapulte,0,0,1);
+    GLUquadric* cylindre = gluNewQuadric();
+    glPushMatrix();
+        drawPied();
+        glTranslatef(0,10,0);
+        drawPied();
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(7,11,14);
+        glPushMatrix();
+            glRotatef(90,1,0,0);
+            glScalef(1,1,12);
+            gluCylinder(cylindre, 0.5,0.5,1,32,32);
+        glPopMatrix();
+        glTranslatef(0,-6,0);
+        drawBras();
+    glPopMatrix();
 }
 
 void MyGLWidget::drawPied()
 {
     glPushMatrix();
-    glScalef (2.0, 0.5, 1.0);
-    drawCube();
+        glColor3f(0.53, 0.45, 0.34);
+        glPushMatrix();
+            glTranslatef(15,0,0);
+            glScalef (30, 1, 1);
+            drawCube();
+        glPopMatrix();
+        glPushMatrix();
+            glTranslatef(4, -0.25, 7);
+            glPushMatrix();
+                glRotatef(-65,0,1,0);
+                glScalef (15, 0.5, 1);
+                drawCube();
+            glPopMatrix();
+            glPushMatrix();
+                glTranslatef(6, 0.5, 0);
+                glRotatef(65,0,1,0);
+                glScalef (15, 0.5, 1);
+                drawCube();
+            glPopMatrix();
+        glPopMatrix();
+        glPushMatrix();
+            glTranslatef(7,0,13.5);
+            glScalef(4,1.5,1);
+            drawCube();
+        glPopMatrix();
     glPopMatrix();
+}
+
+
+void MyGLWidget::drawContrepoid()
+{
+    glColor3f(0.43, 0.35, 0.24);
+        glPushMatrix();
+            glTranslatef(0,0,-2);
+            glScalef (0.1, 0.1, 4);
+            drawCube();
+        glPopMatrix();
+        glPushMatrix();
+            glTranslatef(0,0,-6);
+            glScalef (5,5,4);
+            drawCube();
+       glPopMatrix();
+}
+
+
+void MyGLWidget::drawBras()
+{
+        glRotatef(angleBras,0,1,0);
+        glPushMatrix();
+        glTranslatef(7.5,0,0);
+        glPushMatrix();
+            glScalef(30,1.5,1.5);
+            drawCube();
+        glPopMatrix();
+        glPushMatrix();
+            glTranslatef(-12,0,0);
+            glRotatef(angleBras,0,-1,0);
+            drawContrepoid();
+        glPopMatrix();
+    glPopMatrix();
+}
+
+void MyGLWidget::drawSol()
+{
+    glColor3f(0.24, 0.45, 0.02);
+    glBegin(GL_QUADS);
+        glVertex3f(500,-500,-0.5);
+        glVertex3f(500,500,-0.5);
+        glVertex3f(-500,500,-0.5);
+        glVertex3d(-500,-500,-0.5);
+    glEnd();
+}
+void MyGLWidget::drawCiel()
+{
 
 }
