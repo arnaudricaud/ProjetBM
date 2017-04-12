@@ -22,13 +22,21 @@ public:
 
 private slots:
     void update();
+    void tracking();
 
+
+    void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;
     VideoCapture * cam;
     QTimer *timer = new QTimer(this);
-
+    QTimer *timer2 = new QTimer(this);
+    Point *PointMin = new Point();
+    Point *PointMax = new Point();
+    Point *PointPrev = new Point();
+    bool  start;
+    bool go;
 };
 
 #endif // MAINWINDOW_H
