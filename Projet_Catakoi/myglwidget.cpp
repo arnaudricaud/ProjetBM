@@ -12,6 +12,7 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     xRot = 0;
     yRot = 0;
     zRot = 0;
+    zoom = 1;
 }
 
 MyGLWidget::~MyGLWidget()
@@ -67,6 +68,17 @@ void MyGLWidget::setZRotation(int angle)
     }
 }
 
+void MyGLWidget::setZoom(int scale)
+{
+
+    zoom = float(scale)/100;
+    qDebug()<<zoom;
+    emit zoomChanged(scale);
+        updateGL();
+}
+
+
+
 void MyGLWidget::initializeGL()
 {
     qglClearColor(Qt::black);
@@ -93,6 +105,7 @@ void MyGLWidget::paintGL()
     glRotatef(xRot / 16.0, 1.0, 0.0, 0.0);
     glRotatef(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
+    glScalef(zoom,zoom,zoom);
     draw();
 }
 
@@ -196,5 +209,3 @@ void MyGLWidget::drawPied()
     glPopMatrix();
 
 }
-
-

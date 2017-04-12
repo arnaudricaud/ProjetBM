@@ -30,12 +30,14 @@ public slots:
     void setXRotation(int angle);
     void setYRotation(int angle);
     void setZRotation(int angle);
+    void setZoom(int scale);
 
 signals:
     // signaling rotation from mouse movement
     void xRotationChanged(int angle);
     void yRotationChanged(int angle);
     void zRotationChanged(int angle);
+    void zoomChanged(int scale);
 
 private:
     void draw();
@@ -48,9 +50,9 @@ private:
     int xRot;
     int yRot;
     int zRot;
+    float zoom;
 
     QPoint lastPos;
 };
 
 #endif // MYGLWIDGET_H
-
