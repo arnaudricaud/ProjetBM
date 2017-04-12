@@ -16,8 +16,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     connect(ui->myGLWidget, SIGNAL(zoomChanged(int)), ui->zoomSlider, SLOT(setValue(int)));
+    connect(ui->myGLWidget, SIGNAL(angleCatapulteChanged(int)), ui->SliderAngleCatapulte, SLOT(setValue(int)));
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
-    timer->start(50);
+    timer->start(500);
 
 
 }
@@ -35,8 +36,10 @@ void MainWindow::update(){
             ui->camFrame->setText("");
             // Flip to get a mirror effect
             flip(image,image,1);
-            //float newsize = (ui->centralWidget->width())/5;
-            //cv::resize(image, image, Size(newsize, newsize), 0, 0, INTER_LINEAR);
+            //int newheight = (ui->centralWidget->width())/4;;
+            //int newwidth = (newheight*1.33);
+            //cv::resize(image, image,Size(newwidth,newheight), 0, 0);
+            cv::resize(image, image,Size(), 0.1, 0.1);
             // Invert Blue and Red color channels
             cvtColor(image,image,CV_BGR2RGB);
             // Convert to Qt image
