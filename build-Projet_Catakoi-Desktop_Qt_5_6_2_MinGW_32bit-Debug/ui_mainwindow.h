@@ -40,6 +40,7 @@ public:
     MyGLWidget *myGLWidget;
     QLabel *camFrame;
     QSlider *zoomSlider;
+    QSlider *SliderAngleCatapulte;
     QPushButton *pushButton;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
@@ -77,6 +78,7 @@ public:
         camFrame->setObjectName(QStringLiteral("camFrame"));
         camFrame->setGeometry(QRect(0, 0, 141, 121));
         camFrame->setAlignment(Qt::AlignCenter);
+        camFrame->raise();
 
         verticalLayout_3->addWidget(myGLWidget);
 
@@ -90,6 +92,16 @@ public:
         zoomSlider->setTickInterval(1);
 
         verticalLayout_3->addWidget(zoomSlider);
+
+        SliderAngleCatapulte = new QSlider(centralWidget);
+        SliderAngleCatapulte->setObjectName(QStringLiteral("SliderAngleCatapulte"));
+        SliderAngleCatapulte->setMinimum(-45);
+        SliderAngleCatapulte->setMaximum(45);
+        SliderAngleCatapulte->setOrientation(Qt::Horizontal);
+        SliderAngleCatapulte->setTickPosition(QSlider::TicksBelow);
+        SliderAngleCatapulte->setTickInterval(1);
+
+        verticalLayout_3->addWidget(SliderAngleCatapulte);
 
 
         horizontalLayout->addLayout(verticalLayout_3);
@@ -117,6 +129,7 @@ public:
 
         retranslateUi(MainWindow);
         QObject::connect(zoomSlider, SIGNAL(valueChanged(int)), myGLWidget, SLOT(setZoom(int)));
+        QObject::connect(SliderAngleCatapulte, SIGNAL(valueChanged(int)), myGLWidget, SLOT(setAngleCatapulte(int)));
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
