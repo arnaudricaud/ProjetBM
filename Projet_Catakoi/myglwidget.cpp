@@ -12,6 +12,11 @@
 MyGLWidget::MyGLWidget(QWidget *parent)
     : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
+    setFocusPolicy(Qt::StrongFocus);
+    xTra = 0;
+    yTra = 0;
+    zTra = -10;
+
     xRot = 0;
     yRot = 0;
     zRot = 0;
@@ -73,18 +78,55 @@ void MyGLWidget::setZRotation(int angle)
     }
 }
 
+void MyGLWidget::setXTranslation(float dist)
+{
+    xTra = xTra + dist;
+
+    emit xTranslationChanged(xTra);
+    updateGL();
+}
+
+void MyGLWidget::setYTranslation(float dist)
+{
+    yTra = yTra + dist;
+    emit yTranslationChanged(yTra);
+    updateGL();
+}
+
+void MyGLWidget::setZTranslation(float dist)
+{
+    zTra = zTra + dist;
+    qDebug()<<zTra;
+    emit zTranslationChanged(zTra);
+    updateGL();
+}
+
+
 void MyGLWidget::setZoom(int scale)
 {
-
+    qDebug()<<scale;
     zoom = float(scale)/1000;
     emit zoomChanged(scale);
-        updateGL();
+    updateGL();
 }
 
 void MyGLWidget::setAngleCatapulte(int angle)
 {
     angleCatapulte = angle;
     emit angleCatapulteChanged(angle);
+        updateGL();
+}
+
+void MyGLWidget::setAngleBras(int angle)
+{
+    if (angle > 38){
+        angle = 38;
+    } else if (angle < -135){
+        angle = -135;
+    }
+    angleBras = angle;
+    qDebug()<<angle;
+    emit angleBrasChanged(angle);
         updateGL();
 }
 
@@ -118,7 +160,7 @@ void MyGLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-    glTranslatef(0.0, 0.0, -10.0);
+    glTranslatef(xTra, yTra, zTra);
     glRotatef(xRot / 16.0, 1.0, 0.0, 0.0);
     glRotatef(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
@@ -151,16 +193,47 @@ void MyGLWidget::mouseMoveEvent(QMouseEvent *event)
     int dx = event->x() - lastPos.x();
     int dy = event->y() - lastPos.y();
 
-    if (event->buttons() & Qt::LeftButton) {
+    if (event->buttons() & Qt::RightButton) {
         setXRotation(xRot + dy*8);
         setYRotation(yRot + dx*8);
-    } else if (event->buttons() & Qt::RightButton) {
+    } else if (event->buttons() & Qt::LeftButton) {
         setXRotation(xRot + dy*8);
         setZRotation(zRot + dx*8);
     }
 
     lastPos = event->pos();
 }
+
+void MyGLWidget::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Z){
+        float zoomInt = zoom*1000;
+        int scale = (int)zoomInt + 2;
+        setZoom(scale);
+    } else if(event->key() == Qt::Key_S){
+        float zoomInt = zoom*1000;
+        int scale = (int)zoomInt - 2;
+        setZoom(scale);
+    } else if(event->key() == Qt::Key_Q){
+        setXTranslation(0.3);
+    }else if(event->key() == Qt::Key_D){
+        setXTranslation(-0.3);
+    }else if(event->key() == Qt::Key_A){
+        setYTranslation(0.3);
+    }else if(event->key() == Qt::Key_E){
+        setYTranslation(-0.3);
+    }
+}
+
+void MyGLWidget::wheelEvent(QWheelEvent *event)
+{
+    int scroll = (event->angleDelta().y())/60;
+    float zoomInt = zoom*1000;
+    int scale = (int)zoomInt + scroll;
+    setZoom(scale);
+}
+
+
 
 void MyGLWidget::draw()
 {
@@ -302,12 +375,8 @@ void MyGLWidget::drawBras()
 void MyGLWidget::drawSol()
 {
     glColor3f(0.24, 0.45, 0.02);
-    glBegin(GL_QUADS);
-        glVertex3f(500,-500,-0.5);
-        glVertex3f(500,500,-0.5);
-        glVertex3f(-500,500,-0.5);
-        glVertex3d(-500,-500,-0.5);
-    glEnd();
+    glScalef(5000,5000,500);
+    drawCube();
 }
 void MyGLWidget::drawCiel()
 {

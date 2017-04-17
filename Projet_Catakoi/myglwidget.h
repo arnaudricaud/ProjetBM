@@ -27,22 +27,34 @@ protected:
     QSize sizeHint() const;
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
+    void keyPressEvent(QKeyEvent *);
+    void wheelEvent(QWheelEvent *event);
 
 public slots:
     // slots for xyz-rotation slider
+    void setXTranslation(float dist);
+    void setYTranslation(float dist);
+    void setZTranslation(float dist);
+
     void setXRotation(int angle);
     void setYRotation(int angle);
     void setZRotation(int angle);
     void setZoom(int scale);
     void setAngleCatapulte(int angle);
+    void setAngleBras(int angle);
 
 signals:
     // signaling rotation from mouse movement
+    void xTranslationChanged(float dist);
+    void yTranslationChanged(float dist);
+    void zTranslationChanged(float dist);
+
     void xRotationChanged(int angle);
     void yRotationChanged(int angle);
     void zRotationChanged(int angle);
     void zoomChanged(int scale);
     void angleCatapulteChanged(int angle);
+    void angleBrasChanged(int angle);
 
 private:
     void draw();
@@ -58,6 +70,11 @@ private:
     int xRot;
     int yRot;
     int zRot;
+
+    float xTra;
+    float yTra;
+    float zTra;
+
     float zoom;
 
     QPoint lastPos;
