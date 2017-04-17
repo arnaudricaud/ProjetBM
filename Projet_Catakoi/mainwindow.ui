@@ -50,6 +50,13 @@
             <set>Qt::AlignCenter</set>
            </property>
           </widget>
+<<<<<<< HEAD
+=======
+
+          <zorder>camFrame</zorder>
+          <zorder>zoomSlider</zorder>
+
+>>>>>>> origin/master
          </widget>
         </item>
         <item>
@@ -115,6 +122,13 @@
        </layout>
       </item>
      </layout>
+    </item>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="pushButton">
+      <property name="text">
+       <string>Start Tracking</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
