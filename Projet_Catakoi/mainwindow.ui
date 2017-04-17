@@ -50,13 +50,10 @@
             <set>Qt::AlignCenter</set>
            </property>
           </widget>
-<<<<<<< HEAD
-=======
 
           <zorder>camFrame</zorder>
           <zorder>zoomSlider</zorder>
 
->>>>>>> origin/master
          </widget>
         </item>
         <item>
