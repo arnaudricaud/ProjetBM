@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTimer>
 #include "opencv2/opencv.hpp"
+#include<QLabel>
 
 
 using namespace cv;
@@ -37,6 +38,7 @@ private:
     Point *PointPrev = new Point();
     bool  start;
     bool go;
+//QLabel *labelZero=new QLabel(this);
 };
 
 #endif // MAINWINDOW_H

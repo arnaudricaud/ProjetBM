@@ -21,8 +21,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->myGLWidget, SIGNAL(angleBrasChanged(int)), ui->SliderAngleBras, SLOT(setValue(int)));
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->start(50);
-
-
+    ui->labelZero->setVisible(false);
+   ui->labelCent->setVisible(false);
+ //labelZero->setVisible(false);
+// labelZero->setText("0%");
+ //labelZero->
 PointMin->y=1000;
 PointMax->y=0;
 PointPrev->y=0;
@@ -40,6 +43,7 @@ void MainWindow::update(){
     if (cam->isOpened()) {
         Mat image;
         Rect resultRect;
+        Rect resultRect2;
         if (cam->read(image)) {   // Capture a frame
             ui->camFrame->setText("");
             // Flip to get a mirror effect
@@ -53,17 +57,22 @@ void MainWindow::update(){
             //cv::resize(image, image,Size(), 0.1, 0.1);
             // Invert Blue and Red color channels
             cvtColor(image,image,CV_BGR2RGB);
+            if(go){
+            ui->labelZero->setVisible(true);
+            ui->labelCent->setVisible(true);
+            resultRect=Rect(10,50,120,1);
+            // Draw red rectangle on the frame
+            rectangle(image,resultRect,Scalar( 255, 0, 0),2,8,0);
+            resultRect2=Rect(10,120,120,1);
+            rectangle(image,resultRect2,Scalar( 255, 0, 0),2,8,0);
+            }
             // Convert to Qt image
             QImage img= QImage((const unsigned char*)(image.data),image.cols,image.rows,QImage::Format_RGB888);
             // Display on label
             ui->camFrame->setPixmap(QPixmap::fromImage(img));
             // Resize the label to fit the image
             ui->camFrame->resize(ui->camFrame->pixmap()->size());
-            if(go){
-            resultRect=Rect(100,100,100,100);
-            // Draw green rectangle on the frame
-            rectangle(image,resultRect,Scalar( 255, 0, 0),2,8,0);
-            }
+
         }
         else {
             ui->camFrame->setText("Error capturing the frame");
