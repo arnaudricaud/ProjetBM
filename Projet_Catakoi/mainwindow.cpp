@@ -22,15 +22,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->start(50);
     ui->labelZero->setVisible(false);
-   ui->labelCent->setVisible(false);
- //labelZero->setVisible(false);
-// labelZero->setText("0%");
- //labelZero->
-PointMin->y=1000;
-PointMax->y=0;
-PointPrev->y=0;
-start =false;
-go =false;
+    ui->labelCent->setVisible(false);
+    ui->labelPuissance->setVisible(false);
+    PointMin->y=1000;
+    PointMax->y=0;
+    PointPrev->y=0;
+    start =false;
+    go =false;
+
 }
 
 MainWindow::~MainWindow()
@@ -60,6 +59,7 @@ void MainWindow::update(){
             if(go){
             ui->labelZero->setVisible(true);
             ui->labelCent->setVisible(true);
+
             resultRect=Rect(10,50,120,1);
             // Draw red rectangle on the frame
             rectangle(image,resultRect,Scalar( 255, 0, 0),2,8,0);
@@ -103,11 +103,12 @@ void MainWindow::tracking(){
                 minMaxLoc( resultImage, &minVal, &maxVal, &minLoc, &maxLoc, Mat() );
                // cout<<"maxVal : "<<maxVal<<"minVal : "<<minVal<<endl;
                 if (maxVal>0.965){
-                namedWindow("Image de calibrage",1);
-                imshow("Image de calibrage", image);
+                //namedWindow("Image de calibrage",1);
+                //imshow("Image de calibrage", image);
                 }
                 cout<<maxLoc.x<<" et "<<maxLoc.y<<endl;
-                if (maxLoc.y<100){
+                if (maxLoc.y<150){
+                    ui->labelPuissance->setVisible(true);
                     cout<<"Lancement tracking"<<endl;
                     if(maxLoc.y<PointMin->y){
                     PointMin->y = maxLoc.y;
@@ -121,6 +122,8 @@ void MainWindow::tracking(){
                      PointPrev->y=maxLoc.y;
                           float dist = PointPrev->y-PointMin->y;
                      cout<<"Distance calculee -> "<<dist<<endl;
+                     float pourcentage =floor((100*dist)/250);
+                     ui->labelPuissance->setText(QString::number(pourcentage)+"%");
                     }
                 }
 
@@ -134,6 +137,6 @@ void MainWindow::on_pushButton_clicked()
     go=true;
     cout<<"go true"<<endl;
 
-   // connect(timer2, SIGNAL(timeout()), this, SLOT(tracking()));
-   // timer2->start(1000);
+    connect(timer2, SIGNAL(timeout()), this, SLOT(tracking()));
+    timer2->start(1000);
 }

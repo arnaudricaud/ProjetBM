@@ -41,6 +41,7 @@ public:
     QLabel *camFrame;
     QLabel *labelZero;
     QLabel *labelCent;
+    QLabel *labelPuissance;
     QSlider *zoomSlider;
     QSlider *SliderAngleCatapulte;
     QSlider *SliderAngleBras;
@@ -210,6 +211,60 @@ public:
         palette1.setBrush(QPalette::Disabled, QPalette::ToolTipText, brush6);
         labelCent->setPalette(palette1);
         labelCent->setFont(font1);
+        labelPuissance = new QLabel(myGLWidget);
+        labelPuissance->setObjectName(QStringLiteral("labelPuissance"));
+        labelPuissance->setGeometry(QRect(80, 0, 47, 31));
+        QPalette palette2;
+        QBrush brush8(QColor(0, 0, 255, 255));
+        brush8.setStyle(Qt::SolidPattern);
+        palette2.setBrush(QPalette::Active, QPalette::WindowText, brush8);
+        palette2.setBrush(QPalette::Active, QPalette::Button, brush);
+        palette2.setBrush(QPalette::Active, QPalette::Light, brush1);
+        palette2.setBrush(QPalette::Active, QPalette::Midlight, brush2);
+        palette2.setBrush(QPalette::Active, QPalette::Dark, brush3);
+        palette2.setBrush(QPalette::Active, QPalette::Mid, brush4);
+        palette2.setBrush(QPalette::Active, QPalette::Text, brush);
+        palette2.setBrush(QPalette::Active, QPalette::BrightText, brush);
+        palette2.setBrush(QPalette::Active, QPalette::ButtonText, brush);
+        palette2.setBrush(QPalette::Active, QPalette::Base, brush5);
+        palette2.setBrush(QPalette::Active, QPalette::Window, brush);
+        palette2.setBrush(QPalette::Active, QPalette::Shadow, brush6);
+        palette2.setBrush(QPalette::Active, QPalette::AlternateBase, brush1);
+        palette2.setBrush(QPalette::Active, QPalette::ToolTipBase, brush7);
+        palette2.setBrush(QPalette::Active, QPalette::ToolTipText, brush6);
+        palette2.setBrush(QPalette::Inactive, QPalette::WindowText, brush8);
+        palette2.setBrush(QPalette::Inactive, QPalette::Button, brush);
+        palette2.setBrush(QPalette::Inactive, QPalette::Light, brush1);
+        palette2.setBrush(QPalette::Inactive, QPalette::Midlight, brush2);
+        palette2.setBrush(QPalette::Inactive, QPalette::Dark, brush3);
+        palette2.setBrush(QPalette::Inactive, QPalette::Mid, brush4);
+        palette2.setBrush(QPalette::Inactive, QPalette::Text, brush);
+        palette2.setBrush(QPalette::Inactive, QPalette::BrightText, brush);
+        palette2.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
+        palette2.setBrush(QPalette::Inactive, QPalette::Base, brush5);
+        palette2.setBrush(QPalette::Inactive, QPalette::Window, brush);
+        palette2.setBrush(QPalette::Inactive, QPalette::Shadow, brush6);
+        palette2.setBrush(QPalette::Inactive, QPalette::AlternateBase, brush1);
+        palette2.setBrush(QPalette::Inactive, QPalette::ToolTipBase, brush7);
+        palette2.setBrush(QPalette::Inactive, QPalette::ToolTipText, brush6);
+        palette2.setBrush(QPalette::Disabled, QPalette::WindowText, brush3);
+        palette2.setBrush(QPalette::Disabled, QPalette::Button, brush);
+        palette2.setBrush(QPalette::Disabled, QPalette::Light, brush1);
+        palette2.setBrush(QPalette::Disabled, QPalette::Midlight, brush2);
+        palette2.setBrush(QPalette::Disabled, QPalette::Dark, brush3);
+        palette2.setBrush(QPalette::Disabled, QPalette::Mid, brush4);
+        palette2.setBrush(QPalette::Disabled, QPalette::Text, brush3);
+        palette2.setBrush(QPalette::Disabled, QPalette::BrightText, brush);
+        palette2.setBrush(QPalette::Disabled, QPalette::ButtonText, brush3);
+        palette2.setBrush(QPalette::Disabled, QPalette::Base, brush);
+        palette2.setBrush(QPalette::Disabled, QPalette::Window, brush);
+        palette2.setBrush(QPalette::Disabled, QPalette::Shadow, brush6);
+        palette2.setBrush(QPalette::Disabled, QPalette::AlternateBase, brush);
+        palette2.setBrush(QPalette::Disabled, QPalette::ToolTipBase, brush7);
+        palette2.setBrush(QPalette::Disabled, QPalette::ToolTipText, brush6);
+        labelPuissance->setPalette(palette2);
+        labelPuissance->setFont(font1);
+        labelPuissance->setTextFormat(Qt::PlainText);
 
         verticalLayout_3->addWidget(myGLWidget);
 
@@ -282,6 +337,7 @@ public:
         camFrame->setText(QApplication::translate("MainWindow", "Image", 0));
         labelZero->setText(QApplication::translate("MainWindow", "0%", 0));
         labelCent->setText(QApplication::translate("MainWindow", "100%", 0));
+        labelPuissance->setText(QApplication::translate("MainWindow", "0%", 0));
         pushButton->setText(QApplication::translate("MainWindow", "Start Tracking", 0));
     } // retranslateUi
 

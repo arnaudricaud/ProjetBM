@@ -38,6 +38,7 @@ private:
     Point *PointPrev = new Point();
     bool  start;
     bool go;
+
 //QLabel *labelZero=new QLabel(this);
 };
 
