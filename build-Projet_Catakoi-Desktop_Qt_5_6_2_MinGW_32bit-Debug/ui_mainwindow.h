@@ -13,19 +13,19 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
-#include <QtWidgets/QPushButton>
 #include <QtWidgets/QSlider>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
-#include <myglwidget.h>
+#include "myglwidget.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -42,10 +42,12 @@ public:
     QLabel *labelZero;
     QLabel *labelCent;
     QLabel *labelPuissance;
+    QLabel *labelInstruction;
+    QLabel *labelAngle;
     QSlider *zoomSlider;
     QSlider *SliderAngleCatapulte;
     QSlider *SliderAngleBras;
-    QPushButton *pushButton;
+    QCheckBox *checkBox;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -213,7 +215,7 @@ public:
         labelCent->setFont(font1);
         labelPuissance = new QLabel(myGLWidget);
         labelPuissance->setObjectName(QStringLiteral("labelPuissance"));
-        labelPuissance->setGeometry(QRect(80, 0, 47, 31));
+        labelPuissance->setGeometry(QRect(90, 0, 47, 31));
         QPalette palette2;
         QBrush brush8(QColor(0, 0, 255, 255));
         brush8.setStyle(Qt::SolidPattern);
@@ -265,6 +267,74 @@ public:
         labelPuissance->setPalette(palette2);
         labelPuissance->setFont(font1);
         labelPuissance->setTextFormat(Qt::PlainText);
+        labelInstruction = new QLabel(myGLWidget);
+        labelInstruction->setObjectName(QStringLiteral("labelInstruction"));
+        labelInstruction->setGeometry(QRect(0, 120, 141, 20));
+        QPalette palette3;
+        palette3.setBrush(QPalette::Active, QPalette::WindowText, brush8);
+        palette3.setBrush(QPalette::Inactive, QPalette::WindowText, brush8);
+        QBrush brush9(QColor(120, 120, 120, 255));
+        brush9.setStyle(Qt::SolidPattern);
+        palette3.setBrush(QPalette::Disabled, QPalette::WindowText, brush9);
+        labelInstruction->setPalette(palette3);
+        QFont font2;
+        font2.setFamily(QStringLiteral("Comic Sans MS"));
+        font2.setPointSize(10);
+        font2.setBold(false);
+        font2.setWeight(50);
+        labelInstruction->setFont(font2);
+        labelAngle = new QLabel(myGLWidget);
+        labelAngle->setObjectName(QStringLiteral("labelAngle"));
+        labelAngle->setGeometry(QRect(0, 0, 47, 31));
+        QPalette palette4;
+        palette4.setBrush(QPalette::Active, QPalette::WindowText, brush8);
+        palette4.setBrush(QPalette::Active, QPalette::Button, brush);
+        palette4.setBrush(QPalette::Active, QPalette::Light, brush1);
+        palette4.setBrush(QPalette::Active, QPalette::Midlight, brush2);
+        palette4.setBrush(QPalette::Active, QPalette::Dark, brush3);
+        palette4.setBrush(QPalette::Active, QPalette::Mid, brush4);
+        palette4.setBrush(QPalette::Active, QPalette::Text, brush);
+        palette4.setBrush(QPalette::Active, QPalette::BrightText, brush);
+        palette4.setBrush(QPalette::Active, QPalette::ButtonText, brush);
+        palette4.setBrush(QPalette::Active, QPalette::Base, brush5);
+        palette4.setBrush(QPalette::Active, QPalette::Window, brush);
+        palette4.setBrush(QPalette::Active, QPalette::Shadow, brush6);
+        palette4.setBrush(QPalette::Active, QPalette::AlternateBase, brush1);
+        palette4.setBrush(QPalette::Active, QPalette::ToolTipBase, brush7);
+        palette4.setBrush(QPalette::Active, QPalette::ToolTipText, brush6);
+        palette4.setBrush(QPalette::Inactive, QPalette::WindowText, brush8);
+        palette4.setBrush(QPalette::Inactive, QPalette::Button, brush);
+        palette4.setBrush(QPalette::Inactive, QPalette::Light, brush1);
+        palette4.setBrush(QPalette::Inactive, QPalette::Midlight, brush2);
+        palette4.setBrush(QPalette::Inactive, QPalette::Dark, brush3);
+        palette4.setBrush(QPalette::Inactive, QPalette::Mid, brush4);
+        palette4.setBrush(QPalette::Inactive, QPalette::Text, brush);
+        palette4.setBrush(QPalette::Inactive, QPalette::BrightText, brush);
+        palette4.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
+        palette4.setBrush(QPalette::Inactive, QPalette::Base, brush5);
+        palette4.setBrush(QPalette::Inactive, QPalette::Window, brush);
+        palette4.setBrush(QPalette::Inactive, QPalette::Shadow, brush6);
+        palette4.setBrush(QPalette::Inactive, QPalette::AlternateBase, brush1);
+        palette4.setBrush(QPalette::Inactive, QPalette::ToolTipBase, brush7);
+        palette4.setBrush(QPalette::Inactive, QPalette::ToolTipText, brush6);
+        palette4.setBrush(QPalette::Disabled, QPalette::WindowText, brush3);
+        palette4.setBrush(QPalette::Disabled, QPalette::Button, brush);
+        palette4.setBrush(QPalette::Disabled, QPalette::Light, brush1);
+        palette4.setBrush(QPalette::Disabled, QPalette::Midlight, brush2);
+        palette4.setBrush(QPalette::Disabled, QPalette::Dark, brush3);
+        palette4.setBrush(QPalette::Disabled, QPalette::Mid, brush4);
+        palette4.setBrush(QPalette::Disabled, QPalette::Text, brush3);
+        palette4.setBrush(QPalette::Disabled, QPalette::BrightText, brush);
+        palette4.setBrush(QPalette::Disabled, QPalette::ButtonText, brush3);
+        palette4.setBrush(QPalette::Disabled, QPalette::Base, brush);
+        palette4.setBrush(QPalette::Disabled, QPalette::Window, brush);
+        palette4.setBrush(QPalette::Disabled, QPalette::Shadow, brush6);
+        palette4.setBrush(QPalette::Disabled, QPalette::AlternateBase, brush);
+        palette4.setBrush(QPalette::Disabled, QPalette::ToolTipBase, brush7);
+        palette4.setBrush(QPalette::Disabled, QPalette::ToolTipText, brush6);
+        labelAngle->setPalette(palette4);
+        labelAngle->setFont(font1);
+        labelAngle->setTextFormat(Qt::PlainText);
 
         verticalLayout_3->addWidget(myGLWidget);
 
@@ -306,10 +376,10 @@ public:
 
         gridLayout_3->addLayout(horizontalLayout, 0, 0, 1, 1);
 
-        pushButton = new QPushButton(centralWidget);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
+        checkBox = new QCheckBox(centralWidget);
+        checkBox->setObjectName(QStringLiteral("checkBox"));
 
-        gridLayout_3->addWidget(pushButton, 1, 0, 1, 1);
+        gridLayout_3->addWidget(checkBox, 1, 0, 1, 1);
 
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
@@ -338,7 +408,9 @@ public:
         labelZero->setText(QApplication::translate("MainWindow", "0%", 0));
         labelCent->setText(QApplication::translate("MainWindow", "100%", 0));
         labelPuissance->setText(QApplication::translate("MainWindow", "0%", 0));
-        pushButton->setText(QApplication::translate("MainWindow", "Start Tracking", 0));
+        labelInstruction->setText(QApplication::translate("MainWindow", "TextLabel", 0));
+        labelAngle->setText(QApplication::translate("MainWindow", "0\302\260", 0));
+        checkBox->setText(QApplication::translate("MainWindow", "Start Tracking", 0));
     } // retranslateUi
 
 };

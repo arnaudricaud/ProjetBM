@@ -20,13 +20,13 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void reset();
 
 private slots:
     void update();
     void tracking();
+    void on_checkBox_clicked();
 
-
-    void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -36,8 +36,11 @@ private:
     Point *PointMin = new Point();
     Point *PointMax = new Point();
     Point *PointPrev = new Point();
+    Point *PointPrev2 = new Point();
     bool  start;
+    bool angle;
     bool go;
+    bool on;
 
 //QLabel *labelZero=new QLabel(this);
 };
