@@ -6,7 +6,9 @@
 #include <QGLWidget>
 #include <QOpenGLTexture>
 #include <GL/glu.h>
+#include <time.h>
 #include "myglwidget.h"
+
 
 
 MyGLWidget::MyGLWidget(QWidget *parent)
@@ -14,15 +16,20 @@ MyGLWidget::MyGLWidget(QWidget *parent)
 {
     setFocusPolicy(Qt::StrongFocus);
     xTra = 0;
-    yTra = 0;
+    yTra = -0.6;
     zTra = -10;
 
-    xRot = 0;
+    xRot = -85*16;
     yRot = 0;
-    zRot = 0;
-    zoom = 0.1;
+    zRot = -90*16;
+    zoom = 0.012;
     angleCatapulte = 0;
     angleBras = 0;
+
+    srand (time(NULL));
+    xTarget = -( rand() % 350 + 250);
+    yTarget = rand() % 400 - 200;
+
 }
 
 MyGLWidget::~MyGLWidget()
@@ -96,7 +103,6 @@ void MyGLWidget::setYTranslation(float dist)
 void MyGLWidget::setZTranslation(float dist)
 {
     zTra = zTra + dist;
-    qDebug()<<zTra;
     emit zTranslationChanged(zTra);
     updateGL();
 }
@@ -104,7 +110,6 @@ void MyGLWidget::setZTranslation(float dist)
 
 void MyGLWidget::setZoom(int scale)
 {
-    qDebug()<<scale;
     zoom = float(scale)/1000;
     emit zoomChanged(scale);
     updateGL();
@@ -125,7 +130,6 @@ void MyGLWidget::setAngleBras(int angle)
         angle = -135;
     }
     angleBras = angle;
-    qDebug()<<angle;
     emit angleBrasChanged(angle);
         updateGL();
 }
@@ -174,16 +178,15 @@ void MyGLWidget::resizeGL(int width, int height)
 {
     int side = qMin(width, height);
     glViewport(0, 0, width, height);
-    qDebug()<<width<<" | "<<height;
     float widht2 = 2*float(width)/600;
     float height2 = 2*float(height)/600;
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 #ifdef QT_OPENGL_ES_1
-    glOrthof(-2, +2, -2, +2, 1.0, 15.0);
+    glOrthof(-widht2, widht2, -height2, height2, 1.0, 40.0);
 #else
-    glOrtho(-widht2, widht2, -height2, height2, 1.0, 15.0);
+    glOrtho(-widht2, widht2, -height2, height2, 1.0, 40.0);
 #endif
     glMatrixMode(GL_MODELVIEW);
 }
@@ -242,9 +245,14 @@ void MyGLWidget::wheelEvent(QWheelEvent *event)
 
 void MyGLWidget::draw()
 {
+
     glColor3f(1,1,1);
-    drawTrebuchet();
-    drawSol();
+    glPushMatrix();
+        glScalef(2,2,2);
+        drawTrebuchet();
+    glPopMatrix();
+    drawStadium();
+    drawTarget();
     //drawCiel();
 }
 
@@ -294,6 +302,7 @@ void MyGLWidget::drawCube()
 void MyGLWidget::drawTrebuchet()
 {
     glPushMatrix();
+        glTranslatef(0,-6,0);
         glRotatef(angleCatapulte,0,0,1);
         GLUquadric* cylindre = gluNewQuadric();
         glPushMatrix();
@@ -379,12 +388,59 @@ void MyGLWidget::drawBras()
     glPopMatrix();
 }
 
+void MyGLWidget::drawStadium(){
+    drawSol();
+    //Filets:
+    glPushMatrix();
+        glTranslatef(30,162,0); // 150 + 16 (3*filet/2 + moitier de catapulte)
+        glRotatef(135,0,0,1);
+        drawFilet();
+        glTranslatef(200,0,0);
+        glRotatef(45,0,0,1);
+        drawFilet();
+        glTranslatef(200,0,0);
+        drawFilet();
+        glTranslatef(200,0,0);
+        drawFilet();
+
+
+        glTranslatef(200,0,0);
+        glRotatef(90,0,0,1);
+        drawFilet();
+        glTranslatef(200,0,0);
+        drawFilet();
+        glTranslatef(200,0,0);
+        drawFilet();
+
+        glTranslatef(200,0,0);
+        glRotatef(90,0,0,1);
+        drawFilet();
+        glTranslatef(200,0,0);
+        drawFilet();
+        glTranslatef(200,0,0);
+        drawFilet();
+
+        glTranslatef(200,0,0);
+        glRotatef(45,0,0,1);
+        drawFilet();
+        glTranslatef(200,0,0);
+        //Dernier Poteau
+        glPushMatrix();
+            glColor3f(0.5, 0.5, 0.5);
+            glTranslatef(0,0,35);
+            glScalef(2,2,70);
+            drawCube();
+        glPopMatrix();
+
+    glPopMatrix();
+}
+
 void MyGLWidget::drawSol()
 {
     glPushMatrix();
-        glTranslatef(-150,0,-0.5);
-        glColor3f(0.24, 0.45, 0.02);
-        glScalef(500,500,1);
+        glTranslatef(-300,0,-0.5);
+        glColor3f(0.14, 0.35, 0.0);
+        glScalef(1000,700,1);
         drawCube();
     glPopMatrix();
 
@@ -392,5 +448,76 @@ void MyGLWidget::drawSol()
 }
 void MyGLWidget::drawCiel()
 {
+
+}
+void MyGLWidget::drawFilet()
+{
+    glPushMatrix();
+        //Dessin du Premier Poteau
+        glPushMatrix();
+            glColor3f(0.5, 0.5, 0.5);
+            glTranslatef(0,0,35);
+            glScalef(2,2,70);
+            drawCube();
+        glPopMatrix();
+        glPushMatrix();
+            //Dessin corde
+            glColor3f(0.7, 0.54, 0.41);
+            glTranslatef(100,0,0);
+            glPushMatrix();
+                for(int i = 0; i < 20; i++){
+                    glTranslatef(0,0,3);
+                    glPushMatrix();
+                        glScalef(200,0.3,0.3);
+                        drawCube();
+                    glPopMatrix();
+                }
+            glPopMatrix();
+        glPopMatrix();
+        //Cordes Verticales
+        glTranslatef(0,0,30);
+        glPushMatrix();
+            for(int i = 0; i < 50; i++){
+                glTranslatef(4,0,0);
+                glPushMatrix();
+                    glScalef(0.3,0.3,60);
+                    drawCube();
+                glPopMatrix();
+            }
+        glPopMatrix();
+    glPopMatrix();
+}
+
+void MyGLWidget::drawTarget(){
+    glPushMatrix();
+        glColor3f(1, 0.3, 0.3);
+        glTranslatef(xTarget, yTarget, 25);
+        glRotatef(60,0,1,0);
+        glPushMatrix();
+            glScalef(10,10,2);
+            drawCube();
+        glPopMatrix();
+
+        glColor3f(1, 1, 1);
+        glPushMatrix();
+            glTranslatef(0,0,-0.1);
+            glScalef(20,20,2);
+            drawCube();
+        glPopMatrix();
+
+        glColor3f(1, 1, 0.2);
+        glPushMatrix();
+            glTranslatef(0,0,-0.2);
+            glScalef(30,30,2);
+            drawCube();
+        glPopMatrix();
+
+        glColor3f(1, 1, 1);
+        glPushMatrix();
+            glTranslatef(0,0,-0.3);
+            glScalef(50,50,2);
+            drawCube();
+        glPopMatrix();
+    glPopMatrix();
 
 }

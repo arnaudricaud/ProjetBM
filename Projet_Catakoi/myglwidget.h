@@ -63,8 +63,11 @@ private:
     void drawPied();
     void drawContrepoid();
     void drawBras();
+    void drawStadium();
+    void drawTarget();
     void drawSol();
     void drawCiel();
+    void drawFilet();
     int angleCatapulte;
     int angleBras;
     int xRot;
@@ -74,6 +77,11 @@ private:
     float xTra;
     float yTra;
     float zTra;
+
+    float xTarget;
+    float yTarget;
+
+
 
     float zoom;
 
