@@ -158,6 +158,8 @@ void MyGLWidget::initializeGL()
 
 void MyGLWidget::paintGL()
 {
+
+    resizeGL(this->width(), this->height());
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
     glTranslatef(xTra, yTra, zTra);
@@ -171,14 +173,17 @@ void MyGLWidget::paintGL()
 void MyGLWidget::resizeGL(int width, int height)
 {
     int side = qMin(width, height);
-    glViewport((width - side) / 2, (height - side) / 2, side, side);
+    glViewport(0, 0, width, height);
+    qDebug()<<width<<" | "<<height;
+    float widht2 = 2*float(width)/600;
+    float height2 = 2*float(height)/600;
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 #ifdef QT_OPENGL_ES_1
     glOrthof(-2, +2, -2, +2, 1.0, 15.0);
 #else
-    glOrtho(-2, +2, -2, +2, 1.0, 15.0);
+    glOrtho(-widht2, widht2, -height2, height2, 1.0, 15.0);
 #endif
     glMatrixMode(GL_MODELVIEW);
 }
@@ -239,7 +244,7 @@ void MyGLWidget::draw()
 {
     glColor3f(1,1,1);
     drawTrebuchet();
-    //drawSol();
+    drawSol();
     //drawCiel();
 }
 
@@ -288,22 +293,24 @@ void MyGLWidget::drawCube()
 
 void MyGLWidget::drawTrebuchet()
 {
-    glRotatef(angleCatapulte,0,0,1);
-    GLUquadric* cylindre = gluNewQuadric();
     glPushMatrix();
-        drawPied();
-        glTranslatef(0,10,0);
-        drawPied();
-    glPopMatrix();
-    glPushMatrix();
-        glTranslatef(7,11,14);
+        glRotatef(angleCatapulte,0,0,1);
+        GLUquadric* cylindre = gluNewQuadric();
         glPushMatrix();
-            glRotatef(90,1,0,0);
-            glScalef(1,1,12);
-            gluCylinder(cylindre, 0.5,0.5,1,32,32);
+            drawPied();
+            glTranslatef(0,10,0);
+            drawPied();
         glPopMatrix();
-        glTranslatef(0,-6,0);
-        drawBras();
+        glPushMatrix();
+            glTranslatef(7,11,14);
+            glPushMatrix();
+                glRotatef(90,1,0,0);
+                glScalef(1,1,12);
+                gluCylinder(cylindre, 0.5,0.5,1,32,32);
+            glPopMatrix();
+            glTranslatef(0,-6,0);
+            drawBras();
+        glPopMatrix();
     glPopMatrix();
 }
 
@@ -374,9 +381,14 @@ void MyGLWidget::drawBras()
 
 void MyGLWidget::drawSol()
 {
-    glColor3f(0.24, 0.45, 0.02);
-    glScalef(5000,5000,500);
-    drawCube();
+    glPushMatrix();
+        glTranslatef(-150,0,-0.5);
+        glColor3f(0.24, 0.45, 0.02);
+        glScalef(500,500,1);
+        drawCube();
+    glPopMatrix();
+
+
 }
 void MyGLWidget::drawCiel()
 {
