@@ -28,7 +28,7 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     zoom = 0.012;
 
 
-    puissance = 50;
+    puissance = 100;
     angleCatapulte = 0;
     angleBras = 40;
 
@@ -569,9 +569,9 @@ void MyGLWidget::launchBall(){
 void MyGLWidget::drawBall(){
     glPushMatrix();
         glRotatef(angleCatapulte,0,0,1);
-        glTranslatef(30,-5,2);
+        glTranslatef(30,-5,3);
         glTranslatef(ballPosition[0], ballPosition[1], ballPosition[2]);
-        glScalef(2,2,2);
+        glScalef(4,4,4);
         drawCube();
     glPopMatrix();
 }
@@ -581,9 +581,9 @@ void MyGLWidget::calcBall(){
     //1m = 2*coord
     //1 Tick => 10ms!!
     // Gravité => 10m/s => 0.2coord/tick
-    ballSpeed[0] = float(puissance)/5;
+    ballSpeed[0] = float(puissance)/10;
     ballSpeed[1] =  0;
-    ballSpeed[2] = float(puissance)/10;
+    ballSpeed[2] = float(puissance)/15;
     ballPosition[0] = 0;
     ballPosition[1] = 0;
     ballPosition[2] = 50;
@@ -593,6 +593,11 @@ void MyGLWidget::calcBall(){
         ballPosition[0] -= ballSpeed[0];
         ballPosition[1] += ballSpeed[1];
         ballPosition[2] += ballSpeed[2];
+
+        if (ballPosition[0] < -740){
+            ballPosition[0] = -740;
+            ballSpeed[0] = 0;
+        }
 
         if (ballPosition[2] > 0){
             ballSpeed[2] -= 0.2;
