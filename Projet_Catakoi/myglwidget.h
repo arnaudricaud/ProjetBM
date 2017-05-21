@@ -42,6 +42,7 @@ public slots:
     void setZoom(int scale);
     void setAngleCatapulte(int angle);
     void setAngleBras(int angle);
+    void launchBall();
 
 signals:
     // signaling rotation from mouse movement
@@ -68,8 +69,12 @@ private:
     void drawSol();
     void drawCiel();
     void drawFilet();
+    void drawBall();
+    void calcBall();
+
     int angleCatapulte;
     int angleBras;
+    int puissance;
     int xRot;
     int yRot;
     int zRot;
@@ -80,6 +85,9 @@ private:
 
     float xTarget;
     float yTarget;
+
+    float ballSpeed [3] = {0, 0, 0};
+    float ballPosition [3] = {0, 0, 0};
 
 
 

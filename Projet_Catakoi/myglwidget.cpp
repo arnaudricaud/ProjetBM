@@ -14,6 +14,9 @@
 MyGLWidget::MyGLWidget(QWidget *parent)
     : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
+    //TEXTURES:
+
+    //CAMERA:
     setFocusPolicy(Qt::StrongFocus);
     xTra = 0;
     yTra = -0.6;
@@ -23,8 +26,11 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     yRot = 0;
     zRot = -90*16;
     zoom = 0.012;
+
+
+    puissance = 50;
     angleCatapulte = 0;
-    angleBras = 0;
+    angleBras = 40;
 
     srand (time(NULL));
     xTarget = -( rand() % 350 + 250);
@@ -176,7 +182,6 @@ void MyGLWidget::paintGL()
 
 void MyGLWidget::resizeGL(int width, int height)
 {
-    int side = qMin(width, height);
     glViewport(0, 0, width, height);
     float widht2 = 2*float(width)/600;
     float height2 = 2*float(height)/600;
@@ -253,6 +258,7 @@ void MyGLWidget::draw()
     glPopMatrix();
     drawStadium();
     drawTarget();
+    drawBall();
     //drawCiel();
 }
 
@@ -302,8 +308,8 @@ void MyGLWidget::drawCube()
 void MyGLWidget::drawTrebuchet()
 {
     glPushMatrix();
-        glTranslatef(0,-6,0);
         glRotatef(angleCatapulte,0,0,1);
+        glTranslatef(0,-6,0);
         GLUquadric* cylindre = gluNewQuadric();
         glPushMatrix();
             drawPied();
@@ -520,4 +526,85 @@ void MyGLWidget::drawTarget(){
         glPopMatrix();
     glPopMatrix();
 
+}
+
+void MyGLWidget::launchBall(){
+    qDebug()<<"BALLE LANCEE";
+    /*
+    //INITIALISATION DE LA CAMERA (OK)
+    xTra = 0;
+    yTra = -0.6;
+    zTra = -10;
+    xRot = -70*16;
+    yRot = 0;
+    zRot = -140*16;
+    zoom = 0.012;
+    */
+
+    //Pour tests
+    xTra = -1.5;
+    yTra = -0.6;
+    zTra = -10;
+    xRot = -70*16;
+    yRot = 0;
+    zRot = -180*16;
+    zoom = 0.005;
+
+    //DESSINS AVEC LA BALLE (PAS DE PRISE EN COMPTE DE LA PUISSANCE)
+    for(int i = 40; i > -130; i--){
+        setAngleBras(i);
+    }
+    for(int i = -130; i < -70; i++){
+        setAngleBras(i);
+    }
+    for(int i = -70; i > -90; i--){
+        setAngleBras(i);
+        Sleep(10);
+    }
+
+    calcBall();
+
+
+}
+void MyGLWidget::drawBall(){
+    glPushMatrix();
+        glRotatef(angleCatapulte,0,0,1);
+        glTranslatef(30,-5,2);
+        glTranslatef(ballPosition[0], ballPosition[1], ballPosition[2]);
+        glScalef(2,2,2);
+        drawCube();
+    glPopMatrix();
+}
+
+
+void MyGLWidget::calcBall(){
+    //1m = 2*coord
+    //1 Tick => 10ms!!
+    // Gravité => 10m/s => 0.2coord/tick
+    ballSpeed[0] = float(puissance)/5;
+    ballSpeed[1] =  0;
+    ballSpeed[2] = float(puissance)/10;
+    ballPosition[0] = 0;
+    ballPosition[1] = 0;
+    ballPosition[2] = 50;
+
+    while (ballSpeed[0] != 0 || ballSpeed[1] != 0 || ballSpeed[2] != 0){
+
+        ballPosition[0] -= ballSpeed[0];
+        ballPosition[1] += ballSpeed[1];
+        ballPosition[2] += ballSpeed[2];
+
+        if (ballPosition[2] > 0){
+            ballSpeed[2] -= 0.2;
+        } else{
+            ballSpeed[2] = 0;
+            ballPosition[2] = 0;
+            ballSpeed[0] -= 0.3;
+            if (ballSpeed[0] < 0){
+                ballSpeed[0] = 0;
+            }
+        }
+       updateGL();
+    Sleep(10);
+    }
 }
