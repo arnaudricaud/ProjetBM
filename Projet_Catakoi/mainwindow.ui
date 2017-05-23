@@ -1922,7 +1922,7 @@
            <number>-135</number>
           </property>
           <property name="maximum">
-           <number>40</number>
+           <number>30</number>
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>

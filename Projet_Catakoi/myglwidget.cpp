@@ -7,6 +7,7 @@
 #include <QOpenGLTexture>
 #include <GL/glu.h>
 #include <time.h>
+#include <math.h>
 #include "myglwidget.h"
 
 
@@ -18,23 +19,24 @@ MyGLWidget::MyGLWidget(QWidget *parent)
 
     //CAMERA:
     setFocusPolicy(Qt::StrongFocus);
-    xTra = 0;
-    yTra = -0.6;
-    zTra = -10;
+    xTra = -5;
+    yTra = 0;
+    zTra = -2;
 
-    xRot = -85*16;
+    xRot = -80*16;
     yRot = 0;
     zRot = -90*16;
     zoom = 0.012;
 
 
-    puissance = 100;
+    puissance = 62;
     angleCatapulte = 0;
     angleBras = 40;
 
-    srand (time(NULL));
-    xTarget = -( rand() % 350 + 250);
-    yTarget = rand() % 400 - 200;
+    newTarget();
+    yTarget = 0;
+    xTarget = -430;
+
 
 }
 
@@ -130,8 +132,8 @@ void MyGLWidget::setAngleCatapulte(int angle)
 
 void MyGLWidget::setAngleBras(int angle)
 {
-    if (angle > 38){
-        angle = 38;
+    if (angle > 30){
+        angle = 30;
     } else if (angle < -135){
         angle = -135;
     }
@@ -172,11 +174,12 @@ void MyGLWidget::paintGL()
     resizeGL(this->width(), this->height());
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-    glTranslatef(xTra, yTra, zTra);
     glRotatef(xRot / 16.0, 1.0, 0.0, 0.0);
     glRotatef(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
     glScalef(zoom,zoom,zoom);
+    glTranslatef(xTra/zoom, yTra/zoom, zTra/zoom);
+
     draw();
 }
 
@@ -189,9 +192,9 @@ void MyGLWidget::resizeGL(int width, int height)
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 #ifdef QT_OPENGL_ES_1
-    glOrthof(-widht2, widht2, -height2, height2, 1.0, 40.0);
+    glOrthof(-widht2, widht2, -height2, height2, -50.0, 40.0);
 #else
-    glOrtho(-widht2, widht2, -height2, height2, 1.0, 40.0);
+    glOrtho(-widht2, widht2, -height2, height2, -50.0, 40.0);
 #endif
     glMatrixMode(GL_MODELVIEW);
 }
@@ -494,11 +497,16 @@ void MyGLWidget::drawFilet()
     glPopMatrix();
 }
 
+void MyGLWidget::newTarget(){
+    srand (time(NULL));
+    xTarget = -( rand() % 350 + 250);
+    yTarget = rand() % 400 - 200;
+}
+
 void MyGLWidget::drawTarget(){
     glPushMatrix();
         glColor3f(1, 0.3, 0.3);
-        glTranslatef(xTarget, yTarget, 25);
-        glRotatef(60,0,1,0);
+        glTranslatef(xTarget, yTarget, 0);
         glPushMatrix();
             glScalef(10,10,2);
             drawCube();
@@ -530,47 +538,33 @@ void MyGLWidget::drawTarget(){
 
 void MyGLWidget::launchBall(){
     qDebug()<<"BALLE LANCEE";
-    /*
-    //INITIALISATION DE LA CAMERA (OK)
-    xTra = 0;
-    yTra = -0.6;
-    zTra = -10;
-    xRot = -70*16;
-    yRot = 0;
-    zRot = -140*16;
-    zoom = 0.012;
-    */
 
     //Pour tests
-    xTra = -1.5;
-    yTra = -0.6;
-    zTra = -10;
+
+    xTra = 1.5;
+    yTra = 0;
+    zTra = 0;
+
     xRot = -70*16;
     yRot = 0;
     zRot = -180*16;
-    zoom = 0.005;
+    zoom = 0.008;
 
     //DESSINS AVEC LA BALLE (PAS DE PRISE EN COMPTE DE LA PUISSANCE)
-    for(int i = 40; i > -130; i--){
+    for(int i = 30; i > -130; i--){
         setAngleBras(i);
     }
-    for(int i = -130; i < -70; i++){
-        setAngleBras(i);
-    }
-    for(int i = -70; i > -90; i--){
-        setAngleBras(i);
-        Sleep(10);
-    }
-
-    calcBall();
+        calcBall();
 
 
 }
 void MyGLWidget::drawBall(){
     glPushMatrix();
-        glRotatef(angleCatapulte,0,0,1);
-        glTranslatef(30,-5,3);
-        glTranslatef(ballPosition[0], ballPosition[1], ballPosition[2]);
+        float PI = 3.14159265;
+        float rad = angleCatapulte*PI/180;
+        glTranslatef(40,-2,3);
+        glTranslatef(ballPosition[0]* cos(rad) - ballPosition[1] * sin(rad),
+                ballPosition[0]* sin(rad) + ballPosition[1] * cos(rad), ballPosition[2]);
         glScalef(4,4,4);
         drawCube();
     glPopMatrix();
@@ -578,17 +572,64 @@ void MyGLWidget::drawBall(){
 
 
 void MyGLWidget::calcBall(){
+
+
     //1m = 2*coord
     //1 Tick => 10ms!!
     // Gravité => 10m/s => 0.2coord/tick
-    ballSpeed[0] = float(puissance)/10;
+    ballSpeed[0] = (float(puissance)+20)/12;
     ballSpeed[1] =  0;
-    ballSpeed[2] = float(puissance)/15;
+    ballSpeed[2] = (float(puissance)+20)/15;
     ballPosition[0] = 0;
-    ballPosition[1] = 0;
-    ballPosition[2] = 50;
+    ballPosition[1] = -2;
+    ballPosition[2] = 80;
+    float PI = 3.14159265;
+    float rad = angleCatapulte * PI/180;
+    int posX;
+    int posY;
+    int posZ;
 
-    while (ballSpeed[0] != 0 || ballSpeed[1] != 0 || ballSpeed[2] != 0){
+    //CAMERA
+//    xRot = -80*16;
+//    yRot = 0;
+//    zRot = -45*16;
+//    zoom = 0.01;
+
+    bool touche = false;
+    bool firstTouch = true;
+    int frame1 = -130;
+    int frame2 = -70;
+    int frame3 = -100;
+    while (ballSpeed[0] != 0 || ballSpeed[1] != 0 || ballSpeed[2] != 0 || frame3 !=-90){
+
+//        xTra = (-ballPosition[0] - 40)*zoom;
+//        yTra = (-ballPosition[1] + 3)*zoom;
+//        zTra = (-ballPosition[2] - 2)*zoom;
+
+        // TODO OPTIMISER ANIMATION
+        //BRAS -130 => -70 => -90
+        if (frame1 != -70){
+            angleBras = frame1++;
+        } else if (frame2 != -100){
+            angleBras = frame2--;
+        } else if (frame3 != -90){
+            angleBras = frame3++;
+        }
+
+        posX = (ballPosition[0]* cos(rad) - ballPosition[1] * sin(rad)) + 40;
+        posY = (ballPosition[0]* sin(rad) + ballPosition[1] * cos(rad)) - 2;
+        posZ = ballPosition[2];
+        if(posZ == 0 && !touche && firstTouch){
+            if(posX < xTarget + 15 && posX > xTarget - 15){
+                if(posY < yTarget + 15 && posY > yTarget - 15){
+                    touche = true;
+                } else {
+                    firstTouch = false;
+                }
+            } else {
+                firstTouch = false;
+            }
+        }
 
         ballPosition[0] -= ballSpeed[0];
         ballPosition[1] += ballSpeed[1];
@@ -604,12 +645,17 @@ void MyGLWidget::calcBall(){
         } else{
             ballSpeed[2] = 0;
             ballPosition[2] = 0;
-            ballSpeed[0] -= 0.3;
+            ballSpeed[0] -= 0.2;
             if (ballSpeed[0] < 0){
                 ballSpeed[0] = 0;
             }
         }
        updateGL();
-    Sleep(10);
+    Sleep(100);
+    }
+    if (touche){
+        score += 100;
+        qDebug()<<score;
+        newTarget();
     }
 }

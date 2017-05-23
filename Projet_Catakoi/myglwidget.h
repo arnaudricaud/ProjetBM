@@ -71,6 +71,9 @@ private:
     void drawFilet();
     void drawBall();
     void calcBall();
+    void newTarget();
+
+    int score;
 
     int angleCatapulte;
     int angleBras;
