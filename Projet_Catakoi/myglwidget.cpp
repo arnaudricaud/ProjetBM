@@ -19,9 +19,9 @@ MyGLWidget::MyGLWidget(QWidget *parent)
 
     //CAMERA:
     setFocusPolicy(Qt::StrongFocus);
-    xTra = -5;
+    xTra = 0;
     yTra = 0;
-    zTra = -2;
+    zTra = -15;
 
     xRot = -80*16;
     yRot = 0;
@@ -29,14 +29,21 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     zoom = 0.012;
 
 
+
+
     puissance = 62;
     angleCatapulte = 0;
-    angleBras = 40;
+    setAngleBras(30);
+    angleCorde = 145;
+    ballThrow = false;
 
+    visibleImpact = false;
+    impactX = 0;
+    impactY = 0;
+
+
+    level = 2;
     newTarget();
-    yTarget = 0;
-    xTarget = -430;
-
 
 }
 
@@ -57,7 +64,7 @@ QSize MyGLWidget::sizeHint() const
 static void qNormalizeAngle(int &angle)
 {
     while (angle < 0)
-        angle += 360*16;
+        angle = 360*16;
     while (angle > (360*16))
         angle -= 360*16;
 }
@@ -65,7 +72,11 @@ static void qNormalizeAngle(int &angle)
 void MyGLWidget::setXRotation(int angle)
 {
 
-    qNormalizeAngle(angle);
+    while (angle < -90*16)
+        angle = -90*16;
+    while (angle > (0*16))
+        angle = 0*16;
+
     if (angle != xRot) {
         xRot = angle;
         emit xRotationChanged(angle);
@@ -75,7 +86,11 @@ void MyGLWidget::setXRotation(int angle)
 
 void MyGLWidget::setYRotation(int angle)
 {
-    qNormalizeAngle(angle);
+    while (angle < -90*16)
+        angle = -90*16;
+    while (angle > (0*16))
+        angle = 0*16;
+
     if (angle != yRot) {
         yRot = angle;
         emit yRotationChanged(angle);
@@ -137,6 +152,7 @@ void MyGLWidget::setAngleBras(int angle)
     } else if (angle < -135){
         angle = -135;
     }
+    angleCorde = (115 + angleBras*1.3);
     angleBras = angle;
     emit angleBrasChanged(angle);
         updateGL();
@@ -153,15 +169,13 @@ void MyGLWidget::initializeGL()
     glEnable(GL_CULL_FACE);
     glShadeModel(GL_SMOOTH);
     glEnable(GL_TEXTURE_2D);
-    //glEnable(GL_LIGHTING);
-    //glEnable(GL_LIGHT0);
-    //glEnable(GL_LIGHT1);
-    //static GLfloat lightPosition[4] = { 0, 0, 10, 1.0 };
-    //static GLfloat light2Position[4] = {0, 10, 0, 1.0};
-    //static GLfloat light2Direction[4] = {0, 0, 0, 1.0};
-    //glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-    //glLightfv(GL_LIGHT1, GL_POSITION, light2Position);
-    //glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, light2Direction);
+//LUMIERES
+//    glEnable(GL_LIGHTING);
+//    glEnable(GL_LIGHT0); //SOLEIL
+//    static GLfloat lightPosition[4] = { 0, 0, 10, 1.0 };
+//    float specLight0[4] = {0.5f, 0.5f, 0.5f, 1.0f};
+//    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+//    glLightfv(GL_LIGHT0, GL_SPECULAR, specLight0);
 
 
     //Chargement des textures:
@@ -178,7 +192,7 @@ void MyGLWidget::paintGL()
     glRotatef(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
     glScalef(zoom,zoom,zoom);
-    glTranslatef(xTra/zoom, yTra/zoom, zTra/zoom);
+    glTranslatef(xTra, yTra, zTra);
 
     draw();
 }
@@ -261,7 +275,9 @@ void MyGLWidget::draw()
     glPopMatrix();
     drawStadium();
     drawTarget();
+    glColor3f(0.5, 0.5, 0.5);
     drawBall();
+    drawImpact();
     //drawCiel();
 }
 
@@ -394,6 +410,26 @@ void MyGLWidget::drawBras()
             glRotatef(angleBras,0,-1,0);
             drawContrepoid();
         glPopMatrix();
+        //Corde
+        glPushMatrix();
+            glTranslatef(15,0,0);
+            glRotatef(angleCorde,0,1,0);
+            glTranslatef(6,0,0);
+            glPushMatrix();
+                glScalef(12,0.5,0.5);
+                drawCube();
+            glPopMatrix();
+            //Ball
+            if(!ballThrow){
+                glPushMatrix();
+                GLUquadric* sphere = gluNewQuadric();
+                glColor3f(0.7,0.7,0.7);
+                glTranslatef(6,0,0);
+                glScalef(2,2,2);
+                gluSphere(sphere, 1, 32,32);
+                glPopMatrix();
+            }
+        glPopMatrix();
     glPopMatrix();
 }
 
@@ -470,7 +506,7 @@ void MyGLWidget::drawFilet()
             drawCube();
         glPopMatrix();
         glPushMatrix();
-            //Dessin corde
+            //Dessin filets
             glColor3f(0.7, 0.54, 0.41);
             glTranslatef(100,0,0);
             glPushMatrix();
@@ -499,41 +535,86 @@ void MyGLWidget::drawFilet()
 
 void MyGLWidget::newTarget(){
     srand (time(NULL));
-    xTarget = -( rand() % 350 + 250);
+
+    switch (level){
+    case 1:
+        xTarget = -( rand() % 100 + 250);
+        break;
+    case 2:
+        xTarget = -( rand() % 100 + 350);
+        break;
+    case 3:
+        xTarget = -( rand() % 160 + 450);
+        break;
+    }
     yTarget = rand() % 400 - 200;
+
+    updateGL();
 }
 
 void MyGLWidget::drawTarget(){
+    GLUquadric* disk = gluNewQuadric();
     glPushMatrix();
-        glColor3f(1, 0.3, 0.3);
-        glTranslatef(xTarget, yTarget, 0);
-        glPushMatrix();
-            glScalef(10,10,2);
-            drawCube();
-        glPopMatrix();
-
-        glColor3f(1, 1, 1);
-        glPushMatrix();
-            glTranslatef(0,0,-0.1);
-            glScalef(20,20,2);
-            drawCube();
-        glPopMatrix();
-
-        glColor3f(1, 1, 0.2);
-        glPushMatrix();
-            glTranslatef(0,0,-0.2);
-            glScalef(30,30,2);
-            drawCube();
-        glPopMatrix();
-
-        glColor3f(1, 1, 1);
-        glPushMatrix();
-            glTranslatef(0,0,-0.3);
-            glScalef(50,50,2);
-            drawCube();
-        glPopMatrix();
+        glColor3f(1, 1, 0.3);
+        glTranslatef(xTarget, yTarget, 0.1);
+        glScalef(50,50,1);
+        gluDisk(disk, 0,1, 32,1);
     glPopMatrix();
 
+}
+
+
+void MyGLWidget::drawImpact(){
+    if (visibleImpact)
+    {
+        glColor3f(1,0,0.5);
+        glPushMatrix();
+            glTranslatef(impactX,impactY,1);
+            glScalef(4,4,1);
+            drawCube();
+        glPopMatrix();
+    }
+}
+
+void MyGLWidget::showImpact(){
+    //CAM AU DESSUS DE L'IMPACT
+    xTra = -xTarget;
+    yTra = -yTarget;
+    zTra = -1;
+    xRot = 0;
+    yRot = 0;
+    zRot = -90*16;
+    zoom = 0.02;
+    visibleImpact = true; // On montre l'impact
+    updateGL();
+    Sleep(4000);
+    visibleImpact = false; // On retire l'impact
+    // RAZ DE LA CAM
+    xTra = 0;
+    yTra = 0;
+    zTra = -5;
+
+    xRot = -80*16;
+    yRot = 0;
+    zRot = -90*16;
+    zoom = 0.012;
+
+
+}
+
+void MyGLWidget::drawBall(){
+    GLUquadric* sphere = gluNewQuadric();
+    glColor3f(0.7,0.7,0.7);
+    if(ballThrow){
+        glPushMatrix();
+            float PI = 3.14159265;
+            float rad = angleCatapulte*PI/180;
+            glTranslatef(ballPosition[0]* cos(rad) - ballPosition[1] * sin(rad),
+                    ballPosition[0]* sin(rad) + ballPosition[1] * cos(rad), ballPosition[2]+4);
+            glScalef(4,4,4);
+            gluSphere(sphere, 1, 32,32);
+        glPopMatrix();
+    }
 }
 
 void MyGLWidget::launchBall(){
@@ -551,23 +632,10 @@ void MyGLWidget::launchBall(){
     zoom = 0.008;
 
     //DESSINS AVEC LA BALLE (PAS DE PRISE EN COMPTE DE LA PUISSANCE)
-    for(int i = 30; i > -130; i--){
+    for(int i = 30; i > -90; i--){
         setAngleBras(i);
     }
-        calcBall();
-
-
-}
-void MyGLWidget::drawBall(){
-    glPushMatrix();
-        float PI = 3.14159265;
-        float rad = angleCatapulte*PI/180;
-        glTranslatef(40,-2,3);
-        glTranslatef(ballPosition[0]* cos(rad) - ballPosition[1] * sin(rad),
-                ballPosition[0]* sin(rad) + ballPosition[1] * cos(rad), ballPosition[2]);
-        glScalef(4,4,4);
-        drawCube();
-    glPopMatrix();
+    calcBall();
 }
 
 
@@ -580,63 +648,70 @@ void MyGLWidget::calcBall(){
     ballSpeed[0] = (float(puissance)+20)/12;
     ballSpeed[1] =  0;
     ballSpeed[2] = (float(puissance)+20)/15;
-    ballPosition[0] = 0;
+    ballPosition[0] = 17;
     ballPosition[1] = -2;
-    ballPosition[2] = 80;
+    ballPosition[2] = 97;
     float PI = 3.14159265;
     float rad = angleCatapulte * PI/180;
     int posX;
     int posY;
-    int posZ;
 
-    //CAMERA
-//    xRot = -80*16;
-//    yRot = 0;
-//    zRot = -45*16;
-//    zoom = 0.01;
 
-    bool touche = false;
     bool firstTouch = true;
+    int frame0 = -90;
     int frame1 = -130;
     int frame2 = -70;
     int frame3 = -100;
+    ballThrow = true;
+
+    //CAMERA
+        xRot = -70*16;
+        zRot = -110*16;
+        zoom = 0.01;
+
     while (ballSpeed[0] != 0 || ballSpeed[1] != 0 || ballSpeed[2] != 0 || frame3 !=-90){
 
-//        xTra = (-ballPosition[0] - 40)*zoom;
-//        yTra = (-ballPosition[1] + 3)*zoom;
-//        zTra = (-ballPosition[2] - 2)*zoom;
+        //SUIVIT DE LA BALLE
+        xTra = (-ballPosition[0]);
+        yTra = (-ballPosition[1]);
+        zTra = (-ballPosition[2]);
 
-        // TODO OPTIMISER ANIMATION
         //BRAS -130 => -70 => -90
-        if (frame1 != -70){
+        if (frame0 != -130){
+            angleBras = frame0--;
+            angleCorde--;
+        }else if (frame1 != -70){
             angleBras = frame1++;
+            angleCorde -= 2;
         } else if (frame2 != -100){
             angleBras = frame2--;
+            angleCorde--;
         } else if (frame3 != -90){
             angleBras = frame3++;
+            angleCorde++;
         }
 
+
+        //Calcul de la position de la balle
         posX = (ballPosition[0]* cos(rad) - ballPosition[1] * sin(rad)) + 40;
         posY = (ballPosition[0]* sin(rad) + ballPosition[1] * cos(rad)) - 2;
-        posZ = ballPosition[2];
-        if(posZ == 0 && !touche && firstTouch){
-            if(posX < xTarget + 15 && posX > xTarget - 15){
-                if(posY < yTarget + 15 && posY > yTarget - 15){
-                    touche = true;
-                } else {
-                    firstTouch = false;
-                }
-            } else {
-                firstTouch = false;
-            }
+
+        if(ballPosition[2] == 0 && firstTouch){
+            //Calcul de la distance ball/cible
+            impactX = posX;
+            impactY = posY;
+            impactDist = sqrt(pow((posX - xTarget),2) + pow((posY - yTarget),2));
+            firstTouch = false;
         }
 
         ballPosition[0] -= ballSpeed[0];
         ballPosition[1] += ballSpeed[1];
         ballPosition[2] += ballSpeed[2];
 
-        if (ballPosition[0] < -740){
-            ballPosition[0] = -740;
+        if (posX < -740){
+            //ballPosition[0] = -740;
+            ballSpeed[0] = 0;
+        } else if (posY < -285 || posY > 292){
             ballSpeed[0] = 0;
         }
 
@@ -651,11 +726,15 @@ void MyGLWidget::calcBall(){
             }
         }
        updateGL();
-    Sleep(100);
+    Sleep(30);
     }
-    if (touche){
-        score += 100;
-        qDebug()<<score;
-        newTarget();
-    }
+    showImpact();
+    ballPosition[0] = 0;
+    ballPosition[1] = 0;
+    ballPosition[2] = 0;
+    setAngleBras(30);
+    angleCatapulte = 0;
+    newTarget();
+    ballThrow = false;
+    updateGL();
 }

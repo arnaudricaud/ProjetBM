@@ -70,14 +70,24 @@ private:
     void drawCiel();
     void drawFilet();
     void drawBall();
-    void calcBall();
-    void newTarget();
+    void drawImpact();
 
-    int score;
+    void showImpact();
+    void calcBall();    //Calcul de la trajectoire de la balle, et des informations de l'impact
+    void newTarget(); //Génération d'une cible en fonction de la difficulté
 
-    int angleCatapulte;
-    int angleBras;
-    int puissance;
+    int level; //Niveau de difficulté (de 1 à 3 pour Facile; Moyen; Difficile)
+    bool visibleImpact;
+    float impactDist; //Distance entre l'impact et le centre de la cible (on peut en déduire le score)
+    float impactX;
+    float impactY;
+
+    bool ballThrow;
+    int angleCatapulte; // Angle de la catapulte par rapport au sol
+    int angleBras;  // Angle du bras de la catapulte
+    float angleCorde;
+    int puissance;  //Puissance de lancement
+
     int xRot;
     int yRot;
     int zRot;
