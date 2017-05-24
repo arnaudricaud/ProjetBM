@@ -72,10 +72,10 @@ static void qNormalizeAngle(int &angle)
 void MyGLWidget::setXRotation(int angle)
 {
 
-    while (angle < -90*16)
-        angle = -90*16;
-    while (angle > (0*16))
-        angle = 0*16;
+    while (angle < -89*16)
+        angle = -89*16;
+    while (angle > (0))
+        angle = 0;
 
     if (angle != xRot) {
         xRot = angle;
@@ -86,10 +86,10 @@ void MyGLWidget::setXRotation(int angle)
 
 void MyGLWidget::setYRotation(int angle)
 {
-    while (angle < -90*16)
-        angle = -90*16;
-    while (angle > (0*16))
-        angle = 0*16;
+    while (angle < -89*16)
+        angle = -89*16;
+    while (angle > (0))
+        angle = 0;
 
     if (angle != yRot) {
         yRot = angle;
@@ -133,6 +133,9 @@ void MyGLWidget::setZTranslation(float dist)
 
 void MyGLWidget::setZoom(int scale)
 {
+    if (scale < 3){
+        scale = 3;
+    }
     zoom = float(scale)/1000;
     emit zoomChanged(scale);
     updateGL();
@@ -161,10 +164,8 @@ void MyGLWidget::setAngleBras(int angle)
 
 void MyGLWidget::initializeGL()
 {
-    qglClearColor(Qt::black);
 
-
-
+    glClearColor( 0.05, 0.46, 0.72, 1);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glShadeModel(GL_SMOOTH);
@@ -206,9 +207,9 @@ void MyGLWidget::resizeGL(int width, int height)
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 #ifdef QT_OPENGL_ES_1
-    glOrthof(-widht2, widht2, -height2, height2, -50.0, 40.0);
+    glOrthof(-widht2, widht2, -height2, height2, -50.0, 5000.0);
 #else
-    glOrtho(-widht2, widht2, -height2, height2, -50.0, 40.0);
+    glOrtho(-widht2, widht2, -height2, height2, -50.0, 5000.0);
 #endif
     glMatrixMode(GL_MODELVIEW);
 }
@@ -278,7 +279,7 @@ void MyGLWidget::draw()
     glColor3f(0.5, 0.5, 0.5);
     drawBall();
     drawImpact();
-    //drawCiel();
+    drawCiel();
 }
 
 void MyGLWidget::drawCube()
@@ -483,18 +484,36 @@ void MyGLWidget::drawStadium(){
 void MyGLWidget::drawSol()
 {
     glPushMatrix();
-        glTranslatef(-300,0,-0.5);
+        glTranslatef(0,0,-500);
         glColor3f(0.14, 0.35, 0.0);
-        glScalef(1000,700,1);
+        glScalef(5000,5000,1000);
         drawCube();
     glPopMatrix();
 
 
 }
-void MyGLWidget::drawCiel()
-{
+void MyGLWidget::drawCiel(){
+//    glColor3f(0,0.67,0.90);
+//    glPushMatrix();
+//        glTranslatef(500, 0,0);
+//        glScalef(1,250, 250);
+//    glPopMatrix();
+//    glPushMatrix();
+//        glTranslatef(0,500,0);
+//        glScalef(250, 1, 250);
+//    glPopMatrix();
+//    glPushMatrix();
+//        glTranslatef(0,-500,0);
+//        glScalef(250, 1, 250);
+//    glPopMatrix();
+//    glPushMatrix();
+//        glTranslatef(-200, 0,0);
+//        glScalef(1,250, 250);
+//    glPopMatrix();
 
 }
+
+
 void MyGLWidget::drawFilet()
 {
     glPushMatrix();
