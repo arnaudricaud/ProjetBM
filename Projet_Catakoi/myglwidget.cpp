@@ -29,7 +29,7 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     logoTSE = QImage(":/Textures/ressources/logoTSE2.bmp").mirrored(true,true);
     pancarte = QImage(":/Textures/ressources/Pancarte.bmp");
 
-    puissance = 62;
+    puissance = 100;
     angleCatapulte = 0;
     setAngleBras(30);
     angleCorde = 145;
@@ -169,15 +169,15 @@ void MyGLWidget::initializeGL()
     glEnable(GL_DEPTH_TEST);
     glShadeModel(GL_SMOOTH);
     glEnable(GL_TEXTURE_2D);
-    glEnable(GL_COLOR_MATERIAL);
-    glColorMaterial(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE);
+    //glEnable(GL_COLOR_MATERIAL);
+    //glColorMaterial(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE);
 //LUMIERES
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0); //SOLEIL
-    static GLfloat lightPosition[4] = { 0, 0, 10, 1.0 };
-    float specLight0[4] = {0.5f, 0.5f, 0.5f, 1.0f};
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, specLight0);
+//    glEnable(GL_LIGHTING);
+//    glEnable(GL_LIGHT0); //SOLEIL
+//    static GLfloat lightPosition[4] = { 0, 0, 10, 1.0 };
+//    float specLight0[4] = {0.5f, 0.5f, 0.5f, 1.0f};
+//    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+//    glLightfv(GL_LIGHT0, GL_DIFFUSE, specLight0);
 
 
 
@@ -444,6 +444,24 @@ void MyGLWidget::drawStadium(){
     texture1->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
     texture1->setMagnificationFilter(QOpenGLTexture::Linear);
     texture1->bind();
+    //Logo au sol
+    glPushMatrix();
+        glTranslatef(-30,-64,0.2);
+        glRotatef(90,0,0,1);
+        glPushMatrix();
+            glColor3f(1,1,1);
+            glBegin(GL_QUADS);
+                    glTexCoord2f (1,0);
+                    glVertex3f(0,0,0);
+                    glTexCoord2f (1,1);
+                    glVertex3f(0,39,0);
+                    glTexCoord2f (0,1);
+                    glVertex3f(129,39,0);
+                    glTexCoord2f (0,0);
+                    glVertex3f(129,0,0);
+            glEnd();
+        glPopMatrix();
+    glPopMatrix();
     //Filets:
     glPushMatrix();
         glTranslatef(30,162,0); // 150 + 16 (3*filet/2 + moitier de catapulte)
@@ -780,15 +798,12 @@ void MyGLWidget::calcBall(){
 
     //CAMERA
         xRot = -70*16;
-        zRot = -110*16;
+        zRot = -90*16;
         zoom = 0.01;
 
     while (ballSpeed[0] != 0 || ballSpeed[1] != 0 || ballSpeed[2] != 0 || frame3 !=-90){
 
-        //SUIVIT DE LA BALLE
-        xTra = (-ballPosition[0]);
-        yTra = (-ballPosition[1]);
-        zTra = (-ballPosition[2]);
+
 
         //BRAS -130 => -70 => -90
         if (frame0 != -130){
@@ -810,6 +825,11 @@ void MyGLWidget::calcBall(){
         posX = (ballPosition[0]* cos(rad) - ballPosition[1] * sin(rad));
         posY = (ballPosition[0]* sin(rad) + ballPosition[1] * cos(rad));
 
+        //SUIVIT DE LA BALLE
+        xTra = - posX;
+        yTra = - posY;
+        zTra = (-ballPosition[2]);
+
         if(ballPosition[2] == 0 && firstTouch){
             //Calcul de la distance ball/cible
             impactX = posX;
@@ -822,10 +842,10 @@ void MyGLWidget::calcBall(){
         ballPosition[1] += ballSpeed[1];
         ballPosition[2] += ballSpeed[2];
 
-        if (posX < -740){
+        if (posX < -692){
             //ballPosition[0] = -740;
             ballSpeed[0] = 0;
-        } else if (posY < -285 || posY > 292){
+        } else if (posY < -285 || posY > 285){
             ballSpeed[0] = 0;
         }
 
