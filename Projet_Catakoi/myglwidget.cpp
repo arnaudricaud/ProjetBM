@@ -28,6 +28,9 @@ MyGLWidget::MyGLWidget(QWidget *parent)
 
     logoTSE = QImage(":/Textures/ressources/logoTSE2.bmp").mirrored(true,true);
     pancarte = QImage(":/Textures/ressources/Pancarte.bmp");
+    wood = QImage(":/Textures/ressources/wood.jpg");
+    rock = QImage(":/Textures/ressources/rock.jpg");
+
 
     puissance = 100;
     angleCatapulte = 0;
@@ -327,23 +330,96 @@ void MyGLWidget::drawCube()
 
 }
 
+void MyGLWidget::drawWoodCube()
+{
+
+    glBegin(GL_QUADS);
+        glTexCoord2f (0,0);
+        glVertex3f(-0.5f, -0.5f, -0.5f);
+        glTexCoord2f (0,1);
+        glVertex3f(-0.5f, 0.5f, -0.5f);
+        glTexCoord2f (1,1);
+        glVertex3f(0.5f, 0.5f, -0.5f);
+        glTexCoord2f (1,0);
+        glVertex3d(0.5f, -0.5f, -0.5f);
+    glEnd();
+    glBegin(GL_QUADS);
+        glTexCoord2f (0,0);
+        glVertex3d(0.5f, -0.5f, 0.5f);
+        glTexCoord2f (0,1);
+        glVertex3f(0.5f, 0.5f, 0.5f);
+        glTexCoord2f (1,1);
+        glVertex3f(-0.5f, 0.5f, 0.5f);
+        glTexCoord2f (1,0);
+        glVertex3f(-0.5f, -0.5f, 0.5f);
+    glEnd();
+    glBegin(GL_QUADS);
+        glTexCoord2f (0,0);
+        glVertex3d(0.5f, -0.5f, -0.5f);
+        glTexCoord2f (0,1);
+        glVertex3f(0.5f, -0.5f, 0.5f);
+        glTexCoord2f (1,1);
+        glVertex3f(-0.5f, -0.5f, 0.5f);
+        glTexCoord2f (1,0);
+        glVertex3f(-0.5f, -0.5f, -0.5f);
+    glEnd();
+    glBegin(GL_QUADS);
+        glTexCoord2f (0,0);
+        glVertex3f(-0.5f, 0.5f, -0.5f);
+        glTexCoord2f (0,1);
+        glVertex3f(-0.5f, 0.5f, 0.5f);
+        glTexCoord2f (1,1);
+        glVertex3f(0.5f, 0.5f, 0.5f);
+        glTexCoord2f (1,0);
+        glVertex3d(0.5f, 0.5f, -0.5f);
+    glEnd();
+
+    glBegin(GL_QUADS);
+        glTexCoord2f (0,0);
+        glVertex3f(-0.5f, -0.5f, -0.5f);
+        glTexCoord2f (0,1);
+        glVertex3f(-0.5f, -0.5f, 0.5f);
+        glTexCoord2f (1,1);
+        glVertex3f(-0.5f, 0.5f, 0.5f);
+        glTexCoord2f (1,0);
+        glVertex3d(-0.5f, 0.5f, -0.5f);
+    glEnd();
+    glBegin(GL_QUADS);
+        glTexCoord2f (0,0);
+        glVertex3d(0.5f, 0.5f, -0.5f);
+        glTexCoord2f (0,1);
+        glVertex3f(0.5f, 0.5f, 0.5f);
+        glTexCoord2f (1,1);
+        glVertex3f(0.5f, -0.5f, 0.5f);
+        glTexCoord2f (1,0);
+        glVertex3f(0.5f, -0.5f, -0.5f);
+    glEnd();
+
+}
+
 void MyGLWidget::drawTrebuchet()
 {
+    QOpenGLTexture* texture3 = new QOpenGLTexture(wood);
+    texture3->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
+    texture3->setMagnificationFilter(QOpenGLTexture::Linear);
+    texture3->bind();
     glPushMatrix();
         glRotatef(angleCatapulte,0,0,1);
         glTranslatef(0,-6,0);
         GLUquadric* cylindre = gluNewQuadric();
+        gluQuadricTexture(cylindre,GL_TRUE);
         glPushMatrix();
             drawPied();
             glTranslatef(0,10,0);
             drawPied();
         glPopMatrix();
         glPushMatrix();
-            glTranslatef(7,11,14);
+            glTranslatef(7,10.7,14);
             glPushMatrix();
                 glRotatef(90,1,0,0);
-                glScalef(1,1,12);
+                glScalef(1,1,11.5);
                 gluCylinder(cylindre, 0.5,0.5,1,32,32);
+
             glPopMatrix();
             glTranslatef(0,-6,0);
             drawBras();
@@ -354,30 +430,30 @@ void MyGLWidget::drawTrebuchet()
 void MyGLWidget::drawPied()
 {
     glPushMatrix();
-        glColor3f(0.53, 0.45, 0.34);
+        glColor3f(0.8,0.8,0.8);
         glPushMatrix();
-            glTranslatef(15,0,0);
-            glScalef (30, 1, 1);
-            drawCube();
+            glTranslatef(15,0,1);
+            glScalef (30, 2, 2);
+            drawWoodCube();
         glPopMatrix();
         glPushMatrix();
             glTranslatef(4, -0.25, 7);
             glPushMatrix();
                 glRotatef(-65,0,1,0);
-                glScalef (15, 0.5, 1);
-                drawCube();
+                glScalef (15, 1.5, 1);
+                drawWoodCube();
             glPopMatrix();
             glPushMatrix();
                 glTranslatef(6, 0.5, 0);
                 glRotatef(65,0,1,0);
-                glScalef (15, 0.5, 1);
-                drawCube();
+                glScalef (15, 1.5, 1);
+                drawWoodCube();
             glPopMatrix();
         glPopMatrix();
         glPushMatrix();
             glTranslatef(7,0,13.5);
             glScalef(4,1.5,1);
-            drawCube();
+            drawWoodCube();
         glPopMatrix();
     glPopMatrix();
 }
@@ -385,16 +461,21 @@ void MyGLWidget::drawPied()
 
 void MyGLWidget::drawContrepoid()
 {
+    QOpenGLTexture* texture4 = new QOpenGLTexture(rock);
+    texture4->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
+    texture4->setMagnificationFilter(QOpenGLTexture::Linear);
+    texture4->bind();
     glColor3f(0.43, 0.35, 0.24);
         glPushMatrix();
             glTranslatef(0,0,-2);
             glScalef (0.1, 0.1, 4);
             drawCube();
         glPopMatrix();
+        glColor3f(1,1,1);
         glPushMatrix();
             glTranslatef(0,0,-6);
             glScalef (5,5,4);
-            drawCube();
+            drawWoodCube();
        glPopMatrix();
 }
 
@@ -406,7 +487,7 @@ void MyGLWidget::drawBras()
         glTranslatef(7.5,0,0);
         glPushMatrix();
             glScalef(30,1.5,1.5);
-            drawCube();
+            drawWoodCube();
         glPopMatrix();
         glPushMatrix();
             glTranslatef(-12,0,0);
@@ -419,6 +500,7 @@ void MyGLWidget::drawBras()
             glRotatef(angleCorde,0,1,0);
             glTranslatef(6,0,0);
             glPushMatrix();
+                glColor3f(0.43, 0.35, 0.24);
                 glScalef(12,0.5,0.5);
                 drawCube();
             glPopMatrix();
@@ -426,6 +508,7 @@ void MyGLWidget::drawBras()
             if(!ballThrow){
                 glPushMatrix();
                 GLUquadric* sphere = gluNewQuadric();
+                gluQuadricTexture(sphere,GL_TRUE);
                 glColor3f(0.7,0.7,0.7);
                 glTranslatef(6,0,0);
                 glScalef(2,2,2);
@@ -735,9 +818,11 @@ void MyGLWidget::showImpact(){
 }
 
 void MyGLWidget::drawBall(){
-    GLUquadric* sphere = gluNewQuadric();
+
     glColor3f(0.7,0.7,0.7);
     if(ballThrow){
+        GLUquadric* sphere = gluNewQuadric();
+        gluQuadricTexture(sphere,GL_TRUE);
         glPushMatrix();
             float PI = 3.14159265;
             float rad = angleCatapulte*PI/180;
