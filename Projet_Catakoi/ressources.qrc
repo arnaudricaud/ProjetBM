@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/Textures">
+        <file>ressources/logoTSE2.bmp</file>
+        <file>ressources/Pancarte.bmp</file>
+    </qresource>
+</RCC>

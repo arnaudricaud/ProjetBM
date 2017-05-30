@@ -15,8 +15,6 @@
 MyGLWidget::MyGLWidget(QWidget *parent)
     : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
-    //TEXTURES:
-
     //CAMERA:
     setFocusPolicy(Qt::StrongFocus);
     xTra = 0;
@@ -28,8 +26,8 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     zRot = -90*16;
     zoom = 0.012;
 
-
-
+    logoTSE = QImage(":/Textures/ressources/logoTSE2.bmp").mirrored(true,true);
+    pancarte = QImage(":/Textures/ressources/Pancarte.bmp");
 
     puissance = 62;
     angleCatapulte = 0;
@@ -44,6 +42,8 @@ MyGLWidget::MyGLWidget(QWidget *parent)
 
     level = 2;
     newTarget();
+
+
 
 }
 
@@ -164,22 +164,24 @@ void MyGLWidget::setAngleBras(int angle)
 
 void MyGLWidget::initializeGL()
 {
-
+    glDisable(GL_CULL_FACE);
     glClearColor( 0.05, 0.46, 0.72, 1);
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
     glShadeModel(GL_SMOOTH);
     glEnable(GL_TEXTURE_2D);
+    glEnable(GL_COLOR_MATERIAL);
+    glColorMaterial(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE);
 //LUMIERES
-//    glEnable(GL_LIGHTING);
-//    glEnable(GL_LIGHT0); //SOLEIL
-//    static GLfloat lightPosition[4] = { 0, 0, 10, 1.0 };
-//    float specLight0[4] = {0.5f, 0.5f, 0.5f, 1.0f};
-//    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-//    glLightfv(GL_LIGHT0, GL_SPECULAR, specLight0);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0); //SOLEIL
+    static GLfloat lightPosition[4] = { 0, 0, 10, 1.0 };
+    float specLight0[4] = {0.5f, 0.5f, 0.5f, 1.0f};
+    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specLight0);
 
 
-    //Chargement des textures:
+
+
 
 }
 
@@ -268,18 +270,18 @@ void MyGLWidget::wheelEvent(QWheelEvent *event)
 
 void MyGLWidget::draw()
 {
-
     glColor3f(1,1,1);
     glPushMatrix();
         glScalef(2,2,2);
         drawTrebuchet();
     glPopMatrix();
-    drawStadium();
+
     drawTarget();
     glColor3f(0.5, 0.5, 0.5);
     drawBall();
     drawImpact();
     drawCiel();
+    drawStadium();
 }
 
 void MyGLWidget::drawCube()
@@ -436,6 +438,12 @@ void MyGLWidget::drawBras()
 
 void MyGLWidget::drawStadium(){
     drawSol();
+    drawPancarte();
+    //Texture LOGO
+    QOpenGLTexture* texture1 = new QOpenGLTexture(logoTSE);
+    texture1->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
+    texture1->setMagnificationFilter(QOpenGLTexture::Linear);
+    texture1->bind();
     //Filets:
     glPushMatrix();
         glTranslatef(30,162,0); // 150 + 16 (3*filet/2 + moitier de catapulte)
@@ -445,6 +453,10 @@ void MyGLWidget::drawStadium(){
         glRotatef(45,0,0,1);
         drawFilet();
         glTranslatef(200,0,0);
+        glPushMatrix();
+            glTranslatef(35.5,1,10);
+            drawLogo();
+        glPopMatrix();
         drawFilet();
         glTranslatef(200,0,0);
         drawFilet();
@@ -454,6 +466,10 @@ void MyGLWidget::drawStadium(){
         glRotatef(90,0,0,1);
         drawFilet();
         glTranslatef(200,0,0);
+        glPushMatrix();
+            glTranslatef(35.5,1,10);
+            drawLogo();
+        glPopMatrix();
         drawFilet();
         glTranslatef(200,0,0);
         drawFilet();
@@ -463,6 +479,10 @@ void MyGLWidget::drawStadium(){
         drawFilet();
         glTranslatef(200,0,0);
         drawFilet();
+        glPushMatrix();
+            glTranslatef(35.5,1,10);
+            drawLogo();
+        glPopMatrix();
         glTranslatef(200,0,0);
         drawFilet();
 
@@ -479,6 +499,52 @@ void MyGLWidget::drawStadium(){
         glPopMatrix();
 
     glPopMatrix();
+}
+
+void MyGLWidget::drawPancarte(){
+    glPushMatrix();
+        glTranslatef(50,150,0);
+        glPushMatrix();
+            //Pieds:
+            glPushMatrix();
+                glTranslatef(0,0,10);
+                glColor3f(0.5, 0.5, 0.5);
+                glScalef(2,2,20);
+                drawCube();
+            glPopMatrix();
+            glPushMatrix();
+                glTranslatef(0,100,10);
+                glColor3f(0.5, 0.5, 0.5);
+                glScalef(2,2,20);
+                drawCube();
+            glPopMatrix();
+            //Cadre Bois
+            glColor3f(0.53, 0.45, 0.34);
+            glTranslatef(0,50,30);
+            glScalef(4,104,40);
+            drawCube();
+        glPopMatrix();
+        //TEXTURE
+        QOpenGLTexture* texture2 = new QOpenGLTexture(pancarte);
+        texture2->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
+        texture2->setMagnificationFilter(QOpenGLTexture::Linear);
+        texture2->bind();
+        glPushMatrix();
+            glColor3f(1,1,1);
+            glTranslatef(2.1, 0,12);
+            glBegin(GL_QUADS);
+                    glTexCoord2f (0,0);
+                    glVertex3f(0,0,33);
+                    glTexCoord2f (0,1);
+                    glVertex3f(0,0,0);
+                    glTexCoord2f (1,1);
+                    glVertex3f(0,100,0);
+                    glTexCoord2f (1,0);
+                    glVertex3f(0,100,33);
+            glEnd();
+        glPopMatrix();
+    glPopMatrix();
+
 }
 
 void MyGLWidget::drawSol()
@@ -552,6 +618,24 @@ void MyGLWidget::drawFilet()
     glPopMatrix();
 }
 
+void MyGLWidget::drawLogo(){
+    glPushMatrix();
+        glColor3f(1,1,1);
+        glBegin(GL_QUADS);
+                glTexCoord2f (0,0);
+                glVertex3f(0,0,0);
+                glTexCoord2f (0,1);
+                glVertex3f(0,0,39);
+                glTexCoord2f (1,1);
+                glVertex3f(129,0,39);
+                glTexCoord2f (1,0);
+                glVertex3f(129,0,0);
+        glEnd();
+    glPopMatrix();
+
+}
+
+
 void MyGLWidget::newTarget(){
     srand (time(NULL));
 
@@ -574,10 +658,21 @@ void MyGLWidget::newTarget(){
 void MyGLWidget::drawTarget(){
     GLUquadric* disk = gluNewQuadric();
     glPushMatrix();
-        glColor3f(1, 1, 0.3);
+        glColor3f(1, 1, 1);
         glTranslatef(xTarget, yTarget, 0.1);
-        glScalef(50,50,1);
-        gluDisk(disk, 0,1, 32,1);
+        gluDisk(disk, 0,50, 32,1);
+        glColor3f(0.1, 0.1, 0.1);
+        glTranslatef(0, 0, 0.1);
+        gluDisk(disk, 0,40, 32,1);
+        glColor3f(0.3, 0.3, 1);
+        glTranslatef(0, 0, 0.1);
+        gluDisk(disk, 0,30, 32,1);
+        glColor3f(1, 0.3, 0.3);
+        glTranslatef(0, 0, 0.1);
+        gluDisk(disk, 0,20, 32,1);
+        glColor3f(1, 1, 0.3);
+        glTranslatef(0, 0, 0.1);
+        gluDisk(disk, 0,10, 32,1);
     glPopMatrix();
 
 }
@@ -712,8 +807,8 @@ void MyGLWidget::calcBall(){
 
 
         //Calcul de la position de la balle
-        posX = (ballPosition[0]* cos(rad) - ballPosition[1] * sin(rad)) + 40;
-        posY = (ballPosition[0]* sin(rad) + ballPosition[1] * cos(rad)) - 2;
+        posX = (ballPosition[0]* cos(rad) - ballPosition[1] * sin(rad));
+        posY = (ballPosition[0]* sin(rad) + ballPosition[1] * cos(rad));
 
         if(ballPosition[2] == 0 && firstTouch){
             //Calcul de la distance ball/cible

@@ -60,17 +60,21 @@ signals:
 private:
     void draw();
     void drawCube();
+    void drawWoodCube();
     void drawTrebuchet();
     void drawPied();
     void drawContrepoid();
     void drawBras();
     void drawStadium();
+    void drawPancarte();
     void drawTarget();
     void drawSol();
     void drawCiel();
     void drawFilet();
+    void drawLogo();
     void drawBall();
     void drawImpact();
+
 
     void showImpact();
     void calcBall();    //Calcul de la trajectoire de la balle, et des informations de l'impact
@@ -103,8 +107,10 @@ private:
     float ballPosition [3] = {0, 0, 0};
 
 
-
     float zoom;
+    //TEXTURES:
+    QImage logoTSE;
+    QImage pancarte;
 
     QPoint lastPos;
 };
