@@ -111,7 +111,8 @@ private:
     //TEXTURES:
     QImage logoTSE;
     QImage pancarte;
-
+    QImage wood;
+    QImage rock;
     QPoint lastPos;
 };
 
