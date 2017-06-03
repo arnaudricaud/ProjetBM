@@ -23,6 +23,7 @@ public:
     void reset();
     int getInitialX() {return initialX;}
     int getInitialY() {return initialY;}
+    int getPuissance() {return distance;}
     void setxPostion(int x);
     void setyPostion(int y);
 
@@ -32,21 +33,19 @@ private slots:
     void on_checkBox_clicked();
 
 
+
 private:
     Ui::MainWindow *ui;
     VideoCapture * cam;
     QTimer *timer = new QTimer(this);
     QTimer *timer2 = new QTimer(this);
-    Point *PointMin = new Point();
-    Point *PointMax = new Point();
-    Point *PointPrev = new Point();
-    Point *PointPrev2 = new Point();
+
     bool  start;
     bool angle;
     bool go;
     bool on;
     bool track;
-    bool launchBall;
+    bool lanceBall;
     int templateWidth = 60;
     int templateHeight = 60;
     cv::Rect *templateRect;
@@ -61,7 +60,11 @@ private:
     int yPosition=0;
     int yPrev=90;
     int yMin=90;
-
+    int xPrev=130;
+    int xMin=130;
+    int distance=0;
+    int angleCatapulte=0;
+//int angleCatapulte;
 //QLabel *labelZero=new QLabel(this);
 };
 

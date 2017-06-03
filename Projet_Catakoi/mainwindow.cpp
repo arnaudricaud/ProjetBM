@@ -1,7 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "myglwidget.h"
 #include <QPixmap>
 #include <QDebug>
+#include <GL/glu.h>
+#include <QtOpenGL>
 
 using namespace std;
 
@@ -38,21 +41,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->labelPuissance->setVisible(false);
     ui->labelAngle->setVisible(false);
     ui->labelInstruction->setVisible(false);
-    PointMin->y=1000;
-    PointMax->y=0;
-    PointPrev->y=0;
-    PointPrev2->y=0;
-    PointMin->x=0;
-    PointMax->x=0;
-    PointPrev->x=0;
-    PointPrev2->x=0;
+
     prevY = 15;
     start =false;
     go =false;
     angle = false;
     on =false;
     track=true;
-    launchBall=false;
+    lanceBall=false;
 
 }
 
@@ -62,18 +58,12 @@ MainWindow::~MainWindow()
     delete cam;
 }
 void MainWindow::update(){
-
-      // while (waitKey(10)<0){
-        //Mat resultImage;
-        //Rect resultRect;
-        //Rect resultRect2;
-        //Rect resultRect3;
         if (cam->read(image)) {   // Capture a frame
 
            flip(image,image,1);
            templateImage = Mat(image, *templateRect).clone();
            if(!go){
-           rectangle(image, *templateRect, Scalar(0,0,255),2,8,0);
+                 rectangle(image, *templateRect, Scalar(0,0,255),2,8,0);
            }
            float newsize = (ui->centralWidget->width())/5;
            cv::resize(image, image, Size(newsize, newsize), 0, 0, INTER_LINEAR);
@@ -87,13 +77,8 @@ void MainWindow::update(){
 void MainWindow::tracking(){
 
 
-      int xInit = templateRect->x; //130
-      int yInit = templateRect->y; //90
-      int xPrev;
-
-
-      int distance;
-
+      //int xInit = templateRect->x; //130
+      //int yInit = templateRect->y; //90
 
     if (cam->read(image)) // get a new frame from camera
     {
@@ -103,7 +88,6 @@ void MainWindow::tracking(){
 
         // Do the Matching between the frame and the templateImage
         matchTemplate( image, matchImage, resultImage, TM_CCORR_NORMED );
-
         // Localize the best match with minMaxLoc
         double minVal; double maxVal; Point minLoc; Point maxLoc;
         minMaxLoc( resultImage, &minVal, &maxVal, &minLoc, &maxLoc, Mat() );
@@ -129,10 +113,10 @@ void MainWindow::tracking(){
 
 
        // cout<<"yPrev "<<yPrev<<" et now"<<resultRect.y<<endl;
-      if(!launchBall){
+      if(!lanceBall){
         if (resultRect.y>yPrev+20)
                 {
-                    launchBall=true;
+                    lanceBall=true;
                     distance=yPrev-yMin;
                     cout<<yPrev<<" et "<<yMin<<endl;
                     cout<<"distance :"<<distance<<endl;
@@ -140,10 +124,18 @@ void MainWindow::tracking(){
                 }
         else{
             yPrev=resultRect.y;
+            xPrev=resultRect.x;
+            angleCatapulte=xPrev-xMin;
+            distance=yPrev-yMin;
+            ui->SliderAngleCatapulte->setValue(angleCatapulte);
+            ui->SliderAngleBras->setValue(distance);
             if (yPrev<yMin){
                 yMin=yPrev;
             }
            // cout<<yPrev<<endl;
+        }
+        if (lanceBall){
+            // MyGLWidget::launchBall();
         }
     }
 
@@ -264,7 +256,6 @@ void MainWindow::on_checkBox_clicked()
         int result_cols =  image.cols - templateImage.cols + 1;
         int result_rows = image.rows - templateImage.rows + 1;
         resultImage.create( result_cols, result_rows, CV_32FC1 );
-        imshow("template img",templateImage);
         matchImage=templateImage;
         //on arrete l'affichage simple
         timer->stop();
@@ -284,14 +275,6 @@ void MainWindow::reset(){
     ui->labelPuissance->setVisible(false);
     ui->labelAngle->setVisible(false);
     ui->labelInstruction->setVisible(false);
-    PointMin->y=1000;
-    PointMax->y=0;
-    PointPrev->y=0;
-    PointPrev2->y=0;
-    PointMin->x=0;
-    PointMax->x=0;
-    PointPrev->x=0;
-    PointPrev2->x=0;
     timer->stop();
     timer2->stop();
     start =false;
@@ -300,6 +283,6 @@ void MainWindow::reset(){
     on =false;
     initialX=0;
     initialY=0;
-    launchBall=false;
+    lanceBall=false;
     templateImage.deallocate();
 }
