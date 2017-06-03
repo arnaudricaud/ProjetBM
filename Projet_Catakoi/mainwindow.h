@@ -41,6 +41,14 @@ private:
     bool angle;
     bool go;
     bool on;
+    bool track;
+    int templateWidth = 60;
+    int templateHeight = 60;
+    cv::Rect *templateRect;
+    cv::Mat templateImage;
+    cv::Mat matchImage;
+    cv::Mat resultImage;
+    cv::Mat image;
 
 //QLabel *labelZero=new QLabel(this);
 };
