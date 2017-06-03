@@ -21,6 +21,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void reset();
+    int getInitialX() {return initialX;}
+    int getInitialY() {return initialY;}
+    void setxPostion(int x);
+    void setyPostion(int y);
 
 private slots:
     void update();
@@ -42,6 +46,7 @@ private:
     bool go;
     bool on;
     bool track;
+    bool launchBall;
     int templateWidth = 60;
     int templateHeight = 60;
     cv::Rect *templateRect;
@@ -49,6 +54,13 @@ private:
     cv::Mat matchImage;
     cv::Mat resultImage;
     cv::Mat image;
+    int initialX;
+    int initialY;
+    int prevY;
+    int xPosition=0;
+    int yPosition=0;
+    int yPrev=90;
+    int yMin=90;
 
 //QLabel *labelZero=new QLabel(this);
 };

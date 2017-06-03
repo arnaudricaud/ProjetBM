@@ -46,11 +46,13 @@ MainWindow::MainWindow(QWidget *parent) :
     PointMax->x=0;
     PointPrev->x=0;
     PointPrev2->x=0;
+    prevY = 15;
     start =false;
     go =false;
     angle = false;
     on =false;
     track=true;
+    launchBall=false;
 
 }
 
@@ -79,147 +81,19 @@ void MainWindow::update(){
            QImage img= QImage((const unsigned char*)(image.data),image.cols,image.rows,QImage::Format_RGB888);
            ui->camFrame->setPixmap(QPixmap::fromImage(img));
           }
-       // }
-
-           // Acquisition of the template image
-          // Mat templateImage; // template Mat
-          // Mat image;         // frame Mat
-         /* while (waitKey(10)<0)
-           {
-               if (cam->read(image)) // get a new frame from camera
-               {
-                   float newsize = (ui->centralWidget->width())/5;
-                   cv::resize(image, image, Size(newsize, newsize), 0, 0, INTER_LINEAR);
-                   cvtColor(image,image,CV_BGR2RGB);
-                   // vertical flip of the image
-                   flip(image,image,1);
-                   // Copy the template rect
-                   templateImage=Mat(image,*templateRect).clone();
-                   // Draw red rectangle on the frame
-                   rectangle(image,*templateRect,Scalar( 0, 0, 255),2,8,0);
-                   // Display the frame
-                   imshow("WebCam", image);
-
-                   QImage img= QImage((const unsigned char*)(image.data),image.cols,image.rows,QImage::Format_RGB888);
-                   ui->camFrame->setPixmap(QPixmap::fromImage(img));
-               }
-           }*/
-           // Show the template image
-           //namedWindow("Template image",1);
-           //imshow("Template image", templateImage);
-           /* if(ui->checkBox->){
-                       // Create the matchTemplate image result
-                       Mat resultImage;    // to store the matchTemplate result
-                       int result_cols =  image.cols - templateImage.cols + 1;
-                       int result_rows = image.rows - templateImage.rows + 1;
-                       resultImage.create( result_cols, result_rows, CV_32FC1 );
-                       imshow("image esultat", resultImage);
-            }*/
-          /* Rect resultRect;    // to store the location of the matched rect
-
-           // Init the window to display the result
-           namedWindow("matchTemplate result",1);
-
-           // Online template matching
-           //cout<<"Online template matching, hit a key to stop"<<endl;
-           while (waitKey(5)<0)
-           {
-               if (cam->read(image)) // get a new frame from camera
-               {
-                   // vertical flip of the image
-                   flip(image,image,1);
-
-                   // Do the Matching between the frame and the templateImage
-                   matchTemplate( image, templateImage, resultImage, TM_CCORR_NORMED );
-
-                   // Localize the best match with minMaxLoc
-                   double minVal; double maxVal; Point minLoc; Point maxLoc;
-                   minMaxLoc( resultImage, &minVal, &maxVal, &minLoc, &maxLoc, Mat() );
-                   // Save the location fo the matched rect
-                   resultRect=Rect(maxLoc.x,maxLoc.y,templateWidth,templateHeight);
-
-                   // Show the result
-                   Mat normResultImage;
-                   // Normalize values
-                   normalize(resultImage,normResultImage,1,0,NORM_MINMAX);
-                   // Return to RGB to plot the max in red
-                   cvtColor(normResultImage,normResultImage,CV_GRAY2RGB);
-                   // Draw a red square
-                   rectangle(normResultImage,Rect(maxLoc.x,maxLoc.y,3,3),Scalar( 0, 0, 1),2,8,0);
-                   // Show image
-                   imshow("matchTemplate result",normResultImage);
-
-                   // Draw green rectangle on the frame
-                   rectangle(image,resultRect,Scalar( 0, 255, 0),2,8,0);
-                   // Display the frame
-                   //imshow("WebCam", image);
-                   QImage img= QImage((const unsigned char*)(image.data),image.cols,image.rows,QImage::Format_RGB888);
-                   ui->camFrame->setPixmap(QPixmap::fromImage(img));
-               }
-           }*/
-          /*  ui->camFrame->setText("");
-
-
-
-
-            if(go){
-           // ui->labelZero->setVisible(true);
-           // ui->labelCent->setVisible(true);
-            if(track){
-            resultRect=Rect(50,20,50,50);
-            // Draw red rectangle on the frame
-            rectangle(image,resultRect,Scalar( 255, 0, 0),2,8,0);
-            }
-           // resultRect2=Rect(10,120,120,1);
-           // rectangle(image,resultRect2,Scalar( 255, 0, 0),2,8,0);
-            //ui->labelInstruction->setText("Déterminez la puissance");
-           // ui->labelInstruction->setVisible(true);
-
-            // Motif que l'on recherche
-             Mat templateImage = imread("../Projet_Catakoi/SnapGomme.JPG");
-             int result_cols =  image.cols - templateImage.cols + 1;
-             int result_rows = image.rows - templateImage.rows + 1;
-             resultImage.create( result_cols, result_rows, CV_32FC1 );
-
-             // Do the Matching between the frame and the templateImage
-             matchTemplate( image, templateImage, resultImage, TM_CCORR_NORMED );
-             // Localize the best match with minMaxLoc
-             double minVal; double maxVal; Point minLoc; Point maxLoc;
-             minMaxLoc( resultImage, &minVal, &maxVal, &minLoc, &maxLoc, Mat() );
-             cout<<" maxLocX : "<<maxLoc.x<<endl;//<<"maxLocY : "<<maxLoc.y<<endl;
-             if (maxLoc.x>50 && maxLoc.x<100){
-                 if (maxLoc.y>20 && maxLoc.y<70){
-                 cout<<"gomme";
-             resultRect=Rect(maxLoc.x,maxLoc.y,50,50);
-             rectangle(image,resultRect,Scalar( 255, 0, 0),2,8,0);
-              }
-             }
-
-
-            }
-            if(angle){
-            float x =(PointMin->x*150/580);
-            resultRect=Rect(140-x,30,2,20);
-            rectangle(image,resultRect,Scalar( 255, 0, 0),2,8,0);
-            resultRect2=Rect(x-25,30,1,20);
-            rectangle(image,resultRect2,Scalar( 255, 0, 0),2,8,0);
-            resultRect3=Rect(x+25,30,1,20);
-            rectangle(image,resultRect3,Scalar( 255, 0, 0),2,8,0);
-            }
-
-            // Resize the label to fit the image
-            ui->camFrame->resize(ui->camFrame->pixmap()->size());*/
-
-
-       /* }
-       / else {
-            ui->camFrame->setText("Error capturing the frame");
-        }*/
-
     }
-//}
+
 
 void MainWindow::tracking(){
+
+
+      int xInit = templateRect->x; //130
+      int yInit = templateRect->y; //90
+      int xPrev;
+
+
+      int distance;
+
 
     if (cam->read(image)) // get a new frame from camera
     {
@@ -235,7 +109,6 @@ void MainWindow::tracking(){
         minMaxLoc( resultImage, &minVal, &maxVal, &minLoc, &maxLoc, Mat() );
         // Save the location fo the matched rect
         resultRect=Rect(maxLoc.x,maxLoc.y,templateWidth,templateHeight);
-
         // Show the result
         Mat normResultImage;
         // Normalize values
@@ -244,49 +117,40 @@ void MainWindow::tracking(){
         cvtColor(normResultImage,normResultImage,CV_GRAY2RGB);
         // Draw a red square
         rectangle(normResultImage,Rect(maxLoc.x,maxLoc.y,3,3),Scalar( 0, 0, 1),2,8,0);
-        // Show image
-        imshow("matchTemplate result",normResultImage);
-
         // Draw green rectangle on the frame
         rectangle(image,resultRect,Scalar( 0, 255, 0),2,8,0);
         // Display the image
-        //imshow("WebCam", image);
+
         float newsize = (ui->centralWidget->width())/5;
         cv::resize(image, image, Size(newsize, newsize), 0, 0, INTER_LINEAR);
         cvtColor(image,image,CV_BGR2RGB);
         QImage img= QImage((const unsigned char*)(image.data),image.cols,image.rows,QImage::Format_RGB888);
         ui->camFrame->setPixmap(QPixmap::fromImage(img));
+
+
+       // cout<<"yPrev "<<yPrev<<" et now"<<resultRect.y<<endl;
+      if(!launchBall){
+        if (resultRect.y>yPrev+20)
+                {
+                    launchBall=true;
+                    distance=yPrev-yMin;
+                    cout<<yPrev<<" et "<<yMin<<endl;
+                    cout<<"distance :"<<distance<<endl;
+                  // timer2->stop();
+                }
+        else{
+            yPrev=resultRect.y;
+            if (yPrev<yMin){
+                yMin=yPrev;
+            }
+           // cout<<yPrev<<endl;
+        }
     }
 
-   /* if (cam->isOpened()) {
-        Mat image;
-        Mat resultImage;
-        Rect resultRect;    // to store the location of the matched rect
 
-        float pourPui;
-        float pourAngle;
 
-        if (cam->read(image)){ //image est notre image de calibrage.
-            //Il faut appliquer des traitements pour trouver le point
-            //qui va permettre de découper notre image en 4 imagettes.
+  /*
 
-               // Motif que l'on recherche
-                Mat templateImage = imread("../Projet_Catakoi/SnapGomme.JPG");
-                int result_cols =  image.cols - templateImage.cols + 1;
-                int result_rows = image.rows - templateImage.rows + 1;
-                resultImage.create( result_cols, result_rows, CV_32FC1 );
-
-                // Do the Matching between the frame and the templateImage
-                matchTemplate( image, templateImage, resultImage, TM_CCORR_NORMED );
-                // Localize the best match with minMaxLoc
-                double minVal; double maxVal; Point minLoc; Point maxLoc;
-                minMaxLoc( resultImage, &minVal, &maxVal, &minLoc, &maxLoc, Mat() );
-               // cout<<"maxVal : "<<maxVal<<"minVal : "<<minVal<<endl;
-                if (maxVal>0.965){
-                //namedWindow("Image de calibrage",1);
-                //imshow("Image de calibrage", image);
-                }
-                cout<<maxLoc.x<<" et "<<maxLoc.y;
                 resultRect=Rect(maxLoc.x,maxLoc.y,50,50);
                 rectangle(resultImage,resultRect,Scalar( 0, 255, 0),2,8,0);
                 cout<<maxLoc.x<<" et "<<maxLoc.y<<endl;
@@ -386,11 +250,8 @@ void MainWindow::tracking(){
                             pourAngle=5;
                         }else{pourAngle=0;}
                         ui->labelAngle->setText("+"+QString::number(pourAngle)+"°");
-                    }
-
                     }*/
-      /*  }
-    }*/
+    }
 
 }
 
@@ -405,6 +266,8 @@ void MainWindow::on_checkBox_clicked()
         resultImage.create( result_cols, result_rows, CV_32FC1 );
         imshow("template img",templateImage);
         matchImage=templateImage;
+        //on arrete l'affichage simple
+        timer->stop();
         connect(timer2, SIGNAL(timeout()), this, SLOT(tracking()));
         timer2->start(50);
     }else{
@@ -429,8 +292,14 @@ void MainWindow::reset(){
     PointMax->x=0;
     PointPrev->x=0;
     PointPrev2->x=0;
+    timer->stop();
+    timer2->stop();
     start =false;
     go =false;
     angle = false;
     on =false;
+    initialX=0;
+    initialY=0;
+    launchBall=false;
+    templateImage.deallocate();
 }
