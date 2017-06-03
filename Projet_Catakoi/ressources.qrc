@@ -2,5 +2,7 @@
     <qresource prefix="/Textures">
         <file>ressources/logoTSE2.bmp</file>
         <file>ressources/Pancarte.bmp</file>
+        <file>ressources/wood.jpg</file>
+        <file>ressources/rock.jpg</file>
     </qresource>
 </RCC>
