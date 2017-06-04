@@ -40,6 +40,7 @@ public slots:
     void setAngleCatapulte(int angle);
     void setAngleBras(int angle);
     void setPuissance(int puissance);
+    void setLevel(int level);
     void launchBall();
 
 signals:

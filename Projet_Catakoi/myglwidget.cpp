@@ -177,6 +177,10 @@ void MyGLWidget::setPuissance(int valeur){
     this->puissance = valeur;
 }
 
+void MyGLWidget::setLevel(int valeur){
+    this->level=valeur;
+}
+
 
 void MyGLWidget::initializeGL()
 {
@@ -763,6 +767,8 @@ void MyGLWidget::newTarget(){
     case 3:
         xTarget = -( rand() % 160 + 450);
         break;
+    default :  xTarget = -( rand() % 100 + 350);
+        break;
     }
     yTarget = rand() % 400 - 200;
 
@@ -875,6 +881,8 @@ void MyGLWidget::calcBall(){
     //1m = 2*coord
     //1 Tick => 10ms!!
     // Gravité => 10m/s => 0.2coord/tick
+    qDebug()<<level;
+    qDebug()<<puissance;
     ballSpeed[0] = (float(puissance)+20)/12;
     ballSpeed[1] =  0;
     ballSpeed[2] = (float(puissance)+20)/15;

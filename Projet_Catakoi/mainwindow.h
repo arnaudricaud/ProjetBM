@@ -32,14 +32,20 @@ protected:
 private slots:
     void update();
     void tracking();
+    void transition();
     void on_checkBox_clicked();
     void on_boutonPlay_clicked();
+    void chronoRefresh();
+    void chronoRefresh2();
 
 signals:
 void launchBall();
-void setAngleCatapulte(int);
+void setAngleCatapulte(int angleCatapulte);
 void changePuissance(int puissance);
+void changeLevel(int level);
 void debutGame();
+
+
 
 private:
     Ui::MainWindow *ui;
@@ -47,7 +53,9 @@ private:
     VideoCapture * cam;
     QTimer *timer = new QTimer(this);
     QTimer *timer2 = new QTimer(this);
-
+    QTimer *timer3 = new QTimer(this);
+    QTimer *chronoTotal = new QTimer(this);
+    QTimer *chronoCible = new QTimer(this);
 
     bool  start;
     bool go;
@@ -68,6 +76,8 @@ private:
     int puissance;
     int angleCatapulte=0;
     int countGame=0;
+    int level=3;
+    QString nomJoueur;
 //int angleCatapulte;
 //QLabel *labelZero=new QLabel(this);
 };
