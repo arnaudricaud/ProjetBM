@@ -5,6 +5,7 @@
 #include <QTimer>
 #include "opencv2/opencv.hpp"
 #include<QLabel>
+#include"gamedialog.h"
 
 
 using namespace cv;
@@ -32,25 +33,24 @@ private slots:
     void update();
     void tracking();
     void on_checkBox_clicked();
-
-
     void on_boutonPlay_clicked();
+
 signals:
 void launchBall();
 void setAngleCatapulte(int);
 void changePuissance(int puissance);
+void debutGame();
 
 private:
     Ui::MainWindow *ui;
+
     VideoCapture * cam;
     QTimer *timer = new QTimer(this);
     QTimer *timer2 = new QTimer(this);
 
 
     bool  start;
-    bool angle;
     bool go;
-    bool on;
     bool track;
     bool lanceBall;
     int templateWidth = 60;
@@ -67,6 +67,7 @@ private:
     int distance;
     int puissance;
     int angleCatapulte=0;
+    int countGame=0;
 //int angleCatapulte;
 //QLabel *labelZero=new QLabel(this);
 };

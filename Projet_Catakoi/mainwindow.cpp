@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "myglwidget.h"
 #include "chronometre.h"
+#include "gamedialog.h"
 #include <QPixmap>
 #include <QDebug>
 #include <GL/glu.h>
@@ -36,20 +37,24 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->myGLWidget, SIGNAL(angleCatapulteChanged(int)), ui->SliderAngleCatapulte, SLOT(setValue(int)));
     connect(ui->myGLWidget, SIGNAL(angleBrasChanged(int)), ui->SliderAngleBras, SLOT(setValue(int)));
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
+    connect(timer2, SIGNAL(timeout()), this, SLOT(tracking()));
     connect(this, SIGNAL(launchBall()),ui->myGLWidget, SLOT(launchBall()));
     connect(this, SIGNAL(setAngleCatapulte(int)),ui->myGLWidget, SLOT(setAngleCatapulte(int)));
     connect(this, SIGNAL(changePuissance(int)),ui->myGLWidget, SLOT(setPuissance(int)));
+   // connect(this, SIGNAL(debutGame()), this, SLOT(demarrer()));
 
     timer->start(50);
+    timer2->stop();
     ui->progressBar->setVisible(false);
     ui->progressBar->setValue(0);
 
     start =false;
     go =false;
-    angle = false;
-    on =false;
     track=true;
     lanceBall=false;
+    ui->labelChrono->setVisible(false);
+    ui->checkBox->setVisible(false);
+
 
 }
 
@@ -57,6 +62,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete cam;
+
 }
 void MainWindow::update(){
         if (cam->read(image)) {   // Capture a frame
@@ -76,11 +82,6 @@ void MainWindow::update(){
 
 
 void MainWindow::tracking(){
-
-
-      //int xInit = templateRect->x; //130
-      //int yInit = templateRect->y; //90
-
     if (cam->read(image)) // get a new frame from camera
     {
         Rect resultRect;
@@ -102,8 +103,10 @@ void MainWindow::tracking(){
         cvtColor(normResultImage,normResultImage,CV_GRAY2RGB);
         // Draw a red square
         rectangle(normResultImage,Rect(maxLoc.x,maxLoc.y,3,3),Scalar( 0, 0, 1),2,8,0);
+       // if (maxVal>0.95){
         // Draw green rectangle on the frame
         rectangle(image,resultRect,Scalar( 0, 255, 0),2,8,0);
+       // }
         // Display the image
 
         float newsize = (ui->centralWidget->width())/5;
@@ -119,32 +122,31 @@ void MainWindow::tracking(){
                 {
                     lanceBall=true;
                     distance=yPrev-yMin;
-                    cout<<yPrev<<" et "<<yMin<<endl;
-                    cout<<"distance :"<<distance<<endl;
                     setPuissance(distance);
                     ui->progressBar->setValue(distance);
-                    ui->progressBar->setTextVisible(true);
-                  // timer2->stop();
                 }
         else{
             yPrev=resultRect.y;
             xPrev=resultRect.x;
             angleCatapulte=xPrev-xMin;
-            //*distance = yPrev - yMin;
+            distance = yPrev - yMin;
             ui->progressBar->setValue(distance);
             setAngleCatapulte(angleCatapulte);
-            //emit puissanceChanged(distance);
-           // ui->SliderAngleBras->setValue(distance);
             if (yPrev<yMin){
                 yMin=yPrev;
             }
-           // cout<<yPrev<<endl;
         }
         if (lanceBall){
-            qDebug()<<distance;
-            emit changePuissance(distance);
-            emit launchBall();
             lanceBall = false;
+            emit changePuissance(distance);
+            emit launchBall();      
+            countGame++;
+            qDebug()<<countGame;
+
+        }
+        if (countGame==10)
+        {
+            timer2->stop();
         }
       }
     }
@@ -163,11 +165,9 @@ void MainWindow::on_checkBox_clicked()
         //on arrete l'affichage simple
         timer->stop();
         ui->progressBar->setVisible(true);
-        connect(timer2, SIGNAL(timeout()), this, SLOT(tracking()));
         timer2->start(50);
     }else{
         go=false;
-        timer2->stop();
         reset();
     }
 }
@@ -179,10 +179,11 @@ void MainWindow::reset(){
     timer2->stop();
     start =false;
     go =false;
-    angle = false;
-    on =false;
     lanceBall=false;
     templateImage.deallocate();
+    timer2->stop();
+    timer->start(50);
+    matchImage.deallocate();
 }
 
 int MainWindow::getPuissance(){
@@ -195,14 +196,26 @@ void MainWindow::setPuissance(int dist){
 
 void MainWindow::on_boutonPlay_clicked()
 {
-    //Chronometre *chrono = new Chronometre();
+    ui->labelChrono->setVisible(true);
+    ui->checkBox->setVisible(true);
+    gameDialog x;
+    x.setModal(true);
+    x.exec();
+    //x.getName();
+    int dif=x.getDifficulty();
+    QString nom = x.getName();
+    cout<<"difficulte : "<< dif<<endl;
+   // cout<<" et nom : "<<nom<<endl;
+    qDebug()<<nom;
 
-    connect(timer, SIGNAL(timeout()), this, SLOT(demarrer()));
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Space){
-        tracking();
+        //tracking();
+        timer2->start(50);
     }
 }
+
+

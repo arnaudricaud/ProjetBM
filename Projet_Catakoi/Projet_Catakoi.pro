@@ -16,14 +16,17 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     myglwidget.cpp \
     game.cpp \
-    chronometre.cpp
+    chronometre.cpp \
+    gamedialog.cpp
 
 HEADERS  += mainwindow.h \
     myglwidget.h \
     game.h \
-    chronometre.h
+    chronometre.h \
+    gamedialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    gamedialog.ui
 
 INCLUDEPATH +=$$(OPENCV_DIR)\..\..\include
 
