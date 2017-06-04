@@ -33,6 +33,9 @@ private slots:
 
 
     void on_boutonPlay_clicked();
+signals:
+void launchBall();
+
 
 private:
     Ui::MainWindow *ui;

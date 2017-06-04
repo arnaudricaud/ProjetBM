@@ -850,7 +850,7 @@ void MyGLWidget::launchBall(){
     zoom = 0.008;
 
     //DESSINS AVEC LA BALLE (PAS DE PRISE EN COMPTE DE LA PUISSANCE)
-    for(int i = 30; i > -90; i--){
+    for(int i = 30; i > -90; i--){ // i=anglebras  -90 vers le ciel  30 -> 100% et -5 -> 0
         setAngleBras(i);
     }
     calcBall();
@@ -865,7 +865,7 @@ void MyGLWidget::calcBall(){
     // Gravité => 10m/s => 0.2coord/tick
     MainWindow mai;
     puissance= mai.getPuissance();
-    if (puissance<100){
+    if (puissance>100){
     puissance=100;
     }
     qDebug()<<"Puissance"<<puissance;

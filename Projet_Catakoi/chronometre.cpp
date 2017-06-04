@@ -5,7 +5,7 @@ Chronometre::Chronometre()
 
         timer1 = new QTimer();
         timer1->setInterval(1000);
-        connect(timer1, SIGNAL(timeout()), this, SLOT(incrementerTemps())); // le timer n'est pas encore démarré mais rien n'empêche de déjà le connecter
+        //connect(timer1, SIGNAL(timeout()), this, SLOT(incrementerTemps())); // le timer n'est pas encore démarré mais rien n'empêche de déjà le connecter
     }
 
     void Chronometre::demarrer()
