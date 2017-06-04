@@ -9,6 +9,7 @@
 #include <time.h>
 #include <math.h>
 #include "myglwidget.h"
+#include "mainwindow.h"
 
 
 
@@ -32,7 +33,7 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     rock = QImage(":/Textures/ressources/rock.jpg");
 
 
-    puissance = 100;
+   // puissance = 10;
     angleCatapulte = 0;
     setAngleBras(30);
     angleCorde = 145;
@@ -862,6 +863,12 @@ void MyGLWidget::calcBall(){
     //1m = 2*coord
     //1 Tick => 10ms!!
     // Gravité => 10m/s => 0.2coord/tick
+    MainWindow mai;
+    puissance= mai.getPuissance();
+    if (puissance<100){
+    puissance=100;
+    }
+    qDebug()<<"Puissance"<<puissance;
     ballSpeed[0] = (float(puissance)+20)/12;
     ballSpeed[1] =  0;
     ballSpeed[2] = (float(puissance)+20)/15;
