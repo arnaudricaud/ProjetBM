@@ -165,6 +165,14 @@ void MyGLWidget::setAngleBras(int angle)
         updateGL();
 }
 
+void MyGLWidget::setPuissance(int valeur){
+    qDebug()<<"HELLO: "<<valeur;
+    if (valeur > 100){
+        valeur = 100;
+    }
+    this->puissance = valeur;
+}
+
 
 void MyGLWidget::initializeGL()
 {
@@ -863,11 +871,6 @@ void MyGLWidget::calcBall(){
     //1m = 2*coord
     //1 Tick => 10ms!!
     // Gravité => 10m/s => 0.2coord/tick
-    MainWindow mai;
-    puissance= mai.getPuissance();
-    if (puissance>100){
-    puissance=100;
-    }
     qDebug()<<"Puissance"<<puissance;
     ballSpeed[0] = (float(puissance)+20)/12;
     ballSpeed[1] =  0;
