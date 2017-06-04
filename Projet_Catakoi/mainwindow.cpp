@@ -37,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->myGLWidget, SIGNAL(angleBrasChanged(int)), ui->SliderAngleBras, SLOT(setValue(int)));
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
     connect(this, SIGNAL(launchBall()),ui->myGLWidget, SLOT(launchBall()));
+    connect(this, SIGNAL(changePuissance(int)),ui->myGLWidget, SLOT(setPuissance(int)));
     timer->start(50);
     ui->progressBar->setVisible(false);
     ui->progressBar->setValue(0);
@@ -139,9 +140,10 @@ void MainWindow::tracking(){
         }
         if (lanceBall){
            // int re=getPuissance();
-          // qDebug()<<*distance;
-            launchBall();
-
+            qDebug()<<distance;
+            emit changePuissance(distance);
+            emit launchBall();
+            lanceBall = false;
         }
      }
     }

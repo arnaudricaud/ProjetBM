@@ -35,7 +35,7 @@ private slots:
     void on_boutonPlay_clicked();
 signals:
 void launchBall();
-
+void changePuissance(int puissance);
 
 private:
     Ui::MainWindow *ui;

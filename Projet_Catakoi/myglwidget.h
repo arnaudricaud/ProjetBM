@@ -14,9 +14,6 @@ class MyGLWidget : public QGLWidget
 public:
     explicit MyGLWidget(QWidget *parent = 0);
     ~MyGLWidget();
-signals:
-
-public slots:
 
 protected:
     void initializeGL();
@@ -42,6 +39,7 @@ public slots:
     void setZoom(int scale);
     void setAngleCatapulte(int angle);
     void setAngleBras(int angle);
+    void setPuissance(int puissance);
     void launchBall();
 
 signals:
