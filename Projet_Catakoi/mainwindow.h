@@ -25,6 +25,8 @@ public:
     void setPuissance(int dist);
     void setxPostion(int x);
     void setyPostion(int y);
+protected:
+    void keyPressEvent(QKeyEvent *);
 
 private slots:
     void update();
@@ -35,6 +37,7 @@ private slots:
     void on_boutonPlay_clicked();
 signals:
 void launchBall();
+void setAngleCatapulte(int);
 
 
 private:

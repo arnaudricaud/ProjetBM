@@ -37,10 +37,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->myGLWidget, SIGNAL(angleBrasChanged(int)), ui->SliderAngleBras, SLOT(setValue(int)));
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
     connect(this, SIGNAL(launchBall()),ui->myGLWidget, SLOT(launchBall()));
+    connect(this, SIGNAL(setAngleCatapulte(int)),ui->myGLWidget, SLOT(setAngleCatapulte(int)));
     timer->start(50);
     ui->progressBar->setVisible(false);
     ui->progressBar->setValue(0);
-    distance=3;
+
     start =false;
     go =false;
     angle = false;
@@ -119,8 +120,8 @@ void MainWindow::tracking(){
                     cout<<yPrev<<" et "<<yMin<<endl;
                     cout<<"distance :"<<distance<<endl;
                     setPuissance(distance);
-                     ui->progressBar->setValue(distance);
-                     ui->progressBar->setTextVisible(true);
+                    ui->progressBar->setValue(distance);
+                    ui->progressBar->setTextVisible(true);
                   // timer2->stop();
                 }
         else{
@@ -129,7 +130,7 @@ void MainWindow::tracking(){
             angleCatapulte=xPrev-xMin;
             //*distance = yPrev - yMin;
             ui->progressBar->setValue(distance);
-            ui->SliderAngleCatapulte->setValue(angleCatapulte);
+            setAngleCatapulte(angleCatapulte);
             //emit puissanceChanged(distance);
            // ui->SliderAngleBras->setValue(distance);
             if (yPrev<yMin){
@@ -138,14 +139,12 @@ void MainWindow::tracking(){
            // cout<<yPrev<<endl;
         }
         if (lanceBall){
-           // int re=getPuissance();
-          // qDebug()<<*distance;
+            cout<<"distance2 :"<<distance<<endl;
             launchBall();
-
+            lanceBall=false;
         }
-     }
+      }
     }
-
 }
 
 void MainWindow::on_checkBox_clicked()
@@ -196,4 +195,11 @@ void MainWindow::on_boutonPlay_clicked()
     //Chronometre *chrono = new Chronometre();
 
     connect(timer, SIGNAL(timeout()), this, SLOT(demarrer()));
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Space){
+        tracking();
+    }
 }
