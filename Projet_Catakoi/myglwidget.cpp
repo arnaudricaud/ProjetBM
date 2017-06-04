@@ -147,6 +147,11 @@ void MyGLWidget::setZoom(int scale)
 
 void MyGLWidget::setAngleCatapulte(int angle)
 {
+    if(angle > 45){
+        angle = 45;
+    } else if (angle < -45){
+        angle = -45;
+    }
     angleCatapulte = angle;
     emit angleCatapulteChanged(angle);
         updateGL();
