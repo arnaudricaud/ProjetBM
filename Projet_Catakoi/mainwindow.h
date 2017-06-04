@@ -37,12 +37,8 @@ private slots:
     void on_boutonPlay_clicked();
 signals:
 void launchBall();
-<<<<<<< HEAD
 void setAngleCatapulte(int);
-
-=======
 void changePuissance(int puissance);
->>>>>>> origin/master
 
 private:
     Ui::MainWindow *ui;
