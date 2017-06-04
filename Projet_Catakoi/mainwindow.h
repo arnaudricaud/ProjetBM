@@ -28,6 +28,7 @@ public:
     void setyPostion(int y);
 protected:
     void keyPressEvent(QKeyEvent *);
+    void calculPartie();
 
 private slots:
     void update();
@@ -77,7 +78,9 @@ private:
     int angleCatapulte=0;
     int countGame=0;
     int level=3;
+    int count=0;
     QString nomJoueur;
+    QTime *timeCur;
 //int angleCatapulte;
 //QLabel *labelZero=new QLabel(this);
 };

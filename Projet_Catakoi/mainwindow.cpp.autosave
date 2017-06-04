@@ -303,5 +303,7 @@ void MainWindow::chronoRefresh2()
         chronoCible->stop();
     }
 }
-
+void MainWindow::setScore(int sco){
+    score=sco;
+}
 

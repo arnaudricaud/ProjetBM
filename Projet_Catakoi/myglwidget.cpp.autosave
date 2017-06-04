@@ -16,6 +16,8 @@
 MyGLWidget::MyGLWidget(QWidget *parent)
     : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
+    connect(this, SIGNAL(changeScore(int)),ui->mainWindow, SLOT(setScore(int)));
+    
     //CAMERA:
     setFocusPolicy(Qt::StrongFocus);
     xTra = 0;

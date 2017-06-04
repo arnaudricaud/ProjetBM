@@ -15,15 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     myglwidget.cpp \
-    game.cpp \
-    chronometre.cpp \
-    gamedialog.cpp
+    gamedialog.cpp \
+    score.cpp
 
 HEADERS  += mainwindow.h \
     myglwidget.h \
-    game.h \
-    chronometre.h \
-    gamedialog.h
+    gamedialog.h \
+    score.h
 
 FORMS    += mainwindow.ui \
     gamedialog.ui

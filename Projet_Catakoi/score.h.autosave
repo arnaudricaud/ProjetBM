@@ -1,0 +1,30 @@
+#ifndef SCORE_H
+#define SCORE_H
+#include<QString>
+
+
+class Score
+{
+public:
+    
+    Score(int difficultyLevel=1);
+    Score(QString name, int difficultyLevel, int points);
+
+    QString getName();
+    int getDifficultyLevel();
+    int getPoints();
+
+    void setName(string name);
+    void setDifficultyLevel(int difficultyLevel);
+    void setPoints(int points);
+
+    //Sauvegarde des scores
+    void saveScore(ofstream &os);
+    void loadScore(ifstream &is);
+private:
+    QString name; 
+    int difficultyLevel;    
+    int points; 
+};
+
+#endif // SCORE_H
