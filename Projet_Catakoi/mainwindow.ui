@@ -22,7 +22,7 @@
      <enum>QLayout::SetMaximumSize</enum>
     </property>
     <item row="1" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0,0">
+     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,1,2">
       <property name="spacing">
        <number>6</number>
       </property>
@@ -35,7 +35,7 @@
       <item>
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0">
           <item>
            <widget class="QGroupBox" name="groupBox">
             <property name="minimumSize">
@@ -252,20 +252,46 @@
        </widget>
       </item>
       <item>
-       <widget class="QGroupBox" name="groupBox_3">
-        <property name="title">
-         <string>Affichage des scores</string>
+       <widget class="QTableWidget" name="tableWidget">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>150</height>
+         </size>
         </property>
-        <widget class="QListWidget" name="listWidget">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>20</y>
-           <width>201</width>
-           <height>161</height>
-          </rect>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
+        </attribute>
+        <row>
+         <property name="text">
+          <string>Nom</string>
          </property>
-        </widget>
+        </row>
+        <row>
+         <property name="text">
+          <string>Score</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Chrono</string>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string>Facile</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Intermediaire</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Difficile</string>
+         </property>
+        </column>
        </widget>
       </item>
      </layout>
