@@ -6,6 +6,7 @@
 #include "opencv2/opencv.hpp"
 #include<QLabel>
 #include"gamedialog.h"
+#include <QTime>
 
 
 using namespace cv;
@@ -59,7 +60,10 @@ private:
     QTimer *timer3 = new QTimer(this);
     QTimer *chronoTotal = new QTimer(this);
     QTimer *chronoCible = new QTimer(this);
-
+    QTime *temps = new QTime(0,0,0,0);
+    QTime *chronometre = new QTime(0,0,0,0);
+    QString timeRef;
+    QString timeRefC;
     bool go;
     bool lanceBall;
     int templateWidth = 30;
@@ -81,9 +85,7 @@ private:
     int level=3;
     int score = 0;
     QString nomJoueur;
-    QTime *timeCur;
-//int angleCatapulte;
-//QLabel *labelZero=new QLabel(this);
+
 };
 
 #endif // MAINWINDOW_H

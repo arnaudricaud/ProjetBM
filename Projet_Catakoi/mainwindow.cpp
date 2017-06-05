@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <GL/glu.h>
 #include <QtOpenGL>
+#include <QString>
 
 using namespace std;
 
@@ -37,9 +38,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->myGLWidget, SIGNAL(changeScore(int)),this, SLOT(setScore(int)));
     //TIMERS
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
-    //connect(timer2, SIGNAL(timeout()), this, SLOT(tracking()));
+    //CHRONOMETRE
     connect(chronoTotal, SIGNAL(timeout()),this,SLOT(chronoRefresh()));
-    connect(chronoCible, SIGNAL(timeout()),this,SLOT(chronoRefresh2()));
+   // connect(chronoCible, SIGNAL(timeout()),this,SLOT(chronoRefresh2()));
+    connect(chronoCible,SIGNAL(timeout()), this, SLOT(chronoRefresh2()));
     //PARAM CATAPULTE ET LANCÉ
     connect(this, SIGNAL(launchBall()),ui->myGLWidget, SLOT(launchBall()));
     connect(this, SIGNAL(setAngleCatapulte(int)),ui->myGLWidget, SLOT(setAngleCatapulte(int)));
@@ -133,6 +135,7 @@ void MainWindow::update(){
                     calculPartie();
                     lanceBall = false;                 
                     reset();
+                    chronoCible->stop();
                 }
             }
         }
@@ -167,6 +170,8 @@ void MainWindow::on_checkBox_clicked()
         matchImage=templateImage;
         ui->progressBar->setVisible(true);
         go=true;
+        timeRefC = (QTime::currentTime().toString("hh:mm:ss"));
+        chronoCible->start(1000);
     }else{
         reset();
     }
@@ -209,10 +214,9 @@ void MainWindow::on_boutonPlay_clicked()
      case 3: ui->labelLevel->setText("Difficile");
     break;
     }
-
+    timeRef = (QTime::currentTime().toString("hh:mm:ss"));
     chronoTotal->start(1000);
-    timeCur->currentTime();
-    cout<<"temps pris : "<<timeCur<<endl;
+
     ui->boutonPlay->setEnabled(false);
 }
 
@@ -231,49 +235,77 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
 void MainWindow::chronoRefresh()
 {
-    //Calcul du chronometre pour la partie total
-    QString temps = ui->labelChronoTot->text();
-    QStringList list = temps.split(":");
-    QString minute = list.join(QString(":"));
-    //minute=minute.mid(12,1);
+    QStringList list = timeRef.split(":");
+    QString heure1 = list.join(QString(":"));
     list.removeFirst();
-    QString secon = list.join(QString(":"));
-    int tps=(minute.toInt())*60+secon.toInt();
-    if (tps!=-1)
-    {
-       tps++;
-       int min = tps/60;
-       int seconde = tps - min*60;
-       ui->labelChronoTot->setText(QString::number(min)+":"+QString::number(seconde));
-    }
-    else
-    {
-        chronoTotal->stop();
-    }
+    heure1=heure1.mid(0,2);
+    QString minute1 = list.join(QString(":"));
+    minute1=minute1.mid(0,2);
+    list.removeFirst();
+    QString seconde1 = list.join(QString(":"));
+   QString timeNow = (QTime::currentTime().toString("hh:mm:ss"));
+   QStringList list1 = timeNow.split(":");
+   QString heure2 = list1.join(QString(":"));
+   heure2=heure2.mid(0,2);
+   list1.removeFirst();
+   QString minute2 = list1.join(QString(":"));
+   minute2=minute2.mid(0,2);
+   list1.removeFirst();
+   QString seconde2 = list1.join(QString(":"));
+   int newTimeHH =heure2.toInt() -heure1.toInt();
+   int newTimeMM = minute2.toInt() - minute1.toInt();
+   int newTimeSS = seconde2.toInt() - seconde1.toInt();
+   if (newTimeSS<0){
+       newTimeSS=newTimeSS+60;
+       newTimeMM=newTimeMM-1;
+   }
+   if (newTimeMM<0){
+       newTimeMM=newTimeMM+60;
+       newTimeHH=newTimeHH-1;
+   }
+   if (newTimeHH<0){
+       newTimeHH=newTimeHH+24;
+   }
+    ui->labelChronoTot->setText(QString::number(newTimeHH)+":"+QString::number(newTimeMM)+":"+QString::number(newTimeSS));
+
 }
 
 void MainWindow::chronoRefresh2()
 {
-    //Calcul du chronometre pour un lancé
-    QString temps = ui->labelChronoCible->text();
-    QStringList list = temps.split(":");
-    QString minute = list.join(QString(":"));
-    //minute=minute.mid(12,1);
+    QStringList list = timeRefC.split(":");
+    QString heure1 = list.join(QString(":"));
     list.removeFirst();
-    QString secon = list.join(QString(":"));
-    int tps=minute.toInt()*60+secon.toInt();
-    if (tps!=-1)
-    {
+    heure1=heure1.mid(0,2);
+    QString minute1 = list.join(QString(":"));
+    minute1=minute1.mid(0,2);
+    list.removeFirst();
+    QString seconde1 = list.join(QString(":"));
+   QString timeNow = (QTime::currentTime().toString("hh:mm:ss"));
+   QStringList list1 = timeNow.split(":");
+   QString heure2 = list1.join(QString(":"));
+   heure2=heure2.mid(0,2);
+   list1.removeFirst();
+   QString minute2 = list1.join(QString(":"));
+   minute2=minute2.mid(0,2);
+   list1.removeFirst();
+   QString seconde2 = list1.join(QString(":"));
 
-       tps++;
-       int min = tps/60;
-       int seconde = tps - min*60;
-       ui->labelChronoCible->setText(QString::number(min)+":"+QString::number(seconde));
-    }
-    else
-    {
-        chronoCible->stop();
-    }
+   int newTimeHH =heure2.toInt() -heure1.toInt();
+   int newTimeMM = minute2.toInt() - minute1.toInt();
+   int newTimeSS = seconde2.toInt() - seconde1.toInt();
+   if (newTimeSS<0){
+       newTimeSS=newTimeSS+60;
+       newTimeMM=newTimeMM-1;
+   }
+   if (newTimeMM<0){
+       newTimeMM=newTimeMM+60;
+       newTimeHH=newTimeHH-1;
+   }
+   if (newTimeHH<0){
+       newTimeHH=newTimeHH+24;
+   }
+    ui->labelChronoCible->setText(QString::number(newTimeHH)+":"+QString::number(newTimeMM)+":"+QString::number(newTimeSS));
+
 }
 void MainWindow::setScore(int sco){
     if(sco<5){
@@ -299,7 +331,6 @@ void MainWindow::setScore(int sco){
     }else{
         score=score+0;
     }
-    qDebug()<<"Score : "<<score;
     ui->labelScore->setText(QString::number(score));
 }
 

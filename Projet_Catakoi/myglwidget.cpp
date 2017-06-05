@@ -179,7 +179,6 @@ void MyGLWidget::setPuissance(int valeur){
 
 void MyGLWidget::setLevel(int valeur){
     this->level=valeur;
-    qDebug()<<"ert "<<level;
 }
 
 
@@ -757,7 +756,6 @@ void MyGLWidget::drawLogo(){
 
 void MyGLWidget::newTarget(){
     srand (time(NULL));
-qDebug()<<"level cible "<<level;
     switch (level){
     case 1:
         xTarget = -( rand() % 100 + 250);
