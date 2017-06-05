@@ -33,10 +33,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     templateRect= new Rect((frameWidth-templateWidth)/2,-20+(frameHeight-templateHeight)/2, templateWidth,templateHeight);
 
+    //FOCUS FENETRE
+    setFocusPolicy(Qt::StrongFocus);
 
     //SCORE
     loadHighScore();
-    saveHighScore();
     connect(ui->myGLWidget, SIGNAL(changeScore(int)),this, SLOT(setScore(int)));
     //TIMERS
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
@@ -135,7 +136,7 @@ void MainWindow::update(){
                     chronoCible->stop();
                     emit launchBall();
                     calculPartie();
-                    lanceBall = false;                 
+                    lanceBall = false;
                     reset();
                     chronoCible->stop();
                 }
@@ -341,23 +342,38 @@ void MainWindow::setScore(int sco){
 }
 
 void MainWindow::loadHighScore(){
-
-
+    QSettings highScore("Catakoi", "highScore");
+    //Facile
+    ui->tableWidget->setItem(0,0,new QTableWidgetItem(highScore.value("ScoreFacile/Nom", "Valeille").toString()));
+    ui->tableWidget->setItem(1,0,new QTableWidgetItem(highScore.value("ScoreFacile/Score", 0).toString()));
+    ui->tableWidget->setItem(2,0,new QTableWidgetItem(highScore.value("ScoreFacile/Chrono", "").toString()));
+    //Intermediaire
+    ui->tableWidget->setItem(0,1,new QTableWidgetItem(highScore.value("ScoreIntermediaire/Nom", "Catakoi").toString()));
+    ui->tableWidget->setItem(1,1,new QTableWidgetItem(highScore.value("ScoreIntermediaire/Score", 0).toString()));
+    ui->tableWidget->setItem(2,1,new QTableWidgetItem(highScore.value("ScoreIntermediaire/Nom", "").toString()));
+    //Difficile
+    ui->tableWidget->setItem(0,2,new QTableWidgetItem(highScore.value("ScoreDifficile/Nom", "Ricaud").toString()));
+    ui->tableWidget->setItem(1,2,new QTableWidgetItem(highScore.value("ScoreDifficile/Score", 0).toString()));
+    ui->tableWidget->setItem(2,2,new QTableWidgetItem(highScore.value("ScoreDifficile/Chrono", "").toString()));
 }
 
 void MainWindow::saveHighScore(){
-    QSettings highScore("Catakoi", "highscore");
-    highScore.setValue("ScoreFacile/Nom", "");
-    highScore.setValue("ScoreFacile/Score", 0);
-    highScore.setValue("ScoreFacile/Chrono", "");
+
+    QSettings highScore("Catakoi", "highScore");
+    highScore.setValue("ScoreFacile/Nom", ui->tableWidget->item(0,0)->text());
+    highScore.setValue("ScoreFacile/Score", ui->tableWidget->item(1,0)->text().toInt());
+    highScore.setValue("ScoreFacile/Chrono", ui->tableWidget->item(2,0)->text());
     //Intermediaire
-    highScore.setValue("ScoreIntermediaire/Nom", "");
-    highScore.setValue("ScoreIntermediaire/Score", 0);
-    highScore.setValue("ScoreIntermediaire/Chrono", "");
+    highScore.setValue("ScoreIntermediaire/Nom", ui->tableWidget->item(0,1)->text());
+    highScore.setValue("ScoreIntermediaire/Score", ui->tableWidget->item(1,1)->text().toInt());
+    highScore.setValue("ScoreIntermediaire/Chrono", ui->tableWidget->item(2,1)->text());
     //Difficile
-    highScore.setValue("ScoreDifficile/Nom", "");
-    highScore.setValue("ScoreDifficile/Score", 0);
-    highScore.setValue("ScoreDifficile/Chrono", "");
-    for (int i=0; i<=3 ; i++){
-    }
+    highScore.setValue("ScoreDifficile/Nom", ui->tableWidget->item(0,2)->text());
+    highScore.setValue("ScoreDifficile/Score", ui->tableWidget->item(1,2)->text().toInt());
+    highScore.setValue("ScoreDifficile/Chrono", ui->tableWidget->item(2,2)->text());
+}
+
+void MainWindow::clearHighScore(){
+    QSettings highScore("Catakoi", "highScore");
+    highScore.clear();
 }
