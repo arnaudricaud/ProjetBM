@@ -46,7 +46,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, SIGNAL(setAngleBras(int)),ui->myGLWidget, SLOT(setAngleBras(int)));
     connect(this, SIGNAL(changePuissance(int)),ui->myGLWidget, SLOT(setPuissance(int)));
     connect(this, SIGNAL(changeLevel(int)),ui->myGLWidget, SLOT(setLevel(int)));
-    connect(this, SIGNAL(changeLevel(int)),ui->myGLWidget, SLOT(setLevel(int)));
 
 
     timer->start(100);
@@ -141,11 +140,12 @@ void MainWindow::update(){
 }
 
 void MainWindow::calculPartie(){
-    if (countGame==4)
+    if (countGame==10)
     {
         //ui->labelCible->setText("Fin de la partie !");
         ui->labelCibleR->setText("Fin partie !");
         chronoTotal->stop();
+        ui->boutonPlay->setEnabled(true);
     }else{
         chronoCible->start(1000);//lancement du chrono de la cible
         countGame++;
@@ -153,6 +153,7 @@ void MainWindow::calculPartie(){
         QString nb= QString::number(10-countGame);
        // ui->labelCible->setText(QString("nombre de cibles restantes : "+nb));
         ui->labelCibleR->setText(nb);
+        ui->labelCibleJ->setText(QString::number(countGame));
     }
 }
 void MainWindow::on_checkBox_clicked()
@@ -197,15 +198,22 @@ void MainWindow::on_boutonPlay_clicked()
     gameDialog x;
     x.setModal(true);
     x.exec();
-    //x.getName();
     level=x.getDifficulty();
+    emit changeLevel(level);
     nomJoueur = x.getName();
-    cout<<"difficulte : "<< level<<endl;
-    qDebug()<<" et nom : "<<nomJoueur;
+    switch(level){
+    case 1: ui->labelLevel->setText("Facile");
+    break;
+     case 2: ui->labelLevel->setText("Moyen");
+    break;
+     case 3: ui->labelLevel->setText("Difficile");
+    break;
+    }
 
     chronoTotal->start(1000);
     timeCur->currentTime();
     cout<<"temps pris : "<<timeCur<<endl;
+    ui->boutonPlay->setEnabled(false);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)

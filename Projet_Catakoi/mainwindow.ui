@@ -99,7 +99,7 @@
              <property name="geometry">
               <rect>
                <x>10</x>
-               <y>90</y>
+               <y>110</y>
                <width>47</width>
                <height>13</height>
               </rect>
@@ -151,13 +151,65 @@
              <property name="geometry">
               <rect>
                <x>60</x>
-               <y>90</y>
+               <y>110</y>
                <width>47</width>
                <height>13</height>
               </rect>
              </property>
              <property name="text">
               <string>0</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_5">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>90</y>
+               <width>101</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Nb de cibles jouées :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="labelCibleJ">
+             <property name="geometry">
+              <rect>
+               <x>120</x>
+               <y>90</y>
+               <width>51</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>0</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_6">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>130</y>
+               <width>47</width>
+               <height>13</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Level :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="labelLevel">
+             <property name="geometry">
+              <rect>
+               <x>50</x>
+               <y>126</y>
+               <width>51</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
              </property>
             </widget>
            </widget>
@@ -283,7 +335,7 @@
      <x>0</x>
      <y>0</y>
      <width>694</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>

@@ -81,14 +81,14 @@
   <widget class="QRadioButton" name="radioButtonI">
    <property name="geometry">
     <rect>
-     <x>200</x>
+     <x>220</x>
      <y>50</y>
      <width>84</width>
      <height>19</height>
     </rect>
    </property>
    <property name="text">
-    <string>Intermédiaire</string>
+    <string>Moyen</string>
    </property>
   </widget>
   <widget class="QRadioButton" name="radioButtonD">

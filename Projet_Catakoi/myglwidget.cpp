@@ -34,8 +34,6 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     wood = QImage(":/Textures/ressources/wood.jpg");
     rock = QImage(":/Textures/ressources/rock.jpg");
 
-
-   // puissance = 10;
     angleCatapulte = 0;
     setAngleBras(30);
     angleCorde = 145;
@@ -46,7 +44,7 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     impactY = 0;
 
 
-    level = 2;
+    level = 1;
     newTarget();
 
 
@@ -181,6 +179,7 @@ void MyGLWidget::setPuissance(int valeur){
 
 void MyGLWidget::setLevel(int valeur){
     this->level=valeur;
+    qDebug()<<"ert "<<level;
 }
 
 
@@ -758,7 +757,7 @@ void MyGLWidget::drawLogo(){
 
 void MyGLWidget::newTarget(){
     srand (time(NULL));
-
+qDebug()<<"level cible "<<level;
     switch (level){
     case 1:
         xTarget = -( rand() % 100 + 250);
@@ -883,8 +882,6 @@ void MyGLWidget::calcBall(){
     //1m = 2*coord
     //1 Tick => 10ms!!
     // Gravité => 10m/s => 0.2coord/tick
-    qDebug()<<level;
-    qDebug()<<puissance;
     ballSpeed[0] = (float(puissance)+20)/12;
     ballSpeed[1] =  0;
     ballSpeed[2] = (float(puissance)+20)/15;
