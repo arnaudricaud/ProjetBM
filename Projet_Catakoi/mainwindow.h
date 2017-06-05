@@ -38,6 +38,7 @@ private slots:
     void on_boutonPlay_clicked();
     void chronoRefresh();
     void chronoRefresh2();
+    void setScore(int sco);
 
 signals:
 void launchBall();
@@ -79,6 +80,7 @@ private:
     int countGame=0;
     int level=3;
     int count=0;
+    int score = 0;
     QString nomJoueur;
     QTime *timeCur;
 //int angleCatapulte;
