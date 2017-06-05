@@ -50,8 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
    // connect(this, SIGNAL(debutGame()), this, SLOT(demarrer()));
 
-    timer->start(50);
-    timer2->stop();
+    timer->start(100);
     ui->progressBar->setVisible(false);
     ui->progressBar->setValue(0);
 
@@ -76,12 +75,9 @@ void MainWindow::update(){
 
     if(!go){
         if (cam->read(image)) {   // Capture a frame
-
            flip(image,image,1);
            templateImage = Mat(image, *templateRect).clone();
-
-                 rectangle(image, *templateRect, Scalar(0,0,255),2,8,0);
-
+           rectangle(image, *templateRect, Scalar(0,0,255),2,8,0);
            float newsize = (ui->centralWidget->width())/5;
            cv::resize(image, image, Size(newsize, newsize), 0, 0, INTER_LINEAR);
            cvtColor(image,image,CV_BGR2RGB);
@@ -91,16 +87,13 @@ void MainWindow::update(){
     } else {
         if (cam->read(image)) // get a new frame from camera
         {
-            QString nb= QString::number(10-countGame);
-            ui->labelCible->setText(QString("nombre de cibles restantes : "+nb));
             Rect resultRect;
             double minVal; double maxVal; Point minLoc; Point maxLoc;
             maxVal=0.20;
-            while(maxVal<0.97){
             // vertical flip of the image
             flip(image,image,1);
             // Do the Matching between the frame and the templateImage
-            matchTemplate( image, matchImage, resultImage, TM_CCORR_NORMED );
+            matchTemplate(image, matchImage, resultImage, TM_CCORR_NORMED);
             // Localize the best match with minMaxLoc
             minMaxLoc( resultImage, &minVal, &maxVal, &minLoc, &maxLoc, Mat() );
             // Save the location fo the matched rect
@@ -112,82 +105,67 @@ void MainWindow::update(){
             cvtColor(image,image,CV_BGR2RGB);
             QImage img= QImage((const unsigned char*)(image.data),image.cols,image.rows,QImage::Format_RGB888);
             ui->camFrame->setPixmap(QPixmap::fromImage(img));
-           }
 
-
-           // cout<<"yPrev "<<yPrev<<" et now"<<resultRect.y<<endl;
-          if(!lanceBall){
-            if (resultRect.y>yPrev+30)
-                    {
-                cv::Mat img;
-                image=img;
-                        timer2->stop();
-                        lanceBall=true;
-                        distance=yPrev-yMin;
-                        setPuissance(distance);
-                        ui->progressBar->setValue(distance);
+            if(!lanceBall){
+                if (resultRect.y>yPrev+30){
+                    cv::Mat img;
+                    image=img;
+                    lanceBall=true;
+                    distance=yPrev-yMin;
+                    setPuissance(distance);
+                    ui->progressBar->setValue(distance);
+                }else{
+                    yPrev=resultRect.y;
+                    xPrev=resultRect.x;
+                    angleCatapulte=xPrev-xMin;
+                    distance = yPrev - yMin;
+                    ui->progressBar->setValue(distance);
+                    setAngleCatapulte(angleCatapulte);
+                    if (yPrev<yMin){
+                        yMin=yPrev;
                     }
-            else{
-                yPrev=resultRect.y;
-                xPrev=resultRect.x;
-                angleCatapulte=xPrev-xMin;
-                distance = yPrev - yMin;
-                ui->progressBar->setValue(distance);
-                setAngleCatapulte(angleCatapulte);
-                if (yPrev<yMin){
-                    yMin=yPrev;
+                }
+                if (lanceBall){
+                    emit changePuissance(distance);
+                    chronoCible->stop();
+                    emit launchBall();
+                    calculPartie();
+                    lanceBall = false;
+                    count=count+1;
+                    yMin = 200;
+                    yPrev = yMin;
+                    reset();
                 }
             }
-            if (lanceBall){
-                lanceBall = false;
-                count=count+1;
-                emit changePuissance(distance);
-                emit launchBall();
-                chronoCible->stop();
-                calculPartie();
-                go = false;
-            }
-
-          }
         }
-
     }
-
 }
 
 void MainWindow::calculPartie(){
     if (countGame==4)
     {
         ui->labelCible->setText("Fin de la partie !");
-        timer2->stop();
         chronoTotal->stop();
     }else{
-
         chronoCible->start(1000);//lancement du chrono de la cible
         countGame++;
         count=0;
         QString nb= QString::number(10-countGame);
         ui->labelCible->setText(QString("nombre de cibles restantes : "+nb));
-        //Sleep(1000);
-        //timer2->start(200); //lancement tracking
     }
 }
 void MainWindow::on_checkBox_clicked()
 {
     if(ui->checkBox->isChecked()){
-        go=true;
         // Create the matchTemplate image result
-            // to store the matchTemplate result
+        // to store the matchTemplate result
         int result_cols =  image.cols - templateImage.cols + 1;
         int result_rows = image.rows - templateImage.rows + 1;
         resultImage.create( result_cols, result_rows, CV_32FC1 );
         matchImage=templateImage;
-        //on arrete l'affichage simple
-        //timer->stop();
         ui->progressBar->setVisible(true);
-        //timer2->start(50);
+        go=true;
     }else{
-        go=false;
         reset();
     }
 }
@@ -196,15 +174,10 @@ void MainWindow::on_checkBox_clicked()
 // reset() permet de remettre à zéro toutes les valeurs des points et de cacher les différents labels
 void MainWindow::reset(){
     ui->progressBar->setVisible(false);
-    timer->stop();
-    timer2->stop();
     start =false;
     go =false;
     lanceBall=false;
-    templateImage.deallocate();
-    timer2->stop();
-    timer->start(50);
-    matchImage.deallocate();
+    ui->checkBox->setChecked(false);
 }
 
 int MainWindow::getPuissance(){
