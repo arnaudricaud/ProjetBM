@@ -20,8 +20,6 @@ public:
 
 private slots:
 
-    void on_lineEditNom_textChanged(const QString &arg1);
-
     void on_radioButtonF_clicked();
 
     void on_radioButtonI_clicked();

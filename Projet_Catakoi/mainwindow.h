@@ -60,9 +60,7 @@ private:
     QTimer *chronoTotal = new QTimer(this);
     QTimer *chronoCible = new QTimer(this);
 
-    bool  start;
     bool go;
-    bool track;
     bool lanceBall;
     int templateWidth = 30;
     int templateHeight = 30;
@@ -81,7 +79,6 @@ private:
     int angleBras=0;
     int countGame=0;
     int level=3;
-    int count=0;
     int score = 0;
     QString nomJoueur;
     QTime *timeCur;

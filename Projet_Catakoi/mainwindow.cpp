@@ -32,9 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     templateRect= new Rect((frameWidth-templateWidth)/2,-20+(frameHeight-templateHeight)/2, templateWidth,templateHeight);
 
-    //connect(ui->myGLWidget, SIGNAL(zoomChanged(int)), ui->zoomSlider, SLOT(setValue(int)));
-    //connect(ui->myGLWidget, SIGNAL(angleCatapulteChanged(int)), ui->SliderAngleCatapulte, SLOT(setValue(int)));
-    //connect(ui->myGLWidget, SIGNAL(angleBrasChanged(int)), ui->SliderAngleBras, SLOT(setValue(int)));
+
     //SCORE
     connect(ui->myGLWidget, SIGNAL(changeScore(int)),this, SLOT(setScore(int)));
     //TIMERS
@@ -48,16 +46,16 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, SIGNAL(setAngleBras(int)),ui->myGLWidget, SLOT(setAngleBras(int)));
     connect(this, SIGNAL(changePuissance(int)),ui->myGLWidget, SLOT(setPuissance(int)));
     connect(this, SIGNAL(changeLevel(int)),ui->myGLWidget, SLOT(setLevel(int)));
-   // connect(this, SIGNAL(debutGame()), this, SLOT(demarrer()));
+    connect(this, SIGNAL(changeLevel(int)),ui->myGLWidget, SLOT(setLevel(int)));
+
 
     timer->start(100);
     ui->progressBar->setVisible(false);
     ui->progressBar->setValue(0);
 
-    start =false;
     go =false;
-    track=true;
     lanceBall=false;
+
     ui->checkBox->setVisible(false);
     ui->label_2->setVisible(true);
     ui->label_3->setVisible(true);
@@ -134,8 +132,7 @@ void MainWindow::update(){
                     chronoCible->stop();
                     emit launchBall();
                     calculPartie();
-                    lanceBall = false;
-                    count=count+1;
+                    lanceBall = false;                 
                     reset();
                 }
             }
@@ -152,7 +149,7 @@ void MainWindow::calculPartie(){
     }else{
         chronoCible->start(1000);//lancement du chrono de la cible
         countGame++;
-        count=0;
+
         QString nb= QString::number(10-countGame);
        // ui->labelCible->setText(QString("nombre de cibles restantes : "+nb));
         ui->labelCibleR->setText(nb);
@@ -181,7 +178,6 @@ void MainWindow::reset(){
     yPrev = yMin;
     ui->progressBar->setVisible(false);
     ui->checkBox->setChecked(false);
-    start =false;
     go =false;
     lanceBall=false;
 
@@ -205,8 +201,8 @@ void MainWindow::on_boutonPlay_clicked()
     level=x.getDifficulty();
     nomJoueur = x.getName();
     cout<<"difficulte : "<< level<<endl;
-   // cout<<" et nom : "<<nom<<endl;
-    qDebug()<<nomJoueur;
+    qDebug()<<" et nom : "<<nomJoueur;
+
     chronoTotal->start(1000);
     timeCur->currentTime();
     cout<<"temps pris : "<<timeCur<<endl;
@@ -296,5 +292,6 @@ void MainWindow::setScore(int sco){
         score=score+0;
     }
     qDebug()<<"Score : "<<score;
+    ui->labelScore->setText(QString::number(score));
 }
 
