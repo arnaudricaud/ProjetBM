@@ -16,7 +16,7 @@ gameDialog::~gameDialog()
 
 QString gameDialog::getName()
 {
-    return name;
+    return ui->lineEditNom->text();
 }
 
 

@@ -224,6 +224,7 @@ void MainWindow::on_boutonPlay_clicked()
         }
         timeRef = (QTime::currentTime().toString("hh:mm:ss"));
         chronoTotal->start(1000);
+        qDebug()<<nomJoueur;
     }
 }
 
