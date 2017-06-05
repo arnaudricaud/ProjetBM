@@ -25,8 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //On redimensione la caméra
     int frameWidth=cam->get(CV_CAP_PROP_FRAME_WIDTH);
     int frameHeight=cam->get(CV_CAP_PROP_FRAME_HEIGHT);
-    frameWidth=frameWidth/2;
-    frameHeight=frameHeight/2;
+    frameWidth=frameWidth/4;
+    frameHeight=frameHeight/4;
     cam->set(CV_CAP_PROP_FRAME_WIDTH, frameWidth);
     cam->set(CV_CAP_PROP_FRAME_HEIGHT, frameHeight);
 
@@ -78,8 +78,8 @@ void MainWindow::update(){
            flip(image,image,1);
            templateImage = Mat(image, *templateRect).clone();
            rectangle(image, *templateRect, Scalar(0,0,255),2,8,0);
-           float newsize = (ui->centralWidget->width())/5;
-           cv::resize(image, image, Size(newsize, newsize), 0, 0, INTER_LINEAR);
+           //float newsize = (ui->centralWidget->width())/5;
+           //cv::resize(image, image, Size(newsize, newsize), 0, 0, INTER_LINEAR);
            cvtColor(image,image,CV_BGR2RGB);
            QImage img= QImage((const unsigned char*)(image.data),image.cols,image.rows,QImage::Format_RGB888);
            ui->camFrame->setPixmap(QPixmap::fromImage(img));
@@ -100,8 +100,8 @@ void MainWindow::update(){
             resultRect=Rect(maxLoc.x,maxLoc.y,templateWidth,templateHeight);
             rectangle(image,resultRect,Scalar( 0, 255, 0),2,8,0);
             // Display the image
-            float newsize = (ui->centralWidget->width())/5;
-            cv::resize(image, image, Size(newsize, newsize), 0, 0, INTER_LINEAR);
+            //float newsize = (ui->centralWidget->width())/5;
+            //cv::resize(image, image, Size(newsize, newsize), 0, 0, INTER_LINEAR);
             cvtColor(image,image,CV_BGR2RGB);
             QImage img= QImage((const unsigned char*)(image.data),image.cols,image.rows,QImage::Format_RGB888);
             ui->camFrame->setPixmap(QPixmap::fromImage(img));
@@ -132,8 +132,6 @@ void MainWindow::update(){
                     calculPartie();
                     lanceBall = false;
                     count=count+1;
-                    yMin = 200;
-                    yPrev = yMin;
                     reset();
                 }
             }
@@ -164,11 +162,7 @@ void MainWindow::on_checkBox_clicked()
         resultImage.create( result_cols, result_rows, CV_32FC1 );
         matchImage=templateImage;
         ui->progressBar->setVisible(true);
-<<<<<<< HEAD
         go=true;
-=======
-
->>>>>>> origin/master
     }else{
         reset();
     }
@@ -177,17 +171,14 @@ void MainWindow::on_checkBox_clicked()
 
 // reset() permet de remettre à zéro toutes les valeurs des points et de cacher les différents labels
 void MainWindow::reset(){
+    yMin = 200;
+    yPrev = yMin;
     ui->progressBar->setVisible(false);
+    ui->checkBox->setChecked(false);
     start =false;
     go =false;
     lanceBall=false;
-<<<<<<< HEAD
-    ui->checkBox->setChecked(false);
-=======
-    templateImage.deallocate();
-    timer->start(50);
-    matchImage.deallocate();
->>>>>>> origin/master
+
 }
 
 int MainWindow::getPuissance(){
