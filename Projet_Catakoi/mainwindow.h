@@ -52,6 +52,10 @@ void debutGame();
 
 
 private:
+
+    void saveHighScore();
+    void loadHighScore();
+
     Ui::MainWindow *ui;
 
     VideoCapture * cam;

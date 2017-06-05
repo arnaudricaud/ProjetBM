@@ -35,6 +35,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     //SCORE
+    loadHighScore();
+    saveHighScore();
     connect(ui->myGLWidget, SIGNAL(changeScore(int)),this, SLOT(setScore(int)));
     //TIMERS
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
@@ -334,3 +336,24 @@ void MainWindow::setScore(int sco){
     ui->labelScore->setText(QString::number(score));
 }
 
+void MainWindow::loadHighScore(){
+
+
+}
+
+void MainWindow::saveHighScore(){
+    QSettings highScore("highscore.ini", QSettings::IniFormat);
+    highScore.setValue("ScoreFacile/Nom", "Nom");
+    highScore.setValue("ScoreFacile/Score", "Score");
+    highScore.setValue("ScoreFacile/Chrono", "Chrono");
+    //Intermediaire
+    highScore.setValue("ScoreIntermediaire/Nom", "Nom");
+    highScore.setValue("ScoreIntermediaire/Score", "Score");
+    highScore.setValue("ScoreIntermediaire/Chrono", "Chrono");
+    //Difficile
+    highScore.setValue("ScoreDifficile/Nom", "Nom");
+    highScore.setValue("ScoreDifficile/Score", "Score");
+    highScore.setValue("ScoreDifficile/Chrono", "Chrono");
+
+
+}
