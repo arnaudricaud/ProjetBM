@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->myGLWidget, SIGNAL(angleCatapulteChanged(int)), ui->SliderAngleCatapulte, SLOT(setValue(int)));
     connect(ui->myGLWidget, SIGNAL(angleBrasChanged(int)), ui->SliderAngleBras, SLOT(setValue(int)));
     //SCORE
-    //connect(ui->myGLWidget, SIGNAL(changeScore(int)),this, SLOT(setScore(int)));
+    connect(ui->myGLWidget, SIGNAL(changeScore(int)),this, SLOT(setScore(int)));
     //TIMERS
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
     //connect(timer2, SIGNAL(timeout()), this, SLOT(tracking()));
@@ -164,7 +164,11 @@ void MainWindow::on_checkBox_clicked()
         resultImage.create( result_cols, result_rows, CV_32FC1 );
         matchImage=templateImage;
         ui->progressBar->setVisible(true);
+<<<<<<< HEAD
         go=true;
+=======
+
+>>>>>>> origin/master
     }else{
         reset();
     }
@@ -177,7 +181,13 @@ void MainWindow::reset(){
     start =false;
     go =false;
     lanceBall=false;
+<<<<<<< HEAD
     ui->checkBox->setChecked(false);
+=======
+    templateImage.deallocate();
+    timer->start(50);
+    matchImage.deallocate();
+>>>>>>> origin/master
 }
 
 int MainWindow::getPuissance(){
@@ -210,9 +220,13 @@ void MainWindow::on_boutonPlay_clicked()
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Space){
-        //timer2->start(200);
-    }else if (event->key() == Qt::Key_L){
-        // timer2->start(200);
+        timer->start(50);
+    }else if (event->key() == Qt::Key_0){
+        go=true;
+        int result_cols =  image.cols - templateImage.cols + 1;
+        int result_rows = image.rows - templateImage.rows + 1;
+        resultImage.create( result_cols, result_rows, CV_32FC1 );
+        matchImage=templateImage;
     }
 }
 
@@ -263,6 +277,29 @@ void MainWindow::chronoRefresh2()
     }
 }
 void MainWindow::setScore(int sco){
-    score=sco;
+    if(sco<5){
+        score=score+10;
+    }else if (sco<10){
+        score=score+9;
+    }else if (sco<15){
+        score=score+8;
+    }else if (sco<20){
+        score=score+7;
+    }else if (sco<25){
+        score=score+6;
+    }else if (sco<30){
+        score=score+5;
+    }else if (sco<35){
+        score=score+4;
+    }else if (sco<40){
+        score=score+3;
+    }else if (sco<45){
+        score=score+2;
+    }else if (sco<50){
+        score=score+1;
+    }else{
+        score=score+0;
+    }
+    qDebug()<<"Score : "<<score;
 }
 

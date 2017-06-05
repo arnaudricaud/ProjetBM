@@ -32,8 +32,8 @@ protected:
 
 private slots:
     void update();
-    void tracking();
-    void transition();
+    //void tracking();
+    //void transition();
     void on_checkBox_clicked();
     void on_boutonPlay_clicked();
     void chronoRefresh();
