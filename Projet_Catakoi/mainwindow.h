@@ -49,7 +49,7 @@ private:
     void clearHighScore();
     void saveHighScore();
     void loadHighScore();
-
+    void displayHighScore();
     Ui::MainWindow *ui;
     VideoCapture * cam;
 
@@ -61,6 +61,7 @@ private:
     // Temps de référence pour chrono
     QString timeRef;
     QString timeRefC;
+    QString timeFinal;
 
     bool go;
     bool lanceBall;

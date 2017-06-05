@@ -146,11 +146,12 @@ void MainWindow::update(){
 }
 
 void MainWindow::calculPartie(){
-    if (countGame>=10)
+    if (countGame>=2)
     {
         //ui->labelCible->setText("Fin de la partie !");
         ui->labelCibleR->setText("Fin partie !");
         chronoTotal->stop();
+        displayHighScore();
     }else{
         chronoCible->start(1000);//lancement du chrono de la cible
         countGame++;
@@ -277,7 +278,7 @@ void MainWindow::chronoRefresh()
        newTimeHH=newTimeHH+24;
    }
     ui->labelChronoTot->setText(QString::number(newTimeHH)+":"+QString::number(newTimeMM)+":"+QString::number(newTimeSS));
-
+    timeFinal=(QString::number(newTimeHH)+":"+QString::number(newTimeMM)+":"+QString::number(newTimeSS));
 }
 
 void MainWindow::chronoRefresh2()
@@ -381,4 +382,26 @@ void MainWindow::saveHighScore(){
 void MainWindow::clearHighScore(){
     QSettings highScore("Catakoi", "highScore");
     highScore.clear();
+}
+
+void MainWindow::displayHighScore(){
+    QSettings highScore("Catakoi", "highScore");
+    switch(level){
+    case 1: int scoreF = ui->tableWidget->item(1,0)->text().toInt();
+        if (score>scoreF){
+            ui->tableWidget->setItem(0,0,new QTableWidgetItem(highScore.value("ScoreFacile/Nom", nomJoueur).toString()));
+            ui->tableWidget->setItem(1,0,new QTableWidgetItem(highScore.value("ScoreFacile/Score", score).toString()));
+            ui->tableWidget->setItem(2,0,new QTableWidgetItem(highScore.value("ScoreFacile/Chrono", timeFinal).toString()));
+        }else if(score=scoreF){
+            QString chronoF = ui->tableWidget->item(2,0)->text();
+            if(timeFinal<chronoF){
+                ui->tableWidget->setItem(0,0,new QTableWidgetItem(highScore.value("ScoreFacile/Nom", nomJoueur).toString()));
+                ui->tableWidget->setItem(1,0,new QTableWidgetItem(highScore.value("ScoreFacile/Score", score).toString()));
+                ui->tableWidget->setItem(2,0,new QTableWidgetItem(highScore.value("ScoreFacile/Chrono", timeFinal).toString()));
+            }
+        }
+        break;
+    }
+
+
 }
