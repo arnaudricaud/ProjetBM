@@ -256,7 +256,7 @@
         <property name="title">
          <string>Affichage des scores</string>
         </property>
-        <widget class="QListView" name="listView">
+        <widget class="QListWidget" name="listWidget">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -335,7 +335,7 @@
      <x>0</x>
      <y>0</y>
      <width>694</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

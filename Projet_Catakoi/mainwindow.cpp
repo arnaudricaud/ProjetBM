@@ -346,18 +346,18 @@ void MainWindow::loadHighScore(){
 }
 
 void MainWindow::saveHighScore(){
-    QSettings highScore("highscore.ini", QSettings::IniFormat);
-    highScore.setValue("ScoreFacile/Nom", "Nom");
-    highScore.setValue("ScoreFacile/Score", "Score");
-    highScore.setValue("ScoreFacile/Chrono", "Chrono");
+    QSettings highScore("Catakoi", "highscore");
+    highScore.setValue("ScoreFacile/Nom", "");
+    highScore.setValue("ScoreFacile/Score", 0);
+    highScore.setValue("ScoreFacile/Chrono", "");
     //Intermediaire
-    highScore.setValue("ScoreIntermediaire/Nom", "Nom");
-    highScore.setValue("ScoreIntermediaire/Score", "Score");
-    highScore.setValue("ScoreIntermediaire/Chrono", "Chrono");
+    highScore.setValue("ScoreIntermediaire/Nom", "");
+    highScore.setValue("ScoreIntermediaire/Score", 0);
+    highScore.setValue("ScoreIntermediaire/Chrono", "");
     //Difficile
-    highScore.setValue("ScoreDifficile/Nom", "Nom");
-    highScore.setValue("ScoreDifficile/Score", "Score");
-    highScore.setValue("ScoreDifficile/Chrono", "Chrono");
-
-
+    highScore.setValue("ScoreDifficile/Nom", "");
+    highScore.setValue("ScoreDifficile/Score", 0);
+    highScore.setValue("ScoreDifficile/Chrono", "");
+    for (int i=0; i<=3 ; i++){
+    }
 }
