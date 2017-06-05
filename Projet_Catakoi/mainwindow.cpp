@@ -150,6 +150,7 @@ void MainWindow::calculPartie(){
     {
         //ui->labelCible->setText("Fin de la partie !");
         ui->labelCibleR->setText("Fin partie !");
+        ui->labelCibleJ->setText(QString::number(10));
         chronoTotal->stop();
         displayHighScore();
         saveHighScore();
