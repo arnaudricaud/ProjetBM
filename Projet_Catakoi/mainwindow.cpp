@@ -32,9 +32,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     templateRect= new Rect((frameWidth-templateWidth)/2,-20+(frameHeight-templateHeight)/2, templateWidth,templateHeight);
 
-    connect(ui->myGLWidget, SIGNAL(zoomChanged(int)), ui->zoomSlider, SLOT(setValue(int)));
-    connect(ui->myGLWidget, SIGNAL(angleCatapulteChanged(int)), ui->SliderAngleCatapulte, SLOT(setValue(int)));
-    connect(ui->myGLWidget, SIGNAL(angleBrasChanged(int)), ui->SliderAngleBras, SLOT(setValue(int)));
+    //connect(ui->myGLWidget, SIGNAL(zoomChanged(int)), ui->zoomSlider, SLOT(setValue(int)));
+    //connect(ui->myGLWidget, SIGNAL(angleCatapulteChanged(int)), ui->SliderAngleCatapulte, SLOT(setValue(int)));
+    //connect(ui->myGLWidget, SIGNAL(angleBrasChanged(int)), ui->SliderAngleBras, SLOT(setValue(int)));
     //SCORE
     connect(ui->myGLWidget, SIGNAL(changeScore(int)),this, SLOT(setScore(int)));
     //TIMERS
@@ -58,9 +58,10 @@ MainWindow::MainWindow(QWidget *parent) :
     go =false;
     track=true;
     lanceBall=false;
-    ui->labelChrono->setVisible(false);
-    ui->labelChrono2->setVisible(false);
     ui->checkBox->setVisible(false);
+    ui->label_2->setVisible(true);
+    ui->label_3->setVisible(true);
+    ui->label_4->setVisible(true);
 
 
 }
@@ -105,7 +106,6 @@ void MainWindow::update(){
             cvtColor(image,image,CV_BGR2RGB);
             QImage img= QImage((const unsigned char*)(image.data),image.cols,image.rows,QImage::Format_RGB888);
             ui->camFrame->setPixmap(QPixmap::fromImage(img));
-            qDebug()<<resultRect.y;
             if(!lanceBall){
                 if (resultRect.y>yPrev+12){
                     cv::Mat img;
@@ -146,14 +146,16 @@ void MainWindow::update(){
 void MainWindow::calculPartie(){
     if (countGame==4)
     {
-        ui->labelCible->setText("Fin de la partie !");
+        //ui->labelCible->setText("Fin de la partie !");
+        ui->labelCibleR->setText("Fin partie !");
         chronoTotal->stop();
     }else{
         chronoCible->start(1000);//lancement du chrono de la cible
         countGame++;
         count=0;
         QString nb= QString::number(10-countGame);
-        ui->labelCible->setText(QString("nombre de cibles restantes : "+nb));
+       // ui->labelCible->setText(QString("nombre de cibles restantes : "+nb));
+        ui->labelCibleR->setText(nb);
     }
 }
 void MainWindow::on_checkBox_clicked()
@@ -195,8 +197,6 @@ void MainWindow::setPuissance(int dist){
 
 void MainWindow::on_boutonPlay_clicked()
 {
-    ui->labelChrono->setVisible(true);
-    ui->labelChrono2->setVisible(true);
     ui->checkBox->setVisible(true);
     gameDialog x;
     x.setModal(true);
@@ -228,10 +228,10 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 void MainWindow::chronoRefresh()
 {
     //Calcul du chronometre pour la partie total
-    QString temps = ui->labelChrono->text();
+    QString temps = ui->labelChronoTot->text();
     QStringList list = temps.split(":");
     QString minute = list.join(QString(":"));
-    minute=minute.mid(12,1);
+    //minute=minute.mid(12,1);
     list.removeFirst();
     QString secon = list.join(QString(":"));
     int tps=(minute.toInt())*60+secon.toInt();
@@ -240,7 +240,7 @@ void MainWindow::chronoRefresh()
        tps++;
        int min = tps/60;
        int seconde = tps - min*60;
-       ui->labelChrono->setText("Tps Total - "+QString::number(min)+":"+QString::number(seconde));
+       ui->labelChronoTot->setText(QString::number(min)+":"+QString::number(seconde));
     }
     else
     {
@@ -251,10 +251,10 @@ void MainWindow::chronoRefresh()
 void MainWindow::chronoRefresh2()
 {
     //Calcul du chronometre pour un lancé
-    QString temps = ui->labelChrono2->text();
+    QString temps = ui->labelChronoCible->text();
     QStringList list = temps.split(":");
     QString minute = list.join(QString(":"));
-    minute=minute.mid(12,1);
+    //minute=minute.mid(12,1);
     list.removeFirst();
     QString secon = list.join(QString(":"));
     int tps=minute.toInt()*60+secon.toInt();
@@ -264,7 +264,7 @@ void MainWindow::chronoRefresh2()
        tps++;
        int min = tps/60;
        int seconde = tps - min*60;
-       ui->labelChrono2->setText("Tps Cible - "+QString::number(min)+":"+QString::number(seconde));
+       ui->labelChronoCible->setText(QString::number(min)+":"+QString::number(seconde));
     }
     else
     {

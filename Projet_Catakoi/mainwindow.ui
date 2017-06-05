@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>701</width>
-    <height>476</height>
+    <width>694</width>
+    <height>468</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,18 +18,208 @@
     <bool>true</bool>
    </property>
    <layout class="QGridLayout" name="gridLayout_3">
+    <item row="1" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0,0">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QGroupBox" name="groupBox">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>186</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>186</height>
+             </size>
+            </property>
+            <property name="autoFillBackground">
+             <bool>true</bool>
+            </property>
+            <property name="title">
+             <string>Information sur la partie</string>
+            </property>
+            <widget class="QLabel" name="label">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>30</y>
+               <width>71</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Chrono total :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_2">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>50</y>
+               <width>111</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Chrono pour la cible :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_3">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>70</y>
+               <width>121</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Nb de cibles restantes : </string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_4">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>90</y>
+               <width>47</width>
+               <height>13</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Score :</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="labelChronoTot">
+             <property name="geometry">
+              <rect>
+               <x>90</x>
+               <y>30</y>
+               <width>71</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>00:00</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="labelChronoCible">
+             <property name="geometry">
+              <rect>
+               <x>120</x>
+               <y>50</y>
+               <width>71</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>00:00</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="labelCibleR">
+             <property name="geometry">
+              <rect>
+               <x>130</x>
+               <y>70</y>
+               <width>51</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>10</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="labelScore">
+             <property name="geometry">
+              <rect>
+               <x>60</x>
+               <y>90</y>
+               <width>47</width>
+               <height>13</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>0</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="title">
+         <string>Action utilisateur</string>
+        </property>
+        <widget class="QPushButton" name="boutonPlay">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>91</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Play</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="checkBox">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>60</y>
+           <width>131</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Lancement du Tracking</string>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox_3">
+        <property name="title">
+         <string>Affichage des scores</string>
+        </property>
+        <widget class="QListView" name="listView">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>20</y>
+           <width>201</width>
+           <height>161</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </item>
     <item row="0" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,5">
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="5">
       <property name="sizeConstraint">
        <enum>QLayout::SetDefaultConstraint</enum>
       </property>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <property name="sizeConstraint">
-         <enum>QLayout::SetDefaultConstraint</enum>
-        </property>
-       </layout>
-      </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
@@ -63,7 +253,7 @@
             <rect>
              <x>0</x>
              <y>120</y>
-             <width>141</width>
+             <width>161</width>
              <height>31</height>
             </rect>
            </property>
@@ -74,158 +264,27 @@
             <number>50</number>
            </property>
           </widget>
-          <widget class="QLabel" name="labelChrono">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>210</y>
-             <width>161</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="autoFillBackground">
-            <bool>true</bool>
-           </property>
-           <property name="text">
-            <string>00:00:00</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="labelCible">
-           <property name="geometry">
-            <rect>
-             <x>160</x>
-             <y>10</y>
-             <width>211</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="autoFillBackground">
-            <bool>true</bool>
-           </property>
-           <property name="text">
-            <string>nombre de cibles restantes :</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="labelChrono2">
-           <property name="geometry">
-            <rect>
-             <x>490</x>
-             <y>90</y>
-             <width>171</width>
-             <height>21</height>
-            </rect>
-           </property>
-           <property name="autoFillBackground">
-            <bool>true</bool>
-           </property>
-           <property name="text">
-            <string>00:00:00</string>
-           </property>
-          </widget>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSlider" name="zoomSlider">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="value">
-           <number>100</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="tickPosition">
-           <enum>QSlider::TicksBelow</enum>
-          </property>
-          <property name="tickInterval">
-           <number>1</number>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSlider" name="SliderAngleCatapulte">
-          <property name="minimum">
-           <number>-45</number>
-          </property>
-          <property name="maximum">
-           <number>45</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="tickPosition">
-           <enum>QSlider::TicksBelow</enum>
-          </property>
-          <property name="tickInterval">
-           <number>1</number>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSlider" name="SliderAngleBras">
-          <property name="minimum">
-           <number>-135</number>
-          </property>
-          <property name="maximum">
-           <number>30</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="tickPosition">
-           <enum>QSlider::TicksBelow</enum>
-          </property>
-          <property name="tickInterval">
-           <number>1</number>
-          </property>
+          <zorder>camFrame</zorder>
+          <zorder>progressBar</zorder>
+          <zorder></zorder>
          </widget>
         </item>
        </layout>
       </item>
      </layout>
     </item>
-    <item row="1" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0,0">
-      <property name="spacing">
-       <number>6</number>
+    <item row="2" column="0">
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
       </property>
-      <property name="leftMargin">
-       <number>0</number>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
       </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item>
-       <widget class="QPushButton" name="pushButton">
-        <property name="text">
-         <string>Lauch Ball</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="boutonPlay">
-        <property name="text">
-         <string>Play</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="checkBox">
-        <property name="text">
-         <string>Start Tracking</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     </spacer>
     </item>
    </layout>
   </widget>
@@ -234,7 +293,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>701</width>
+     <width>694</width>
      <height>20</height>
     </rect>
    </property>
@@ -268,70 +327,5 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections>
-  <connection>
-   <sender>zoomSlider</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>myGLWidget</receiver>
-   <slot>setZoom(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>522</x>
-     <y>382</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>522</x>
-     <y>203</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>SliderAngleCatapulte</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>myGLWidget</receiver>
-   <slot>setAngleCatapulte(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>354</x>
-     <y>382</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>354</x>
-     <y>186</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>SliderAngleBras</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>myGLWidget</receiver>
-   <slot>setAngleBras(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>354</x>
-     <y>431</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>354</x>
-     <y>194</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>myGLWidget</receiver>
-   <slot>launchBall()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>350</x>
-     <y>435</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>354</x>
-     <y>168</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
