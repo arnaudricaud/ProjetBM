@@ -152,6 +152,7 @@ void MainWindow::calculPartie(){
         ui->labelCibleR->setText("Fin partie !");
         chronoTotal->stop();
         displayHighScore();
+        saveHighScore();
     }else{
         chronoCible->start(1000);//lancement du chrono de la cible
         countGame++;
