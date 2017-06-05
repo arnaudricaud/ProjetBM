@@ -203,22 +203,28 @@ void MainWindow::on_boutonPlay_clicked()
     ui->checkBox->setVisible(true);
     gameDialog x;
     x.setModal(true);
-    x.exec();
-    level=x.getDifficulty();
-    emit changeLevel(level);
-    ui->myGLWidget->newTarget();
-    nomJoueur = x.getName();
-    switch(level){
-    case 1: ui->labelLevel->setText("Facile");
-    break;
-     case 2: ui->labelLevel->setText("Moyen");
-    break;
-     case 3: ui->labelLevel->setText("Difficile");
-    break;
+    int result = x.exec();
+    if (result == 1){
+        level=x.getDifficulty();
+        emit changeLevel(level);
+        ui->myGLWidget->newTarget();
+        nomJoueur = x.getName();
+        countGame = 0;
+        ui->labelCibleJ->setText("0");
+        ui->labelCibleR->setText("10");
+        switch(level){
+        case 1: ui->labelLevel->setText("Facile");
+        break;
+         case 2: ui->labelLevel->setText("Moyen");
+        break;
+         case 3: ui->labelLevel->setText("Difficile");
+        break;
+        }
+        timeRef = (QTime::currentTime().toString("hh:mm:ss"));
+        chronoTotal->start(1000);
     }
-    timeRef = (QTime::currentTime().toString("hh:mm:ss"));
-    chronoTotal->start(1000);
 }
+
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {

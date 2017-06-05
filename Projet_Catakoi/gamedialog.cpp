@@ -34,7 +34,6 @@ void gameDialog::on_radioButtonF_clicked()
 void gameDialog::on_radioButtonI_clicked()
 {
     level=2;
-    qDebug()<<level<<" lev";
 }
 
 void gameDialog::on_radioButtonD_clicked()
