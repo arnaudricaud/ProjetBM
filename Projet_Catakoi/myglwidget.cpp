@@ -853,7 +853,6 @@ void MyGLWidget::drawBall(){
 }
 
 void MyGLWidget::launchBall(){
-    qDebug()<<"BALLE LANCEE";
 
     //Pour tests
 

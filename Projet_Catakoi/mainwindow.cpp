@@ -146,13 +146,14 @@ void MainWindow::update(){
 }
 
 void MainWindow::calculPartie(){
-    if (countGame>10)
+    if (countGame==9)
     {
         //ui->labelCible->setText("Fin de la partie !");
         ui->labelCibleR->setText("Fin partie !");
         chronoTotal->stop();
         displayHighScore();
         saveHighScore();
+        ui->checkBox->setVisible(false);
     }else{
         chronoCible->start(1000);//lancement du chrono de la cible
         countGame++;
@@ -393,13 +394,13 @@ void MainWindow::displayHighScore(){
         int scoreF = ui->tableWidget->item(1,0)->text().toInt();
         if (score>scoreF){
             ui->tableWidget->setItem(0,0,new QTableWidgetItem(nomJoueur));
-            ui->tableWidget->setItem(1,0,new QTableWidgetItem(score));
+            ui->tableWidget->setItem(1,0,new QTableWidgetItem(QString::number(score)));
             ui->tableWidget->setItem(2,0,new QTableWidgetItem(timeFinal));
         }else if(score==scoreF){
             QString chronoF = ui->tableWidget->item(2,0)->text();
             if(timeFinal<chronoF){
                 ui->tableWidget->setItem(0,0,new QTableWidgetItem(nomJoueur));
-                ui->tableWidget->setItem(1,0,new QTableWidgetItem(score));
+                ui->tableWidget->setItem(1,0,new QTableWidgetItem(QString::number(score)));
                 ui->tableWidget->setItem(2,0,new QTableWidgetItem(timeFinal));
             }
         }
@@ -410,13 +411,13 @@ void MainWindow::displayHighScore(){
     int scoreI = ui->tableWidget->item(1,1)->text().toInt();
     if (score>scoreI){
         ui->tableWidget->setItem(0,1,new QTableWidgetItem(nomJoueur));
-        ui->tableWidget->setItem(1,1,new QTableWidgetItem(score));
+        ui->tableWidget->setItem(1,1,new QTableWidgetItem(QString::number(score)));
         ui->tableWidget->setItem(2,1,new QTableWidgetItem(timeFinal));
     }else if(score==scoreI){
         QString chronoI = ui->tableWidget->item(2,1)->text();
         if(timeFinal<chronoI){
             ui->tableWidget->setItem(0,1,new QTableWidgetItem(nomJoueur));
-            ui->tableWidget->setItem(1,1,new QTableWidgetItem(score));
+            ui->tableWidget->setItem(1,1,new QTableWidgetItem(QString::number(score)));
             ui->tableWidget->setItem(2,1,new QTableWidgetItem(timeFinal));
         }
     }
@@ -426,14 +427,14 @@ void MainWindow::displayHighScore(){
         int scoreD = ui->tableWidget->item(1,2)->text().toInt();
         if (score>scoreD){
             ui->tableWidget->setItem(0,2,new QTableWidgetItem(nomJoueur));
-            ui->tableWidget->setItem(1,2,new QTableWidgetItem(score));
+            ui->tableWidget->setItem(1,2,new QTableWidgetItem(QString::number(score)));
             ui->tableWidget->setItem(2,2,new QTableWidgetItem(timeFinal));
         }else if(score==scoreD){
             QString chronoD = ui->tableWidget->item(2,2)->text();
             if(timeFinal<chronoD){
                 ui->tableWidget->setItem(0,2,new QTableWidgetItem(nomJoueur));
-                ui->tableWidget->setItem(1,2,new QTableWidgetItem(score);
-                ui->tableWidget->setItem(2,2,new QTableWidgetItem(timeFinal);
+                ui->tableWidget->setItem(1,2,new QTableWidgetItem(QString::number(score)));
+                ui->tableWidget->setItem(2,2,new QTableWidgetItem(timeFinal));
             }
         }
     break;}
