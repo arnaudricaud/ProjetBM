@@ -225,8 +225,12 @@ void MainWindow::on_boutonPlay_clicked()
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Space){
-        timer->start(50);
-    }else if (event->key() == Qt::Key_0){
+        go=true;
+        int result_cols =  image.cols - templateImage.cols + 1;
+        int result_rows = image.rows - templateImage.rows + 1;
+        resultImage.create( result_cols, result_rows, CV_32FC1 );
+        matchImage=templateImage;
+    }else if (event->key() == Qt::Key_P){
         go=true;
         int result_cols =  image.cols - templateImage.cols + 1;
         int result_rows = image.rows - templateImage.rows + 1;
