@@ -14,6 +14,7 @@ class MyGLWidget : public QGLWidget
 public:
     explicit MyGLWidget(QWidget *parent = 0);
     ~MyGLWidget();
+    void newTarget(); //Génération d'une cible en fonction de la difficulté
 
 protected:
     void initializeGL();
@@ -78,7 +79,6 @@ private:
 
     void showImpact();
     void calcBall();    //Calcul de la trajectoire de la balle, et des informations de l'impact
-    void newTarget(); //Génération d'une cible en fonction de la difficulté
 
     int level; //Niveau de difficulté (de 1 à 3 pour Facile; Moyen; Difficile)
     bool visibleImpact;

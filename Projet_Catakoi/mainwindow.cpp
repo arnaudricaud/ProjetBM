@@ -146,16 +146,14 @@ void MainWindow::update(){
 }
 
 void MainWindow::calculPartie(){
-    if (countGame==10)
+    if (countGame>=10)
     {
         //ui->labelCible->setText("Fin de la partie !");
         ui->labelCibleR->setText("Fin partie !");
         chronoTotal->stop();
-        ui->boutonPlay->setEnabled(true);
     }else{
         chronoCible->start(1000);//lancement du chrono de la cible
         countGame++;
-
         QString nb= QString::number(10-countGame);
        // ui->labelCible->setText(QString("nombre de cibles restantes : "+nb));
         ui->labelCibleR->setText(nb);
@@ -208,6 +206,7 @@ void MainWindow::on_boutonPlay_clicked()
     x.exec();
     level=x.getDifficulty();
     emit changeLevel(level);
+    ui->myGLWidget->newTarget();
     nomJoueur = x.getName();
     switch(level){
     case 1: ui->labelLevel->setText("Facile");
@@ -219,8 +218,6 @@ void MainWindow::on_boutonPlay_clicked()
     }
     timeRef = (QTime::currentTime().toString("hh:mm:ss"));
     chronoTotal->start(1000);
-
-    ui->boutonPlay->setEnabled(false);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
@@ -315,30 +312,32 @@ void MainWindow::chronoRefresh2()
 
 }
 void MainWindow::setScore(int sco){
-    if(sco<5){
-        score=score+10;
-    }else if (sco<10){
-        score=score+9;
-    }else if (sco<15){
-        score=score+8;
-    }else if (sco<20){
-        score=score+7;
-    }else if (sco<25){
-        score=score+6;
-    }else if (sco<30){
-        score=score+5;
-    }else if (sco<35){
-        score=score+4;
-    }else if (sco<40){
-        score=score+3;
-    }else if (sco<45){
-        score=score+2;
-    }else if (sco<50){
-        score=score+1;
-    }else{
-        score=score+0;
+    if(countGame < 10){
+        if(sco<5){
+            score=score+10;
+        }else if (sco<10){
+            score=score+9;
+        }else if (sco<15){
+            score=score+8;
+        }else if (sco<20){
+            score=score+7;
+        }else if (sco<25){
+            score=score+6;
+        }else if (sco<30){
+            score=score+5;
+        }else if (sco<35){
+            score=score+4;
+        }else if (sco<40){
+            score=score+3;
+        }else if (sco<45){
+            score=score+2;
+        }else if (sco<50){
+            score=score+1;
+        }else{
+            score=score+0;
+        }
+        ui->labelScore->setText(QString::number(score));
     }
-    ui->labelScore->setText(QString::number(score));
 }
 
 void MainWindow::loadHighScore(){
