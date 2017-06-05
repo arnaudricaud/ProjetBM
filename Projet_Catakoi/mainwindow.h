@@ -46,7 +46,7 @@ void changePuissance(int puissance);
 void changeLevel(int level);
 
 private:
-
+    void clearHighScore();
     void saveHighScore();
     void loadHighScore();
 
