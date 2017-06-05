@@ -17,7 +17,10 @@
    <property name="enabled">
     <bool>true</bool>
    </property>
-   <layout class="QGridLayout" name="gridLayout_3">
+   <layout class="QGridLayout" name="gridLayout_3" rowstretch="9,1">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetMaximumSize</enum>
+    </property>
     <item row="1" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0,0">
       <property name="spacing">
@@ -27,7 +30,7 @@
        <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>2</number>
       </property>
       <item>
        <layout class="QGridLayout" name="gridLayout">
@@ -264,27 +267,13 @@
             <number>50</number>
            </property>
           </widget>
-          <zorder>camFrame</zorder>
           <zorder>progressBar</zorder>
-          <zorder></zorder>
+          <zorder>camFrame</zorder>
          </widget>
         </item>
        </layout>
       </item>
      </layout>
-    </item>
-    <item row="2" column="0">
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
     </item>
    </layout>
   </widget>
@@ -294,7 +283,7 @@
      <x>0</x>
      <y>0</y>
      <width>694</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
