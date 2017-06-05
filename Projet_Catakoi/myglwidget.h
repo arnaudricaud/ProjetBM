@@ -24,8 +24,8 @@ protected:
     QSize sizeHint() const;
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
-    void keyPressEvent(QKeyEvent *);
-    void wheelEvent(QWheelEvent *event);
+    void keyPressEvent(QKeyEvent *); // Clavier
+    void wheelEvent(QWheelEvent *event); //Molette de la souris
 
 public slots:
     // slots for xyz-rotation slider
@@ -41,7 +41,7 @@ public slots:
     void setAngleBras(int angle);
     void setPuissance(int puissance);
     void setLevel(int level);
-    void launchBall();
+    void launchBall(); // Lancement de la balle
 
 signals:
     // signaling rotation from mouse movement
@@ -55,10 +55,10 @@ signals:
     void zoomChanged(int scale);
     void angleCatapulteChanged(int angle);
     void angleBrasChanged(int angle);
-
     void changeScore(int);
 
 private:
+    //DESSIN:
     void draw();
     void drawCube();
     void drawWoodCube();
@@ -76,7 +76,6 @@ private:
     void drawBall();
     void drawImpact();
 
-
     void showImpact();
     void calcBall();    //Calcul de la trajectoire de la balle, et des informations de l'impact
     void newTarget(); //Génération d'une cible en fonction de la difficulté
@@ -87,7 +86,7 @@ private:
     float impactX;
     float impactY;
 
-    bool ballThrow;
+    bool ballThrow; // Indique si la balle est en l'air ou non
     int angleCatapulte; // Angle de la catapulte par rapport au sol
     int angleBras;  // Angle du bras de la catapulte
     float angleCorde;
@@ -101,11 +100,11 @@ private:
     float yTra;
     float zTra;
 
-    float xTarget;
+    float xTarget; // Position du centre de la cible
     float yTarget;
 
-    float ballSpeed [3] = {0, 0, 0};
-    float ballPosition [3] = {0, 0, 0};
+    float ballSpeed [3] = {0, 0, 0};    // V de la balle
+    float ballPosition [3] = {0, 0, 0}; // Position de la balle
 
 
     float zoom;
@@ -114,6 +113,8 @@ private:
     QImage pancarte;
     QImage wood;
     QImage rock;
+
+    //Dernière position du curseur (pour les mouvements à la souris)
     QPoint lastPos;
 };
 
