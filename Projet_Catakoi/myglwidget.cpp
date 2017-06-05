@@ -944,6 +944,7 @@ void MyGLWidget::calcBall(){
             impactY = posY;
             impactDist = sqrt(pow((posX - xTarget),2) + pow((posY - yTarget),2));
             qDebug()<<"dist->"<<impactDist;
+            emit changeScore(impactDist);
             firstTouch = false;
         }
 

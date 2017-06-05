@@ -56,6 +56,8 @@ signals:
     void angleCatapulteChanged(int angle);
     void angleBrasChanged(int angle);
 
+    void changeScore(int);
+
 private:
     void draw();
     void drawCube();
