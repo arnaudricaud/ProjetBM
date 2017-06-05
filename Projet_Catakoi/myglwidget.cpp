@@ -870,7 +870,7 @@ void MyGLWidget::launchBall(){
     zoom = 0.008;
 
     //DESSINS AVEC LA BALLE (PAS DE PRISE EN COMPTE DE LA PUISSANCE)
-    for(int i = 30; i > -90; i--){ // i=anglebras  -90 vers le ciel  30 -> 100% et -5 -> 0
+    for(int i = angleBras; i > -90; i--){ // i=anglebras  -90 vers le ciel  30 -> 100% et -5 -> 0
         setAngleBras(i);
     }
     calcBall();
@@ -943,7 +943,6 @@ void MyGLWidget::calcBall(){
             impactX = posX;
             impactY = posY;
             impactDist = sqrt(pow((posX - xTarget),2) + pow((posY - yTarget),2));
-            qDebug()<<"dist->"<<impactDist;
             emit changeScore(impactDist);
             firstTouch = false;
         }

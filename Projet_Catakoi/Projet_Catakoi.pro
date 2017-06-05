@@ -15,13 +15,11 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     myglwidget.cpp \
-    gamedialog.cpp \
-    score.cpp
+    gamedialog.cpp
 
 HEADERS  += mainwindow.h \
     myglwidget.h \
-    gamedialog.h \
-    score.h
+    gamedialog.h
 
 FORMS    += mainwindow.ui \
     gamedialog.ui

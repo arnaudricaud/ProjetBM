@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
     cam->set(CV_CAP_PROP_FRAME_WIDTH, frameWidth);
     cam->set(CV_CAP_PROP_FRAME_HEIGHT, frameHeight);
 
-    templateRect= new Rect((frameWidth-templateWidth)/2,(frameHeight-templateHeight)/2, templateWidth,templateHeight);
+    templateRect= new Rect((frameWidth-templateWidth)/2,-20+(frameHeight-templateHeight)/2, templateWidth,templateHeight);
 
     connect(ui->myGLWidget, SIGNAL(zoomChanged(int)), ui->zoomSlider, SLOT(setValue(int)));
     connect(ui->myGLWidget, SIGNAL(angleCatapulteChanged(int)), ui->SliderAngleCatapulte, SLOT(setValue(int)));
@@ -45,9 +45,9 @@ MainWindow::MainWindow(QWidget *parent) :
     //PARAM CATAPULTE ET LANCÉ
     connect(this, SIGNAL(launchBall()),ui->myGLWidget, SLOT(launchBall()));
     connect(this, SIGNAL(setAngleCatapulte(int)),ui->myGLWidget, SLOT(setAngleCatapulte(int)));
+    connect(this, SIGNAL(setAngleBras(int)),ui->myGLWidget, SLOT(setAngleBras(int)));
     connect(this, SIGNAL(changePuissance(int)),ui->myGLWidget, SLOT(setPuissance(int)));
     connect(this, SIGNAL(changeLevel(int)),ui->myGLWidget, SLOT(setLevel(int)));
-
    // connect(this, SIGNAL(debutGame()), this, SLOT(demarrer()));
 
     timer->start(100);
@@ -105,13 +105,14 @@ void MainWindow::update(){
             cvtColor(image,image,CV_BGR2RGB);
             QImage img= QImage((const unsigned char*)(image.data),image.cols,image.rows,QImage::Format_RGB888);
             ui->camFrame->setPixmap(QPixmap::fromImage(img));
-
+            qDebug()<<resultRect.y;
             if(!lanceBall){
-                if (resultRect.y>yPrev+30){
+                if (resultRect.y>yPrev+12){
                     cv::Mat img;
                     image=img;
                     lanceBall=true;
                     distance=yPrev-yMin;
+                    distance=(100*distance)/80;
                     setPuissance(distance);
                     ui->progressBar->setValue(distance);
                 }else{
@@ -119,8 +120,11 @@ void MainWindow::update(){
                     xPrev=resultRect.x;
                     angleCatapulte=xPrev-xMin;
                     distance = yPrev - yMin;
+                    distance=(100*distance)/80;
                     ui->progressBar->setValue(distance);
                     setAngleCatapulte(angleCatapulte);
+                    angleBras=(30*distance)/100;
+                    setAngleBras(angleBras);
                     if (yPrev<yMin){
                         yMin=yPrev;
                     }

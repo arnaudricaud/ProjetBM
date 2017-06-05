@@ -43,6 +43,7 @@ private slots:
 signals:
 void launchBall();
 void setAngleCatapulte(int angleCatapulte);
+void setAngleBras(int angleBras);
 void changePuissance(int puissance);
 void changeLevel(int level);
 void debutGame();
@@ -63,20 +64,21 @@ private:
     bool go;
     bool track;
     bool lanceBall;
-    int templateWidth = 60;
-    int templateHeight = 60;
+    int templateWidth = 30;
+    int templateHeight = 30;
     cv::Rect *templateRect;
     cv::Mat templateImage;
     cv::Mat matchImage;
     cv::Mat resultImage;
     cv::Mat image;
     int yPrev=90;
-    int yMin=90;
+    int yMin=20;
     int xPrev=130;
-    int xMin=130;
+    int xMin=60;
     int distance;
     int puissance;
     int angleCatapulte=0;
+    int angleBras=0;
     int countGame=0;
     int level=3;
     int count=0;
