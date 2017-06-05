@@ -387,21 +387,20 @@ void MainWindow::clearHighScore(){
 }
 
 void MainWindow::displayHighScore(){
-    QSettings highScore("Catakoi", "highScore");
     switch(level){
     case 1 :
     {
         int scoreF = ui->tableWidget->item(1,0)->text().toInt();
         if (score>scoreF){
-            ui->tableWidget->setItem(0,0,new QTableWidgetItem(highScore.value("ScoreFacile/Nom", nomJoueur).toString()));
-            ui->tableWidget->setItem(1,0,new QTableWidgetItem(highScore.value("ScoreFacile/Score", score).toString()));
-            ui->tableWidget->setItem(2,0,new QTableWidgetItem(highScore.value("ScoreFacile/Chrono", timeFinal).toString()));
+            ui->tableWidget->setItem(0,0,new QTableWidgetItem(nomJoueur));
+            ui->tableWidget->setItem(1,0,new QTableWidgetItem(score));
+            ui->tableWidget->setItem(2,0,new QTableWidgetItem(timeFinal));
         }else if(score==scoreF){
             QString chronoF = ui->tableWidget->item(2,0)->text();
             if(timeFinal<chronoF){
-                ui->tableWidget->setItem(0,0,new QTableWidgetItem(highScore.value("ScoreFacile/Nom", nomJoueur).toString()));
-                ui->tableWidget->setItem(1,0,new QTableWidgetItem(highScore.value("ScoreFacile/Score", score).toString()));
-                ui->tableWidget->setItem(2,0,new QTableWidgetItem(highScore.value("ScoreFacile/Chrono", timeFinal).toString()));
+                ui->tableWidget->setItem(0,0,new QTableWidgetItem(nomJoueur));
+                ui->tableWidget->setItem(1,0,new QTableWidgetItem(score));
+                ui->tableWidget->setItem(2,0,new QTableWidgetItem(timeFinal));
             }
         }
      break;
@@ -410,15 +409,15 @@ void MainWindow::displayHighScore(){
     {
     int scoreI = ui->tableWidget->item(1,1)->text().toInt();
     if (score>scoreI){
-        ui->tableWidget->setItem(0,1,new QTableWidgetItem(highScore.value("ScoreFacile/Nom", nomJoueur).toString()));
-        ui->tableWidget->setItem(1,1,new QTableWidgetItem(highScore.value("ScoreFacile/Score", score).toString()));
-        ui->tableWidget->setItem(2,1,new QTableWidgetItem(highScore.value("ScoreFacile/Chrono", timeFinal).toString()));
+        ui->tableWidget->setItem(0,1,new QTableWidgetItem(nomJoueur));
+        ui->tableWidget->setItem(1,1,new QTableWidgetItem(score));
+        ui->tableWidget->setItem(2,1,new QTableWidgetItem(timeFinal));
     }else if(score==scoreI){
         QString chronoI = ui->tableWidget->item(2,1)->text();
         if(timeFinal<chronoI){
-            ui->tableWidget->setItem(0,1,new QTableWidgetItem(highScore.value("ScoreFacile/Nom", nomJoueur).toString()));
-            ui->tableWidget->setItem(1,1,new QTableWidgetItem(highScore.value("ScoreFacile/Score", score).toString()));
-            ui->tableWidget->setItem(2,1,new QTableWidgetItem(highScore.value("ScoreFacile/Chrono", timeFinal).toString()));
+            ui->tableWidget->setItem(0,1,new QTableWidgetItem(nomJoueur));
+            ui->tableWidget->setItem(1,1,new QTableWidgetItem(score));
+            ui->tableWidget->setItem(2,1,new QTableWidgetItem(timeFinal));
         }
     }
     break;}
@@ -426,15 +425,15 @@ void MainWindow::displayHighScore(){
     {
         int scoreD = ui->tableWidget->item(1,2)->text().toInt();
         if (score>scoreD){
-            ui->tableWidget->setItem(0,2,new QTableWidgetItem(highScore.value("ScoreFacile/Nom", nomJoueur).toString()));
-            ui->tableWidget->setItem(1,2,new QTableWidgetItem(highScore.value("ScoreFacile/Score", score).toString()));
-            ui->tableWidget->setItem(2,2,new QTableWidgetItem(highScore.value("ScoreFacile/Chrono", timeFinal).toString()));
+            ui->tableWidget->setItem(0,2,new QTableWidgetItem(nomJoueur));
+            ui->tableWidget->setItem(1,2,new QTableWidgetItem(score));
+            ui->tableWidget->setItem(2,2,new QTableWidgetItem(timeFinal));
         }else if(score==scoreD){
             QString chronoD = ui->tableWidget->item(2,2)->text();
             if(timeFinal<chronoD){
-                ui->tableWidget->setItem(0,2,new QTableWidgetItem(highScore.value("ScoreFacile/Nom", nomJoueur).toString()));
-                ui->tableWidget->setItem(1,2,new QTableWidgetItem(highScore.value("ScoreFacile/Score", score).toString()));
-                ui->tableWidget->setItem(2,2,new QTableWidgetItem(highScore.value("ScoreFacile/Chrono", timeFinal).toString()));
+                ui->tableWidget->setItem(0,2,new QTableWidgetItem(nomJoueur));
+                ui->tableWidget->setItem(1,2,new QTableWidgetItem(score);
+                ui->tableWidget->setItem(2,2,new QTableWidgetItem(timeFinal);
             }
         }
     break;}
